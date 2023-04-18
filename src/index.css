@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.tabs-container .active-tab-styles {
+  @apply bg-red-700 text-white;
+}
