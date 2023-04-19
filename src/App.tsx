@@ -6,6 +6,8 @@ import { LatestTrailer } from "./LatestTrailer";
 import { Popular } from "./Popular";
 import { FreeToWatch } from "./FreeToWatch";
 import { FooterNav } from "./FooterNav";
+import { MovieDetail } from "./components/Details/MovieDetail";
+import { Movie } from "./Movie";
 
 function App() {
   return (
@@ -17,6 +19,10 @@ function App() {
       <Popular />
       <FreeToWatch />
       <FooterNav />
+
+      <Routes>
+        <Route path="/movie/:id" element={<MovieDetail />} />
+      </Routes>
     </>
     // <div className="my-4">
     //   <Routes>
