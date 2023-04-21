@@ -123,3 +123,87 @@ export type TabProps = {
   header: string;
   activeTab: TabType;
 };
+
+export interface ICrewResponse {
+  id: number;
+  cast: ICastMember[];
+  crew: ICrewMember[];
+}
+
+export interface ICastMember {
+  adult: boolean;
+  gender: number | null;
+  id: number;
+  known_for_department: string;
+  name: string;
+  original_name: string;
+  popularity: number;
+  profile_path: string;
+  cast_id: number;
+  character: string;
+  credit_id: string;
+  order: number;
+}
+
+export interface ICrewMember {
+  adult: boolean;
+  gender: number;
+  id: number;
+  known_for_department: string;
+  name: string;
+  original_name: string;
+  popularity: number;
+  profile_path: string | null;
+  credit_id: string;
+  department: string;
+  job: string;
+}
+
+export interface AuthorDetails {
+  name: string;
+  username: string;
+  avatar_path: string | null;
+  rating: number | null;
+}
+
+export interface ReviewResult {
+  author: string;
+  author_details: AuthorDetails;
+  content: string;
+  created_at: string;
+  id: string;
+  updated_at: string;
+  url: string;
+}
+
+export interface ReviewResponse {
+  id: number;
+  page: number;
+  results: ReviewResult[];
+  total_pages: number;
+  total_results: number;
+}
+
+export interface RecommendationResponse {
+  page: number;
+  results: MovieRecommendation[];
+  total_pages: number;
+  total_results: number;
+}
+
+export interface MovieRecommendation {
+  adult: boolean;
+  backdrop_path: string | null;
+  genre_ids: number[];
+  id: number;
+  original_language: string;
+  original_title: string;
+  overview: string;
+  release_date: string;
+  poster_path: string | null;
+  popularity: number;
+  title: string;
+  video: boolean;
+  vote_average: number;
+  vote_count: number;
+}

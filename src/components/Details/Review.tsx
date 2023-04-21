@@ -1,48 +1,84 @@
 import { FaStar } from "react-icons/fa";
+import { useReviewData } from "../../hooks/useReviewData";
+import { ReviewResult } from "../../types";
+import { Link } from "react-router-dom";
 
-export function Review() {
+export function Review({
+  movieId,
+  showAll = false,
+  API_IMG,
+}: {
+  movieId: number;
+  showAll?: boolean;
+  API_IMG: string;
+}) {
+  const { data, isLoading, error } = useReviewData(movieId);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+
+  const reviews: ReviewResult[] = data?.results || [];
+
+  const displayedReviews = showAll
+    ? reviews
+    : [reviews[Math.floor(Math.random() * reviews.length)]];
+
   return (
     <>
-      <section className="px-10 pb-6">
-        <hr />
-        <h2 className="font-bold text-lg pt-6 pb-4">
-          Reviews <span className="text-[#c0baba] text-sm">10</span>
-        </h2>
-        <article className="shadow rounded-xl overflow-hidden p-6 border flex gap-4 items-start">
-          <figure className="min-w-[50px] w-[70px] ">
-            <a href="#">
-              <img
-                src="https://secure.gravatar.com/avatar/992eef352126a53d7e141bf9e8707576.jpg?s=300"
-                alt=""
-                className="w-full h-full rounded-full"
-              />
-            </a>
-          </figure>
-
-          <div className="pt-3">
-            <div className="flex gap-4 items-center">
-              <h2 className="text-lg font-bold">A review by Nutshell</h2>
-              <div className="flex gap-1 items-center text-xs rounded-lg bg-black text-white px-2 py-1 w-12">
-                <FaStar /> 6.0
-              </div>
-            </div>
-            <p className="text-xs font-light mb-10">
-              written by <span className="font-semibold">Nutshell</span> on 3
-              August 2019
-            </p>
-
-            <p className="text-sm font-normal">
-              Zachary Levi is a hoot in this super-hero comedy reminiscent of
-              the now classic Big with Tom Hanks. We get a solid first half,
-              even two thirds, but why oh why do these movies almost always seem
-              to revert to formula in the 3rd act? Been there, done that...
-            </p>
-          </div>
-        </article>
-        <p className="font-bold text-lg pt-4">
-          <a href="#">Read All Reviews</a>
-        </p>
-      </section>
+      {reviews.length > 0 && (
+        <section className="px-10 pb-6">
+          <hr />
+          <h2 className="font-bold text-lg pt-6 pb-4">
+            Reviews{" "}
+            <span className="text-[#c0baba] text-sm">{reviews.length}</span>
+          </h2>
+          {displayedReviews.map((review) => {
+            if (!review.author_details) {
+              return null;
+            }
+            return (
+              <article
+                key={review.id}
+                className="shadow rounded-xl overflow-hidden p-6 border flex gap-4 items-start"
+              >
+                <figure className="min-w-[50px] w-[70px]">
+                  <a href="#">
+                    <img
+                      src={
+                        API_IMG + review.author_details.avatar_path ||
+                        "https://secure.gravatar.com/avatar/992eef352126a53d7e141bf9e8707576.jpg?s=300"
+                      }
+                      alt=""
+                      className="w-16 h-16 object-cover rounded-full"
+                    />
+                  </a>
+                </figure>
+                <div className="pt-3">
+                  <div className="flex gap-4 items-center">
+                    <h2 className="text-lg font-bold">
+                      A review by {review.author}
+                    </h2>
+                    {review.author_details.rating && (
+                      <div className="flex gap-1 items-center text-xs rounded-lg bg-black text-white px-2 py-1 w-12">
+                        <FaStar /> {review.author_details.rating.toFixed(1)}
+                      </div>
+                    )}
+                  </div>
+                  <p className="text-xs font-light mb-10">
+                    written by{" "}
+                    <span className="font-semibold">{review.author}</span> on{" "}
+                    {new Date(review.created_at).toLocaleDateString()}
+                  </p>
+                  <p className="text-sm font-normal">{review.content}</p>
+                </div>
+              </article>
+            );
+          })}
+          <p className="font-bold text-lg pt-4">
+            <Link to={`/all-reviews/\${movieId}`}>Read All Reviews</Link>
+          </p>
+        </section>
+      )}
     </>
   );
 }

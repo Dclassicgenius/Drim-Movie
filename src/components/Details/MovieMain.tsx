@@ -1,12 +1,8 @@
-import { FaListUl } from "react-icons/fa";
-import { FaHeart } from "react-icons/fa";
-import { FaBookmark } from "react-icons/fa";
-import { FaStar } from "react-icons/fa";
-import { FaPlay } from "react-icons/fa";
-import { IMovieDetail } from "../../types";
-
+import { FaListUl, FaPlay, FaStar, FaBookmark, FaHeart } from "react-icons/fa";
+import { IMovieDetail, ICrewMember } from "../../types";
+import { useMovieData } from "../../hooks/useMovieData";
 type MovieMainProps = {
-  movie: IMovieDetail;
+  movie: IMovieDetail | null;
   API_IMG: string;
 };
 
@@ -17,11 +13,32 @@ function convertMinutesToHoursAndMinutes(minutes: number) {
 }
 
 export function MovieMain({ movie, API_IMG }: MovieMainProps) {
+  if (!movie) {
+    return <div>Loading...</div>;
+  }
+
+  const { data, isLoading, error } = useMovieData(movie.id);
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
   const { hours, minutes } = convertMinutesToHoursAndMinutes(movie.runtime);
+
+  const importantJobs = [
+    "Director",
+    "Screenplay",
+    "Writer",
+    "Characters",
+    "Novel",
+    "Creator",
+  ];
+
+  const importantCrew: ICrewMember[] = (data?.crew || []).filter(
+    (person: ICrewMember) => importantJobs.includes(person.job)
+  );
+
   return (
     <>
       <section
-        className="grid grid-cols-4 gap-8 pt-10 pl-10 pb-8 bg-cover "
+        className="grid grid-cols-4 gap-8 pt-10 px-10 pb-8 bg-cover "
         style={{
           backgroundImage: `url(${API_IMG + movie.backdrop_path})`,
           position: "relative",
@@ -107,29 +124,15 @@ export function MovieMain({ movie, API_IMG }: MovieMainProps) {
           <p className="italic text-sm text-[#c0baba]">{movie.tagline}</p>
           <div className="py-6 ">
             <h3 className="font-bold text-lg">Overview</h3>
-            <p className="text-sm mt-2 text-[#c0baba]">{movie.tagline}</p>
+            <p className="text-sm mt-2 text-[#c0baba]">{movie.overview}</p>
           </div>
           <div className="grid grid-cols-3 gap-4">
-            <div>
-              <p className="font-bold text-sm">Henry Gayden</p>
-              <p className="text-[#c0baba] text-xs">Screenplay, Story</p>
-            </div>
-            <div>
-              <p className="font-bold text-sm">C.C. Beck</p>
-              <p className="text-[#c0baba] text-xs">Characters</p>
-            </div>
-            <div>
-              <p className="font-bold text-sm">Bill Parker</p>
-              <p className="text-[#c0baba] text-xs">Characters</p>
-            </div>
-            <div>
-              <p className="font-bold text-sm">David F. Sandberg</p>
-              <p className="text-[#c0baba] text-xs">Director</p>
-            </div>
-            <div>
-              <p className="font-bold text-sm">Darren Lemke</p>
-              <p className="text-[#c0baba] text-xs">Story</p>
-            </div>
+            {importantCrew.map((crew) => (
+              <ul className="list-none" key={crew.credit_id}>
+                <li className="font-bold text-sm">{crew.name}</li>
+                <li className="text-[#c0baba] text-xs">{crew.job}</li>
+              </ul>
+            ))}
           </div>
         </div>
       </section>
