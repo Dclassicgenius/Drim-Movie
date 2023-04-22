@@ -8,7 +8,7 @@ interface MovieProps {
 export function Movie({ movies, API_IMG }: MovieProps) {
   return (
     <>
-      <section className="overflow-x-auto flex w-11/12 mx-auto pt-6 space-x-5">
+      <section className="overflow-x-auto flex w-11/12 mx-auto pt-6 space-x-5 ">
         {Array.isArray(movies) &&
           movies
             .filter((movie) => movie.poster_path !== null)
@@ -39,6 +39,13 @@ export function Movie({ movies, API_IMG }: MovieProps) {
                 </div>
               </Link>
             ))}
+        {/* <div
+          className="top-0 right-0 w-[60px] h-full absolute pointer-events-none"
+          style={{
+            backgroundImage:
+              "linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%)",
+          }}
+        ></div> */}
       </section>
     </>
   );

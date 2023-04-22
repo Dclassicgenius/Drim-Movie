@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ICastMember, IMovieDetail } from "../../types";
 import { useMovieData } from "../../hooks/useMovieData";
+import { Link } from "react-router-dom";
 
 type CastProps = {
   movie: IMovieDetail | null;
@@ -51,9 +52,9 @@ export function Cast({ movie, API_IMG }: CastProps) {
           )}
         </ol>
 
-        <p className="font-bold pt-6 text-lg">
-          <a href="#">Full Cast & Crew</a>
-        </p>
+        <Link to={`/movie/${movie.id}/cast`} className="font-bold pt-6 text-lg">
+          Full Cast & Crew
+        </Link>
       </section>
     </>
   );

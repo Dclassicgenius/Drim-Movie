@@ -2,6 +2,10 @@ import { FaListUl, FaPlay, FaStar, FaBookmark, FaHeart } from "react-icons/fa";
 import { IMovieDetail, ICrewMember } from "../../types";
 import { useMovieData } from "../../hooks/useMovieData";
 import { CircularProgressBar } from "../utility/CircularProgressBar";
+import { useState } from "react";
+import { MovieTrailer } from "./MovieTrailer";
+import { useTrailer } from "../../hooks/useTrailer";
+
 type MovieMainProps = {
   movie: IMovieDetail | null;
   API_IMG: string;
@@ -24,9 +28,23 @@ export function MovieMain({ movie, API_IMG }: MovieMainProps) {
   }
 
   const { data, isLoading, error } = useMovieData(movie.id);
+  const [showPlayer, setShowPlayer] = useState<boolean>(false);
+  const { trailer } = useTrailer(movie.id);
+
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
+  if (!trailer) return <div>No trailer found</div>;
+
   const { hours, minutes } = convertMinutesToHoursAndMinutes(movie.runtime);
+
+  function togglePlayer() {
+    setShowPlayer((prevShowPlayer) => !prevShowPlayer);
+  }
+
+  function handleCloseClick(event: React.MouseEvent) {
+    event.stopPropagation();
+    setShowPlayer((prevShowPlayer) => !prevShowPlayer);
+  }
 
   const importantJobs = [
     "Director",
@@ -42,17 +60,6 @@ export function MovieMain({ movie, API_IMG }: MovieMainProps) {
     (person: ICrewMember) => importantJobs.includes(person.job)
   );
 
-  const availableCertification = data?.releases?.countries.find(
-    (country) => country.certification !== ""
-  );
-
-  const usCertification = data?.releases?.countries.find(
-    (country) => country.iso_3166_1 === "US"
-  )?.certification;
-
-  const certification =
-    usCertification || availableCertification?.certification || "Not available";
-
   const uniqueImportantCrew = importantCrew.reduce<IUniqueCrew[]>(
     (acc, crew) => {
       const existingCrew = acc.find((item) => item.name === crew.name);
@@ -65,6 +72,17 @@ export function MovieMain({ movie, API_IMG }: MovieMainProps) {
     },
     []
   );
+
+  const availableCertification = data?.releases?.countries.find(
+    (country) => country.certification !== ""
+  );
+
+  const usCertification = data?.releases?.countries.find(
+    (country) => country.iso_3166_1 === "US"
+  )?.certification;
+
+  const certification =
+    usCertification || availableCertification?.certification || "Not available";
 
   return (
     <>
@@ -140,14 +158,22 @@ export function MovieMain({ movie, API_IMG }: MovieMainProps) {
               <FaStar />
             </a>
 
-            <a href="#" className="flex gap-4 items-center ">
+            <p
+              className="flex gap-4 items-center cursor-pointer"
+              onClick={togglePlayer}
+            >
               <FaPlay
                 style={{
                   color: "white",
                 }}
               />{" "}
-              Play Trailer
-            </a>
+              Play {trailer.type}
+              <MovieTrailer
+                video={trailer}
+                handleCloseClick={handleCloseClick}
+                showPlayer={showPlayer}
+              />
+            </p>
           </div>
           <p className="italic text-sm text-[#c0baba] ">{movie.tagline}</p>
           <div className="py-6 ">

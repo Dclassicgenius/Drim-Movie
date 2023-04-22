@@ -3,6 +3,7 @@ import { NavBar } from "./NavBar";
 import { FooterNav } from "./FooterNav";
 import { MovieDetail } from "./components/Details/MovieDetail";
 import { Home } from "./Home";
+import { FullCastsAndCrew } from "./components/Cast/FullCastsAndCrew";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Routes>
         <Route index element={<Home />} />
         <Route path="/movie/:id" element={<MovieDetail />} />
+        <Route path="/movie/:id/cast" element={<FullCastsAndCrew />} />
       </Routes>
       <FooterNav />
     </>

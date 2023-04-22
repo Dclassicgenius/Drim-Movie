@@ -97,7 +97,10 @@ export function LatestTrailer() {
 
     // Find the trailer video
     const video = trailerVideos?.find(
-      (video) => video.type === "Trailer" && video.site === "YouTube"
+      (video) =>
+        video.type === "Trailer" ||
+        video.type === "Teaser" ||
+        (video.type === "Clip" && video.site === "YouTube")
     );
 
     // Set the selected video key

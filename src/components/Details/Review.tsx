@@ -45,8 +45,14 @@ export function Review({
                   <a href="#">
                     <img
                       src={
-                        API_IMG + review.author_details.avatar_path ||
-                        "https://secure.gravatar.com/avatar/992eef352126a53d7e141bf9e8707576.jpg?s=300"
+                        review.author_details.avatar_path?.startsWith("/http")
+                          ? review.author_details.avatar_path.replace(
+                              /^\/+/,
+                              ""
+                            )
+                          : `${API_IMG}${
+                              review.author_details.avatar_path ?? ""
+                            }`
                       }
                       alt=""
                       className="w-16 h-16 object-cover rounded-full"

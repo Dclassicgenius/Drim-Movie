@@ -126,6 +126,8 @@ export type TabProps = {
 
 export interface ICrewResponse {
   id: number;
+  original_title: string;
+  release_date: string;
   cast: ICastMember[];
   crew: ICrewMember[];
   releases: IReleases;
