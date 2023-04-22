@@ -5,13 +5,14 @@ import { ICrewResponse } from "../types";
 const fetchMovieData = async (movieId: number): Promise<ICrewResponse> => {
   const apiKey = import.meta.env.VITE_TMDB_API_KEY;
   const response = await axios.get(
-    `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${apiKey}&language=en-US`
+    `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=en-US&append_to_response=credits,releases`
   );
 
   return {
     id: response.data.id,
-    crew: response.data.crew,
-    cast: response.data.cast,
+    crew: response.data.credits.crew,
+    cast: response.data.credits.cast,
+    releases: response.data.releases,
   };
 };
 

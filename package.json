@@ -15,6 +15,7 @@
     "flowbite-react": "^0.4.2",
     "iso-639-1": "^2.1.15",
     "movie-trailer": "^3.0.0",
+    "node-vibrant": "^3.2.1-alpha.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.8.0",

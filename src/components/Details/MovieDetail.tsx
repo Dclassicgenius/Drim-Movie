@@ -11,36 +11,21 @@ import axios from "axios";
 export function MovieDetail() {
   const { id } = useParams<{ id?: string }>();
   const [movieDetails, setMovieDetails] = useState<IMovieDetail | null>(null);
-  // const [movieRecommendations, setMovieRecommendations] = useState<
-  //   MovieRecommendation[]
-  // >([]);
   const apiKey = import.meta.env.VITE_TMDB_API_KEY;
   const API_IMG = "https://image.tmdb.org/t/p/w500";
+  const movieId = parseInt(id ?? "0");
 
   async function fetchMovieDetails(movieId: number): Promise<IMovieDetail> {
     const response = await axios.get(
       `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=en-US&page=1`
     );
-    console.log(response.data);
 
     return response.data;
   }
 
-  // async function fetchMovieRecommendations(
-  //   movieId: number
-  // ): Promise<MovieRecommendation[]> {
-  //   const { data } = await axios.get(
-  //     `https://api.themoviedb.org/3/movie/${movieId}/recommendations?api_key=${apiKey}&language=en-US&page=1`
-  //   );
-  //   console.log(data.results);
-
-  //   return data.results;
-  // }
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const movieId = parseInt(id ?? "0");
         const fetchMovieDetail = await fetchMovieDetails(movieId);
         setMovieDetails(fetchMovieDetail);
       } catch (error) {
@@ -59,8 +44,8 @@ export function MovieDetail() {
         <SideBar movie={movieDetails} />
       </section>
 
-      <Review API_IMG={API_IMG} movieId={parseInt(id ?? "0")} />
-      <Recommendations movieId={parseInt(id ?? "0")} API_IMG={API_IMG} />
+      <Review API_IMG={API_IMG} movieId={movieId} />
+      <Recommendations movieId={movieId} API_IMG={API_IMG} />
     </>
   );
 }

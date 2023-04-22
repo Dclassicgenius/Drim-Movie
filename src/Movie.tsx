@@ -1,29 +1,21 @@
 import { Link } from "react-router-dom";
 import { IMovie } from "./types";
-import { MovieDetail } from "./components/Details/MovieDetail";
 
 interface MovieProps {
   movies: IMovie[];
   API_IMG: string;
 }
 export function Movie({ movies, API_IMG }: MovieProps) {
-  const handleClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault(); // Prevent the default behavior of the anchor tag
-  };
   return (
     <>
       <section className="overflow-x-auto flex w-11/12 mx-auto pt-6 space-x-5">
         {Array.isArray(movies) &&
           movies
-            .filter((movie) => movie.poster_path !== null) // Filter out movies with null poster_path
+            .filter((movie) => movie.poster_path !== null)
             .map((movie) => (
-              <Link
-                to={`/movie/${movie.id}`}
-                key={movie.id}
-                // onClick={handleClick}
-              >
+              <Link to={`/movie/${movie.id}`} key={movie.id}>
                 <div
-                  className="relative rounded-lg min-w-[150px] mb-4 bg-white dark:bg-gray-800 shadow-md"
+                  className="relative rounded-lg min-w-[150px] mb-4 bg-white dark:bg-gray-800 "
                   key={movie.id}
                 >
                   <img

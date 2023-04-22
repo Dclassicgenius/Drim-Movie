@@ -128,6 +128,7 @@ export interface ICrewResponse {
   id: number;
   cast: ICastMember[];
   crew: ICrewMember[];
+  releases: IReleases;
 }
 
 export interface ICastMember {
@@ -157,6 +158,16 @@ export interface ICrewMember {
   credit_id: string;
   department: string;
   job: string;
+}
+
+export interface IReleases {
+  countries: ICountryRelease[];
+}
+
+export interface ICountryRelease {
+  iso_3166_1: string;
+  certification: string;
+  release_date: string;
 }
 
 export interface AuthorDetails {
