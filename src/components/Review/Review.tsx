@@ -1,7 +1,6 @@
 import { FaStar } from "react-icons/fa";
-import { useReviewData } from "../../hooks/useReviewData";
-import { ReviewResult } from "../../types";
 import { Link } from "react-router-dom";
+import { useMovieDetail } from "../../hooks/MovieHooks/useMovieDetail";
 
 export function Review({
   movieId,
@@ -12,12 +11,12 @@ export function Review({
   showAll?: boolean;
   API_IMG: string;
 }) {
-  const { data, isLoading, error } = useReviewData(movieId);
+  const { data, isLoading, error } = useMovieDetail(movieId);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
-  const reviews: ReviewResult[] = data?.results || [];
+  const reviews = data?.reviews.results || [];
 
   const displayedReviews = showAll
     ? reviews
@@ -81,7 +80,7 @@ export function Review({
             );
           })}
           <p className="font-bold text-lg pt-4">
-            <Link to={`/all-reviews/\${movieId}`}>Read All Reviews</Link>
+            <Link to={`/all-reviews/${movieId}`}>Read All Reviews</Link>
           </p>
         </section>
       )}

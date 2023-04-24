@@ -1,7 +1,8 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { NavBar } from "./NavBar";
 import { FooterNav } from "./FooterNav";
-import { MovieDetail } from "./components/Details/MovieDetail";
+import { MovieDetail } from "./components/Detail/MovieDetail";
+
 import { Home } from "./Home";
 import { FullCastsAndCrew } from "./components/Cast/FullCastsAndCrew";
 

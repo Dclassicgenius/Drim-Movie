@@ -3,6 +3,8 @@ import { MovieRecommendation } from "../../types";
 import { useState } from "react";
 import { useMovieRecommendations } from "../../hooks/useMovieRecommendations";
 import { Link } from "react-router-dom";
+import { useMovieDetail } from "../../hooks/MovieHooks/useMovieDetail";
+import { IRecommendation } from "./recommendationType";
 
 interface RecommendationProps {
   movieId: number;
@@ -10,12 +12,12 @@ interface RecommendationProps {
 }
 
 export function Recommendations({ API_IMG, movieId }: RecommendationProps) {
-  const { data, isLoading, error } = useMovieRecommendations(movieId);
+  const { data, isLoading, error } = useMovieDetail(movieId);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
-  const movies: MovieRecommendation[] = data?.results || [];
+  const movies: IRecommendation[] = data?.recommendations.results || [];
   return (
     <>
       <section className=" px-10 text-sm">
@@ -28,7 +30,7 @@ export function Recommendations({ API_IMG, movieId }: RecommendationProps) {
               .map((movie) => (
                 <Link to={`/movie/${movie.id}`} key={movie.id}>
                   <li
-                    className="shadow-md rounded-lg overflow-hidden min-w-[250px] w-[300px]"
+                    className="shadow-md rounded-lg overflow-hidden min-w-[250px] w-[350px]"
                     key={movie.id}
                   >
                     <a href="#">

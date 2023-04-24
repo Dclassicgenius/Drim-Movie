@@ -1,14 +1,13 @@
-// hooks/useTrailer.ts
-import { useMovieTrailer } from "./useMovieTrailer";
 import { IVideo } from "../types";
+import { useMovieDetail } from "./MovieHooks/useMovieDetail";
 
 export function useTrailer(movieId: number) {
-  const { data, isLoading, error } = useMovieTrailer(movieId);
+  const { data, isLoading, error } = useMovieDetail(movieId);
 
   let trailer: IVideo | undefined;
 
   if (data) {
-    const videos: IVideo[] = data.results || [];
+    const videos: IVideo[] = data.videos.results || [];
 
     trailer = videos.find(
       (video) =>

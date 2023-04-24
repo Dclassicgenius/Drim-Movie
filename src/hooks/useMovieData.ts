@@ -1,4 +1,4 @@
-import { useQuery, UseQueryResult } from "react-query";
+import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import axios from "axios";
 import { ICrewResponse } from "../types";
 
@@ -7,7 +7,6 @@ const fetchMovieData = async (movieId: number): Promise<ICrewResponse> => {
   const response = await axios.get(
     `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=en-US&append_to_response=credits,releases`
   );
-  console.log(response);
 
   return {
     id: response.data.id,

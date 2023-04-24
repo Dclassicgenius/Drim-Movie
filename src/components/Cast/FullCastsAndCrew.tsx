@@ -1,67 +1,39 @@
 import { FaArrowLeft } from "react-icons/fa";
-import { useMovieData } from "../../hooks/useMovieData";
+import { useMovieDetail } from "../../hooks/MovieHooks/useMovieDetail";
+import { ICast, ICrew } from "./castType";
 import { useParams } from "react-router-dom";
-import { ICrewMember } from "../../types";
+import malePlaceholder from "../../assets/defaultMale.svg";
+import femalePlaceholder from "../../assets/defaultFemale.svg";
 
-const API_IMG = "https://image.tmdb.org/t/p/w500";
+interface GroupedCrew {
+  [department: string]: ICrew[];
+}
 
 export function FullCastsAndCrew() {
   const { id } = useParams<{ id?: string }>();
 
-  const { data } = useMovieData(parseInt(id ?? "0"));
+  const API_IMG = "https://image.tmdb.org/t/p/w500";
+  const movieId = parseInt(id ?? "0");
+  const { data, isLoading, error } = useMovieDetail(movieId);
 
-  // const casts: ICrewMember[] = data?.cast || []
-  // const movie = data?
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
 
-  //   const groupedCrew = data?.crew.reduce((acc, crewMember) => {
-  //     const department: string = crewMember.known_for_department;
-  //     if (!acc[department]) {
-  //       acc[department] = [];
-  //     }
-  //     acc[department].push(crewMember);
-  //     return acc;
-  //   }, {});
-  //
+  const casts: ICast[] = data?.credits.cast || [];
+  const crew: ICrew[] = data?.credits.crew || [];
 
-  // import React from 'react';
+  const groupedCrew = crew.reduce<GroupedCrew>((acc, crewMember) => {
+    const department = crewMember.known_for_department;
+    if (!acc[department]) {
+      acc[department] = [];
+    }
+    acc[department].push(crewMember);
+    return acc;
+  }, {});
 
-  // interface CrewMember {
-  //   adult: boolean;
-  //   gender: number;
-  //   id: number;
-  //   known_for_department: string;
-  //   name: string;
-  //   original_name: string;
-  //   popularity: number;
-  //   profile_path: string;
-  //   credit_id: string;
-  //   department: string;
-  //   job: string;
-  // }
-
-  // interface GroupedCrew {
-  //   [department: string]: CrewMember[];
-  // }
-
-  // const CrewList: React.FC<{ crewData: CrewMember[] }> = ({ crewData }) => {
-  //   // Group the crew members by their known_for_department
-  //   const groupedCrew = crewData.reduce<GroupedCrew>((acc, crewMember) => {
-  //     const department = crewMember.known_for_department;
-  //     if (!acc[department]) {
-  //       acc[department] = [];
-  //     }
-  //     acc[department].push(crewMember);
-  //     return acc;
-  //   }, {});
-
-  // ...rest of the component
-  // };
-
-  // export default CrewList;
-
-  // Sort the department names alphabetically
-  //   const sortedDepartments = Object.keys(groupedCrew).sort((a, b) => a.localeCompare(b));
-
+  const sortedDepartments = Object.keys(groupedCrew).sort((a, b) =>
+    a.localeCompare(b)
+  );
   return (
     <>
       <section className="pb-10">
@@ -69,16 +41,16 @@ export function FullCastsAndCrew() {
           <div className="pl-20 text-white flex gap-8 items-center justify-start py-6">
             <figure className="w-[60px] h-[90px]">
               <img
-                src="https://www.themoviedb.org/t/p/w116_and_h174_face/t6HIqrRAclMCA60NsSmeqe9RmNV.jpg"
+                src={API_IMG + data.poster_path}
                 alt=""
-                className="w-full rounded-md"
+                className="w-full h-full rounded-md overflow-clip object-cover"
               />
             </figure>
             <div>
               <h1 className="font-bold text-3xl">
                 {data?.original_title}{" "}
                 <span className="text-[#c0baba] font-normal">
-                  ({data?.release_date})
+                  ({new Date(data.release_date).getFullYear()})
                 </span>
               </h1>
               <p className="text-[#c0baba] flex gap-2 mt-2 items-center">
@@ -91,21 +63,25 @@ export function FullCastsAndCrew() {
           <article>
             <h2 className="font-bold text-xl pb-7">
               Cast{" "}
-              <span className="text-[#c0baba] font-normal">
-                {data?.cast.length}
-              </span>
+              <span className="text-[#c0baba] font-normal">{casts.length}</span>
             </h2>
             <ol className="grid gap-4">
-              {data?.cast.map((cast) => (
+              {casts.map((cast) => (
                 <li
                   className=" flex justify-start items-center gap-6"
                   key={cast.id}
                 >
-                  <figure className="w-[80px] h-[120px]">
+                  <figure className="w-[75px] h-[100px]">
                     <img
-                      src={API_IMG + cast.profile_path}
+                      src={
+                        cast.profile_path
+                          ? API_IMG + cast.profile_path
+                          : cast.gender === 2
+                          ? malePlaceholder
+                          : femalePlaceholder
+                      }
                       alt=""
-                      className="w-full h-full  rounded-md overflow-hidden"
+                      className="w-full h-full  rounded-md overflow-hidden object-cover"
                     />
                   </figure>
                   <div>
@@ -119,26 +95,43 @@ export function FullCastsAndCrew() {
           <article>
             <h2 className="font-bold text-xl pb-7">
               Crew{" "}
-              <span className="text-[#c0baba] font-normal">
-                {data?.crew.length}
-              </span>
+              <span className="text-[#c0baba] font-normal">{crew.length}</span>
             </h2>
-            <ol>
-              <h3 className="font-bold text-base pb-5">Art</h3>
-              <li className=" flex justify-start items-center gap-6">
-                <figure className="w-[70px] h-[70px]">
-                  <img
-                    src="https://www.themoviedb.org/t/p/w132_and_h132_face/mflBcox36s9ZPbsZPVOuhf6axaJ.jpg"
-                    alt=""
-                    className="w-full rounded-md"
-                  />
-                </figure>
-                <div>
-                  <p className="font-bold">Sam Worthington</p>
-                  <p className="text text-sm">Jake Sully</p>
-                </div>
-              </li>
-            </ol>
+
+            {sortedDepartments.map((department) => (
+              <div key={department}>
+                <h3 className="font-bold text-base pb-5">{department}</h3>
+
+                <ol className="grid gap-8">
+                  {groupedCrew[department].map((crewMember) => (
+                    <li
+                      className=" flex justify-start items-center gap-8"
+                      key={crewMember.id}
+                    >
+                      <figure className="w-[75px] h-[100px]">
+                        <img
+                          src={
+                            crewMember.profile_path
+                              ? API_IMG + crewMember.profile_path
+                              : crewMember.gender === 2
+                              ? malePlaceholder
+                              : femalePlaceholder
+                          }
+                          alt=""
+                          className="w-full h-full  rounded-md object-cover"
+                        />
+                      </figure>
+                      <div>
+                        <p className="font-bold">
+                          {crewMember.name || crewMember.original_name}
+                        </p>
+                        <p className="text text-sm">{crewMember.job}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            ))}
           </article>
         </div>
       </section>

@@ -1,19 +1,19 @@
 import { FaListUl, FaPlay, FaStar, FaBookmark, FaHeart } from "react-icons/fa";
-import { IMovieDetail, ICrewMember } from "../../types";
-import { useMovieData } from "../../hooks/useMovieData";
 import { CircularProgressBar } from "../utility/CircularProgressBar";
 import { useState } from "react";
-import { MovieTrailer } from "./MovieTrailer";
-import { useTrailer } from "../../hooks/useTrailer";
+import { MovieTrailer } from "../Trailer/MovieTrailer";
+import { useMovieDetail } from "../../hooks/MovieHooks/useMovieDetail";
+import { getMovieCertification } from "../utility/getMovieCertification";
+import {
+  IUniqueCrew,
+  getUniqueImportantCrew,
+} from "../utility/getUniqueImportantCrew";
+import { IVideo } from "../Trailer/videoType";
 
 type MovieMainProps = {
-  movie: IMovieDetail | null;
+  movieId: number;
   API_IMG: string;
 };
-
-interface IUniqueCrew extends ICrewMember {
-  jobs: string[];
-}
 
 function convertMinutesToHoursAndMinutes(minutes: number) {
   const hours = Math.floor(minutes / 60);
@@ -22,20 +22,14 @@ function convertMinutesToHoursAndMinutes(minutes: number) {
   return { hours, minutes: remainingMinutes };
 }
 
-export function MovieMain({ movie, API_IMG }: MovieMainProps) {
-  if (!movie) {
-    return <div>Loading...</div>;
-  }
-
-  const { data, isLoading, error } = useMovieData(movie.id);
+export function MovieMainDetail({ movieId, API_IMG }: MovieMainProps) {
+  const { data, isLoading, error } = useMovieDetail(movieId);
   const [showPlayer, setShowPlayer] = useState<boolean>(false);
-  const { trailer } = useTrailer(movie.id);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
-  if (!trailer) return <div>No trailer found</div>;
 
-  const { hours, minutes } = convertMinutesToHoursAndMinutes(movie.runtime);
+  const { hours, minutes } = convertMinutesToHoursAndMinutes(data.runtime);
 
   function togglePlayer() {
     setShowPlayer((prevShowPlayer) => !prevShowPlayer);
@@ -46,43 +40,23 @@ export function MovieMain({ movie, API_IMG }: MovieMainProps) {
     setShowPlayer((prevShowPlayer) => !prevShowPlayer);
   }
 
-  const importantJobs = [
-    "Director",
-    "Screenplay",
-    "Writer",
-    "Characters",
-    "Novel",
-    "Creator",
-    "Story",
-  ];
-
-  const importantCrew: ICrewMember[] = (data?.crew || []).filter(
-    (person: ICrewMember) => importantJobs.includes(person.job)
+  const certification = getMovieCertification(data);
+  const uniqueImportantCrew: IUniqueCrew[] = getUniqueImportantCrew(
+    data.credits
   );
 
-  const uniqueImportantCrew = importantCrew.reduce<IUniqueCrew[]>(
-    (acc, crew) => {
-      const existingCrew = acc.find((item) => item.name === crew.name);
-      if (existingCrew) {
-        existingCrew.jobs.push(crew.job);
-      } else {
-        acc.push({ ...crew, jobs: [crew.job] });
-      }
-      return acc;
-    },
-    []
-  );
+  let trailer: IVideo | undefined;
 
-  const availableCertification = data?.releases?.countries.find(
-    (country) => country.certification !== ""
-  );
+  if (data) {
+    const videos: IVideo[] = data.videos.results || [];
 
-  const usCertification = data?.releases?.countries.find(
-    (country) => country.iso_3166_1 === "US"
-  )?.certification;
-
-  const certification =
-    usCertification || availableCertification?.certification || "Not available";
+    trailer = videos.find(
+      (video) =>
+        video.type === "Trailer" ||
+        video.type === "Teaser" ||
+        (video.type === "Clip" && video.site === "YouTube")
+    );
+  }
 
   return (
     <>
@@ -90,24 +64,20 @@ export function MovieMain({ movie, API_IMG }: MovieMainProps) {
         className="grid grid-cols-4 gap-8 pt-10 px-10 pb-8 bg-cover "
         style={{
           backgroundImage: `linear-gradient( to bottom right, rgba(3,37,65, 1) , rgba(3,37,65, 0.8) ), url(${
-            API_IMG + movie.backdrop_path
+            API_IMG + data.backdrop_path
           })`,
         }}
       >
         <figure className="col-span-1 z-10">
-          <img
-            src={API_IMG + movie.poster_path}
-            alt=""
-            className="rounded-lg"
-          />
+          <img src={API_IMG + data.poster_path} alt="" className="rounded-lg" />
         </figure>
 
         <div className="col-span-3 text-white z-10 flex flex-col justify-center">
           <div className="text-[#c0baba]">
             <h2 className="font-bold text-2xl text-white">
-              {movie.original_title}{" "}
+              {data.title || data.original_title}{" "}
               <span className="font-normal text-[#c0baba]">
-                ({new Date(movie.release_date).getFullYear()})
+                ({new Date(data.release_date).getFullYear()})
               </span>
             </h2>
             <div className="space-x-3 text-sm flex gap-2">
@@ -115,10 +85,10 @@ export function MovieMain({ movie, API_IMG }: MovieMainProps) {
                 {certification}
               </span>
               <span>
-                {new Date(movie.release_date).toLocaleDateString()} (US)
+                {new Date(data.release_date).toLocaleDateString()} (US)
               </span>
               <ul className="list-disc flex gap-4 space-x-2">
-                <li>{movie.genres.map((genre) => genre.name).join(", ")} </li>
+                <li>{data.genres.map((genre) => genre.name).join(", ")} </li>
                 <li>
                   {hours === 0 && minutes === 0
                     ? "No runtime value"
@@ -131,7 +101,7 @@ export function MovieMain({ movie, API_IMG }: MovieMainProps) {
           </div>
           <div className="flex gap-8 py-6 items-center font-bold text-base">
             <p>
-              <CircularProgressBar score={movie.vote_average} /> User Score
+              <CircularProgressBar score={data.vote_average} /> User Score
             </p>
             <a
               href="#"
@@ -167,18 +137,18 @@ export function MovieMain({ movie, API_IMG }: MovieMainProps) {
                   color: "white",
                 }}
               />{" "}
-              Play {trailer.type}
+              Play {trailer?.type}
               <MovieTrailer
-                video={trailer}
+                trailer={trailer}
                 handleCloseClick={handleCloseClick}
                 showPlayer={showPlayer}
               />
             </p>
           </div>
-          <p className="italic text-sm text-[#c0baba] ">{movie.tagline}</p>
+          <p className="italic text-sm text-[#c0baba] ">{data.tagline}</p>
           <div className="py-6 ">
             <h3 className="font-bold text-lg">Overview</h3>
-            <p className="text-sm mt-2 text-[#c0baba]">{movie.overview}</p>
+            <p className="text-sm mt-2 text-[#c0baba]">{data.overview}</p>
           </div>
           <div className="grid grid-cols-3 gap-4">
             {uniqueImportantCrew.map((crew) => (

@@ -1,23 +1,19 @@
-import { useState } from "react";
-import { ICastMember, IMovieDetail } from "../../types";
-import { useMovieData } from "../../hooks/useMovieData";
 import { Link } from "react-router-dom";
+import { useMovieDetail } from "../../hooks/MovieHooks/useMovieDetail";
+import { ICast } from "./castType";
 
 type CastProps = {
-  movie: IMovieDetail | null;
+  movieId: number;
   API_IMG: string;
 };
 
-export function Cast({ movie, API_IMG }: CastProps) {
-  if (!movie) {
-    return <div>Loading...</div>;
-  }
-  const { data, isLoading, error } = useMovieData(movie.id);
+export function Cast({ movieId, API_IMG }: CastProps) {
+  const { data, isLoading, error } = useMovieDetail(movieId);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
-  const casts: ICastMember[] = (data?.cast || []).filter(
+  const casts: ICast[] = (data?.credits.cast || []).filter(
     (cast) => cast.known_for_department === "Acting"
   );
 
@@ -52,7 +48,7 @@ export function Cast({ movie, API_IMG }: CastProps) {
           )}
         </ol>
 
-        <Link to={`/movie/${movie.id}/cast`} className="font-bold pt-6 text-lg">
+        <Link to={`/movie/${movieId}/cast`} className="font-bold pt-6 text-lg">
           Full Cast & Crew
         </Link>
       </section>

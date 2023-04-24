@@ -5,13 +5,13 @@ import { IVideo } from "../../types";
 interface TrailerProps {
   handleCloseClick: (event: React.MouseEvent) => void;
   showPlayer: boolean;
-  video: IVideo;
+  trailer: IVideo | undefined;
 }
 
 export function MovieTrailer({
   showPlayer,
   handleCloseClick,
-  video,
+  trailer,
 }: TrailerProps) {
   const opts = {
     height: "390",
@@ -28,8 +28,12 @@ export function MovieTrailer({
         {showPlayer && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
             <div className="relative w-full max-w-4xl p-4 mx-4 my-8 bg-white rounded shadow-lg">
-              {video.key !== "" && (
-                <YouTube className="rounded" videoId={video?.key} opts={opts} />
+              {trailer && trailer.key !== "" && (
+                <YouTube
+                  className="rounded"
+                  videoId={trailer?.key}
+                  opts={opts}
+                />
               )}
               <button
                 className="absolute top-2 right-2 p-2 text-white bg-red-500 rounded-full hover:bg-red-600"
