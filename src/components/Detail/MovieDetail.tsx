@@ -20,7 +20,7 @@ export function MovieDetail() {
         <SideBar movieId={movieId} />
       </section>
 
-      <Review API_IMG={API_IMG} movieId={movieId} />
+      <Review API_IMG={API_IMG} movieId={movieId} displayCount={1} />
       <Recommendations movieId={movieId} API_IMG={API_IMG} />
     </>
   );

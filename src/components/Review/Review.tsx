@@ -4,12 +4,13 @@ import { useMovieDetail } from "../../hooks/MovieHooks/useMovieDetail";
 
 export function Review({
   movieId,
-  showAll = false,
+  displayCount = -1,
   API_IMG,
 }: {
   movieId: number;
   showAll?: boolean;
   API_IMG: string;
+  displayCount: number;
 }) {
   const { data, isLoading, error } = useMovieDetail(movieId);
 
@@ -18,9 +19,12 @@ export function Review({
 
   const reviews = data?.reviews.results || [];
 
-  const displayedReviews = showAll
-    ? reviews
-    : [reviews[Math.floor(Math.random() * reviews.length)]];
+  const displayedReviews =
+    displayCount === -1
+      ? reviews
+      : reviews.length > 0
+      ? [reviews[Math.floor(Math.random() * reviews.length)]]
+      : [];
 
   return (
     <>
@@ -38,7 +42,7 @@ export function Review({
             return (
               <article
                 key={review.id}
-                className="shadow rounded-xl overflow-hidden p-6 border flex gap-4 items-start"
+                className="shadow rounded-xl overflow-hidden p-6 border flex gap-4 items-start mb-8"
               >
                 <figure className="min-w-[50px] w-[70px]">
                   <a href="#">
@@ -79,9 +83,11 @@ export function Review({
               </article>
             );
           })}
-          <p className="font-bold text-lg pt-4">
-            <Link to={`/all-reviews/${movieId}`}>Read All Reviews</Link>
-          </p>
+          {displayCount !== -1 && (
+            <p className="font-bold text-lg pt-4">
+              <Link to={`/movie/${movieId}/reviews`}>Read All Reviews</Link>
+            </p>
+          )}
         </section>
       )}
     </>
