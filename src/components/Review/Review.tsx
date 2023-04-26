@@ -1,23 +1,27 @@
 import { FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { useMovieDetail } from "../../hooks/MovieHooks/useMovieDetail";
+import { IReview } from "./reviewType";
 
 export function Review({
-  movieId,
+  id,
   displayCount = -1,
   API_IMG,
+  useDetail,
+  detailType,
 }: {
-  movieId: number;
+  id: number;
   showAll?: boolean;
   API_IMG: string;
   displayCount: number;
+  useDetail: (id: number) => any;
+  detailType: "movie" | "tv";
 }) {
-  const { data, isLoading, error } = useMovieDetail(movieId);
+  const { data, isLoading, error } = useDetail(id);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
-  const reviews = data?.reviews.results || [];
+  const reviews: IReview[] = data?.reviews.results || [];
 
   const displayedReviews =
     displayCount === -1
@@ -85,7 +89,7 @@ export function Review({
           })}
           {displayCount !== -1 && (
             <p className="font-bold text-lg pt-4">
-              <Link to={`/movie/${movieId}/reviews`}>Read All Reviews</Link>
+              <Link to={`/${detailType}/${id}/reviews`}>Read All Reviews</Link>
             </p>
           )}
         </section>

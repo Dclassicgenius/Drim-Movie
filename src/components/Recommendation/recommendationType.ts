@@ -3,6 +3,9 @@ export interface IRecommendation {
   backdrop_path: string | null;
   genre_ids: number[];
   id: number;
+  name: string;
+  first_air_date: string;
+  media_type: string;
   original_language: string;
   original_title: string;
   overview: string;

@@ -1,7 +1,7 @@
-import { ICredits } from "../Cast/castType";
-import { IRecommendationResponse } from "../Recommendation/recommendationType";
-import { IReviewResponse } from "../Review/reviewType";
-import { IVideo, IVideoResponse } from "../Trailer/videoType";
+import { ICredits } from "../../Cast/castType";
+import { IRecommendationResponse } from "../../Recommendation/recommendationType";
+import { IReviewResponse } from "../../Review/reviewType";
+import { IVideoResponse } from "../../Trailer/videoType";
 
 export type Genres = {
   id: number;

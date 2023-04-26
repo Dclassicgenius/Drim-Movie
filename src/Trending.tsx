@@ -30,7 +30,11 @@ export function Trending() {
   useEffect(() => {
     const fetchMovie = async () => {
       const response = await axios.get<IResponse>(activeTab.apiUrl);
-      setMovies(response.data.results);
+      const resultsWithTypes = response.data.results.map((movie) => ({
+        ...movie,
+        type: movie.first_air_date ? "tv" : "movie",
+      }));
+      setMovies(resultsWithTypes);
     };
     fetchMovie();
   }, [activeTab]);
@@ -38,6 +42,7 @@ export function Trending() {
   const handleTabClick = (tab: TabType) => {
     setActiveTab(tab);
   };
+
   return (
     <>
       <Tab

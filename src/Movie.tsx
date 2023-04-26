@@ -13,7 +13,7 @@ export function Movie({ movies, API_IMG }: MovieProps) {
           movies
             .filter((movie) => movie.poster_path !== null)
             .map((movie) => (
-              <Link to={`/movie/${movie.id}`} key={movie.id}>
+              <Link to={`/${movie.type}/${movie.id}`} key={movie.id}>
                 <div
                   className="relative rounded-lg min-w-[150px] mb-4 bg-white dark:bg-gray-800 "
                   key={movie.id}

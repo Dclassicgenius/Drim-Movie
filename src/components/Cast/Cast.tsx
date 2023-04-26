@@ -3,24 +3,33 @@ import { useMovieDetail } from "../../hooks/MovieHooks/useMovieDetail";
 import { ICast } from "./castType";
 
 type CastProps = {
-  movieId: number;
+  id: number;
   API_IMG: string;
+  useDetail: (id: number) => any;
+  detailType: "movie" | "tv";
 };
 
-export function Cast({ movieId, API_IMG }: CastProps) {
-  const { data, isLoading, error } = useMovieDetail(movieId);
+export function Cast({ id, API_IMG, useDetail, detailType }: CastProps) {
+  const { data, isLoading, error } = useDetail(id);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
-  const casts: ICast[] = (data?.credits.cast || []).filter(
-    (cast) => cast.known_for_department === "Acting"
+  const casts: ICast[] = (
+    detailType === "movie"
+      ? data?.credits.cast || []
+      : data.aggregate_credits.cast || []
+  ).filter(
+    (cast: { known_for_department: string }) =>
+      cast.known_for_department === "Acting"
   );
 
   return (
     <>
       <section className=" pl-10 py-6 col-span-4">
-        <h2 className="font-bold py-6 text-lg">Top Billed Cast</h2>
+        <h2 className="font-bold py-6 text-lg">
+          {detailType === "movie" ? "Top Billed Cast" : "Series Cast"}
+        </h2>
 
         <ol className="flex gap-4 overflow-x-scroll overflow-y-hidden list-none list-inside pb-6">
           {casts.map(
@@ -42,13 +51,25 @@ export function Cast({ movieId, API_IMG }: CastProps) {
                   <p className="font-bold text-sm pl-3 pt-3">
                     {cast.original_name}
                   </p>
-                  <p className="text-xs pl-3 pb-2">{cast.character}</p>
+                  <p className="text-xs pl-3 pb-2">
+                    {detailType === "tv"
+                      ? cast.roles?.map((role) => role.character).join(", ")
+                      : cast.character}
+                  </p>
+                  {detailType === "tv" && (
+                    <p className="text-xs pl-3 pb-2 text-[#c0baba] ">
+                      {cast.total_episode_count} Episodes
+                    </p>
+                  )}
                 </li>
               )
           )}
         </ol>
 
-        <Link to={`/movie/${movieId}/cast`} className="font-bold pt-6 text-lg">
+        <Link
+          to={`/${detailType}/${id}/cast`}
+          className="font-bold pt-6 text-lg"
+        >
           Full Cast & Crew
         </Link>
       </section>

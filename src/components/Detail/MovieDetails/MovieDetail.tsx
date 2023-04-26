@@ -1,9 +1,9 @@
-import { Cast } from "../Cast/Cast";
-import { Review } from "../Review/Review";
-import { Recommendations } from "../Recommendation/Recommendations";
-import { SideBar } from "./SideBar";
 import { useParams } from "react-router-dom";
 import { MovieMainDetail } from "./MovieMainDetail";
+import { MovieRecommendations } from "./MovieRecommendations";
+import { MovieReviews } from "./MovieReviews";
+import { MovieCast } from "./MovieCast";
+import { MovieSideBar } from "./MovieSideBar";
 
 export function MovieDetail() {
   const { id } = useParams<{ id?: string }>();
@@ -16,12 +16,12 @@ export function MovieDetail() {
       <MovieMainDetail movieId={movieId} API_IMG={API_IMG} />
 
       <section className="grid grid-cols-5 gap-4">
-        <Cast movieId={movieId} API_IMG={API_IMG} />
-        <SideBar movieId={movieId} />
+        <MovieCast movieId={movieId} API_IMG={API_IMG} />
+        <MovieSideBar movieId={movieId} />
       </section>
 
-      <Review API_IMG={API_IMG} movieId={movieId} displayCount={1} />
-      <Recommendations movieId={movieId} API_IMG={API_IMG} />
+      <MovieReviews API_IMG={API_IMG} movieId={movieId} />
+      <MovieRecommendations movieId={movieId} API_IMG={API_IMG} />
     </>
   );
 }

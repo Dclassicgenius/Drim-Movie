@@ -2,15 +2,25 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useMovieDetail } from "../../hooks/MovieHooks/useMovieDetail";
 import { FaArrowLeft } from "react-icons/fa";
 
-export function PageHeader() {
+export type PageHeaderProps = {
+  useDetail: (id: number) => any;
+  detailType: "movie" | "tv";
+};
+
+export function PageHeader({ useDetail, detailType }: PageHeaderProps) {
   const { id } = useParams<{ id?: string }>();
   const API_IMG = "https://image.tmdb.org/t/p/w500";
-  const movieId = parseInt(id ?? "0");
-  const { data, isLoading, error } = useMovieDetail(movieId);
+  const itemId = parseInt(id ?? "0");
+  const { data, isLoading, error } = useDetail(itemId);
   const navigate = useNavigate();
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
+
+  const title =
+    detailType === "movie" ? data.title || data.original_title : data.name;
+  const releaseDate =
+    detailType === "movie" ? data.release_date : data.first_air_date;
   return (
     <>
       <div className="bg-slate-800">
@@ -24,9 +34,9 @@ export function PageHeader() {
           </figure>
           <div>
             <h1 className="font-bold text-3xl">
-              {data?.original_title}{" "}
+              {title}{" "}
               <span className="text-[#c0baba] font-normal">
-                ({new Date(data.release_date).getFullYear()})
+                ({new Date(releaseDate).getFullYear()})
               </span>
             </h1>
             <p

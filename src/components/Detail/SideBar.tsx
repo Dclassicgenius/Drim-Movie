@@ -3,10 +3,11 @@ import { FaTwitter } from "react-icons/fa";
 import { FaInstagram } from "react-icons/fa";
 import { FaLink } from "react-icons/fa";
 import ISO6391 from "iso-639-1";
-import { useMovieDetail } from "../../hooks/MovieHooks/useMovieDetail";
 
 type SideBarProps = {
-  movieId: number;
+  id: number;
+  useDetail: (id: number) => any;
+  detailType: "movie" | "tv";
 };
 
 function currencyFormat(num: number, currencySymbol = "$") {
@@ -15,8 +16,8 @@ function currencyFormat(num: number, currencySymbol = "$") {
   );
 }
 
-export function SideBar({ movieId }: SideBarProps) {
-  const { data, isLoading, error } = useMovieDetail(movieId);
+export function SideBar({ id, useDetail, detailType }: SideBarProps) {
+  const { data, isLoading, error } = useDetail(id);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;

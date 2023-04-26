@@ -30,7 +30,12 @@ export function Popular() {
   useEffect(() => {
     const fetchMovie = async () => {
       const response = await axios.get<IResponse>(activeTab.apiUrl);
-      setMovies(response.data.results);
+
+      const responseWithTypes = response.data.results.map((movie) => ({
+        ...movie,
+        type: activeTab.title === "Movies" ? "movie" : "tv",
+      }));
+      setMovies(responseWithTypes);
     };
     fetchMovie();
   }, [activeTab]);

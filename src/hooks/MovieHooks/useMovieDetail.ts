@@ -1,6 +1,6 @@
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import axios from "axios";
-import { IMovieDetails } from "../../components/Detail/movieDetailType";
+import { IMovieDetails } from "../../components/Detail/MovieDetails/movieDetailType";
 
 const fetchMovieData = async (movieId: number): Promise<IMovieDetails> => {
   const apiKey = import.meta.env.VITE_TMDB_API_KEY;

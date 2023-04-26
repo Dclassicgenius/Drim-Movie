@@ -1,3 +1,15 @@
+export interface Roles {
+  credit_id: string;
+  character: string;
+  episode_count: number;
+}
+
+export interface Jobs {
+  credit_id: string;
+  job: string;
+  episode_count: number;
+}
+
 export interface ICast {
   adult: boolean;
   gender: number | null;
@@ -8,9 +20,11 @@ export interface ICast {
   popularity: number;
   profile_path: string;
   cast_id: number;
-  character: string;
+  character?: string;
   credit_id: string;
   order: number;
+  total_episode_count?: number;
+  roles?: Roles[];
 }
 
 export interface ICrew {
@@ -24,7 +38,9 @@ export interface ICrew {
   profile_path: string | null;
   credit_id: string;
   department: string;
-  job: string;
+  job?: string;
+  total_episode_count: number;
+  jobs?: Jobs[];
 }
 
 export interface ICredits {

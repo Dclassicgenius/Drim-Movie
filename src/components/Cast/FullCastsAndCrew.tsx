@@ -1,7 +1,4 @@
-import { FaArrowLeft } from "react-icons/fa";
-import { useMovieDetail } from "../../hooks/MovieHooks/useMovieDetail";
 import { ICast, ICrew } from "./castType";
-import { useParams } from "react-router-dom";
 import malePlaceholder from "../../assets/defaultMale.svg";
 import femalePlaceholder from "../../assets/defaultFemale.svg";
 import { PageHeader } from "../Layout/PageHeader";
@@ -10,18 +7,34 @@ interface GroupedCrew {
   [department: string]: ICrew[];
 }
 
-export function FullCastsAndCrew() {
-  const { id } = useParams<{ id?: string }>();
+export type FullCastsAndCrewProps = {
+  id: number;
+  useDetail: (id: number) => any;
+  detailType: "movie" | "tv";
+};
+
+export function FullCastsAndCrew({
+  id,
+  useDetail,
+  detailType,
+}: FullCastsAndCrewProps) {
+  // const { id } = useParams<{ id?: string }>();
 
   const API_IMG = "https://image.tmdb.org/t/p/w500";
-  const movieId = parseInt(id ?? "0");
-  const { data, isLoading, error } = useMovieDetail(movieId);
+  // const movieId = parseInt(id ?? "0");
+  const { data, isLoading, error } = useDetail(id);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
-  const casts: ICast[] = data?.credits.cast || [];
-  const crew: ICrew[] = data?.credits.crew || [];
+  const casts: ICast[] =
+    detailType === "movie"
+      ? data?.credits.cast || []
+      : data?.aggregate_credits.cast || [];
+  const crew: ICrew[] =
+    detailType === "movie"
+      ? data?.credits.crew || []
+      : data?.aggregate_credits.crew || [];
 
   const groupedCrew = crew.reduce<GroupedCrew>((acc, crewMember) => {
     const department = crewMember.known_for_department;
@@ -38,7 +51,7 @@ export function FullCastsAndCrew() {
   return (
     <>
       <section className="pb-10">
-        <PageHeader />
+        <PageHeader useDetail={useDetail} detailType={detailType} />
         <div className="pl-20 pt-10 grid grid-cols-2">
           <article>
             <h2 className="font-bold text-xl pb-7">
@@ -56,9 +69,9 @@ export function FullCastsAndCrew() {
                       src={
                         cast.profile_path
                           ? API_IMG + cast.profile_path
-                          : cast.gender === 2
-                          ? malePlaceholder
-                          : femalePlaceholder
+                          : cast.gender === 1
+                          ? femalePlaceholder
+                          : malePlaceholder
                       }
                       alt=""
                       className="w-full h-full  rounded-md overflow-hidden object-cover"
@@ -66,7 +79,16 @@ export function FullCastsAndCrew() {
                   </figure>
                   <div>
                     <p className="font-bold">{cast.original_name}</p>
-                    <p className="text text-sm pb-4">{cast.character}</p>
+                    <p className="text text-sm pb-4">
+                      {detailType === "tv"
+                        ? cast.roles?.map((role) => role.character).join(", ")
+                        : cast.character}{" "}
+                      {detailType === "tv" && (
+                        <span className="text-xs pl-1 pb-2 text-[#c0baba] ">
+                          ({cast.total_episode_count} Episodes)
+                        </span>
+                      )}
+                    </p>
                   </div>
                 </li>
               ))}
@@ -80,7 +102,7 @@ export function FullCastsAndCrew() {
 
             {sortedDepartments.map((department) => (
               <div key={department}>
-                <h3 className="font-bold text-base pb-5">{department}</h3>
+                <h3 className="font-bold text-base py-5">{department}</h3>
 
                 <ol className="grid gap-8">
                   {groupedCrew[department].map((crewMember) => (
@@ -105,7 +127,16 @@ export function FullCastsAndCrew() {
                         <p className="font-bold">
                           {crewMember.name || crewMember.original_name}
                         </p>
-                        <p className="text text-sm">{crewMember.job}</p>
+                        <p className="text text-sm pb-4">
+                          {detailType === "tv"
+                            ? crewMember.jobs?.map((job) => job.job).join(", ")
+                            : crewMember.job}{" "}
+                          {detailType === "tv" && (
+                            <span className="text-xs pl-1 pb-2 text-[#c0baba] ">
+                              ({crewMember.total_episode_count} Episodes)
+                            </span>
+                          )}
+                        </p>
                       </div>
                     </li>
                   ))}
