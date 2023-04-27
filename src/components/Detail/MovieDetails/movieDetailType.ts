@@ -1,3 +1,4 @@
+import { ExternalIDs, Keywords } from "../../../types";
 import { ICredits } from "../../Cast/castType";
 import { IRecommendationResponse } from "../../Recommendation/recommendationType";
 import { IReviewResponse } from "../../Review/reviewType";
@@ -67,4 +68,6 @@ export interface IMovieDetails {
   recommendations: IRecommendationResponse;
   reviews: IReviewResponse;
   videos: IVideoResponse;
+  keywords: Keywords;
+  external_ids: ExternalIDs;
 }

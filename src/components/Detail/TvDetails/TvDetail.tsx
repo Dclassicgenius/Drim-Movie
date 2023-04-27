@@ -3,6 +3,7 @@ import { TvMainDetail } from "./TvMainDetail";
 import { TvRecommendations } from "./TvRecommendations";
 import { TvReviews } from "./TvReviews";
 import { TvCast } from "./TvCast";
+import { TvSideBar } from "./TvSideBar";
 // import { TvSideBar } from "./TvSideBar";
 
 export function TvDetail() {
@@ -17,7 +18,7 @@ export function TvDetail() {
 
       <section className="grid grid-cols-5 gap-4">
         <TvCast tvId={tvId} API_IMG={API_IMG} />
-        {/* <TvSideBar tvId={tvId} /> */}
+        <TvSideBar id={tvId} API_IMG={API_IMG} />
       </section>
 
       <TvReviews API_IMG={API_IMG} tvId={tvId} />

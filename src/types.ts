@@ -1,3 +1,5 @@
+import { Key } from "react";
+
 export interface IResponse {
   page: number;
   results: IMovie[];
@@ -108,7 +110,9 @@ export interface Episode {
 }
 
 export interface Keywords {
-  results: Keyword[];
+  results?: Keyword[];
+
+  keywords?: Keyword[];
 }
 
 export interface Keyword {

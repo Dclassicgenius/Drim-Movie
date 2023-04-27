@@ -52,7 +52,7 @@ export function FullCastsAndCrew({
     <>
       <section className="pb-10">
         <PageHeader useDetail={useDetail} detailType={detailType} />
-        <div className="pl-20 pt-10 grid grid-cols-2">
+        <div className="pl-20 pt-10 grid grid-cols-2 gap-8">
           <article>
             <h2 className="font-bold text-xl pb-7">
               Cast{" "}
@@ -64,7 +64,7 @@ export function FullCastsAndCrew({
                   className=" flex justify-start items-center gap-6"
                   key={cast.id}
                 >
-                  <figure className="w-[75px] h-[100px]">
+                  <figure className="w-[75px] h-[100px] min-w-[75px]">
                     <img
                       src={
                         cast.profile_path

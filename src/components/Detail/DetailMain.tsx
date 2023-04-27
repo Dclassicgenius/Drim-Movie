@@ -66,18 +66,23 @@ DetailMainProps) {
   const uniqueImportantCrew: IUniqueCrew[] = getUniqueImportantCrew(
     data.credits
   );
-
   let trailer: IVideo | undefined;
 
   if (data) {
     const videos: IVideo[] = data.videos.results || [];
 
     trailer = videos.find(
-      (video) =>
-        video.type === "Trailer" ||
-        video.type === "Teaser" ||
-        (video.type === "Clip" && video.site === "YouTube")
+      (video) => video.type === "Trailer" && video.site === "YouTube"
     );
+
+    if (!trailer) {
+      trailer = videos.find(
+        (video) =>
+          video.type === "Teaser" ||
+          video.type === "Clip" ||
+          (video.type === "Opening Credits" && video.site === "YouTube")
+      );
+    }
   }
 
   return (

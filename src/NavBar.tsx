@@ -1,10 +1,14 @@
+import { Link } from "react-router-dom";
+
 export function NavBar() {
   return (
     <>
       <header className="sticky top-0 z-20 bg-[#032541] text-white">
         <section className="mx-auto flex max-w-4xl items-center justify-between p-4">
           <div className="flex gap-6 items-center ">
-            <h1 className="text-2xl text-[#55c2bf]">Drim Movie</h1>
+            <Link to={"/"} key={"home"}>
+              <h1 className="text-2xl text-[#55c2bf]">Drim Movie</h1>
+            </Link>
             <nav>
               <nav
                 className="hidden space-x-8 text-l md:block"
