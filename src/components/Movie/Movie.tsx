@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
-import { IMovie } from "./types";
+import { IMovie } from "../../types";
+import { CircularProgressBar } from "../utility/CircularProgressBar";
 
 interface MovieProps {
   movies: IMovie[];
-  API_IMG: string;
 }
-export function Movie({ movies, API_IMG }: MovieProps) {
+export function Movie({ movies }: MovieProps) {
+  const API_IMG = "https://image.tmdb.org/t/p/w500";
   return (
     <>
       <section className="overflow-x-auto flex w-11/12 mx-auto pt-6 space-x-5 ">
@@ -23,8 +24,12 @@ export function Movie({ movies, API_IMG }: MovieProps) {
                     src={API_IMG + movie.poster_path}
                     alt={movie.title || movie.name}
                   />
-                  <div className="absolute top-0 right-0 m-2 bg-green-500 text-white rounded-full p-1 text-xs">
-                    {movie.vote_average.toFixed(1)}
+                  <div className="absolute top-0 right-0 m-0.5 text-white rounded-full text-xs">
+                    {/* {movie.vote_average.toFixed(1)} */}
+                    <CircularProgressBar
+                      score={Number(movie.vote_average.toFixed(1))}
+                      radius={20}
+                    />
                   </div>
                   <div className="py-4 px-1">
                     <h5 className="text-xs font-bold tracking-tight text-gray-900 dark:text-white">

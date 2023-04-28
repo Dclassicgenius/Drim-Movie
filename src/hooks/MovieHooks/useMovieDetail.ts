@@ -7,7 +7,6 @@ const fetchMovieData = async (movieId: number): Promise<IMovieDetails> => {
   const response = await axios.get<IMovieDetails>(
     `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=en-US&append_to_response=credits,releases,recommendations,reviews,videos,external_ids,keywords`
   );
-  console.log(response.data);
   return response.data;
 };
 

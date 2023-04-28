@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Tab } from "./Tab";
 import { IMovie, TabType, IResponse } from "./types";
-import { Movie } from "./Movie";
+import { Movie } from "./components/Movie/Movie";
 
 const tabs = [
   {
@@ -46,7 +46,7 @@ export function FreeToWatch() {
         header="Free To Watch"
         activeTab={activeTab}
       />
-      <Movie movies={movies} API_IMG={API_IMG} />
+      <Movie movies={movies} />
     </>
   );
 }

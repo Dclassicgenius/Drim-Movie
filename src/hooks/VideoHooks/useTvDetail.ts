@@ -7,7 +7,7 @@ const fetchTvdata = async (tvId: number): Promise<ITvShowDetails> => {
   const response = await axios.get<ITvShowDetails>(
     `https://api.themoviedb.org/3/tv/${tvId}?api_key=${apiKey}&language=en-US&append_to_response=credits,content_ratings,recommendations,reviews,videos,external_ids,episode_groups,keywords,aggregate_credits`
   );
-  console.log(response.data);
+
   return response.data;
 };
 

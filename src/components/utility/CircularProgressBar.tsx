@@ -1,8 +1,12 @@
 export interface CircularProgressBarProps {
   score: number;
+  radius?: number;
 }
 
-export function CircularProgressBar({ score }: CircularProgressBarProps) {
+export function CircularProgressBar({
+  score,
+  radius = 20,
+}: CircularProgressBarProps) {
   const percentage = Math.round((score / 10) * 100);
   const progressColor =
     percentage >= 85
@@ -17,13 +21,13 @@ export function CircularProgressBar({ score }: CircularProgressBarProps) {
       ? "#E53E3E"
       : "#F56565";
 
-  const radius = 20;
+  // const radius = 20;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference * ((100 - percentage) / 100);
 
   return (
     <>
-      <div className="relative w-20 h-20">
+      <div className="relative w-11 h-11 bg-[#081c21] rounded-full">
         <svg className="w-full h-full" viewBox="0 0 50 50">
           <circle
             cx="25"
@@ -47,7 +51,7 @@ export function CircularProgressBar({ score }: CircularProgressBarProps) {
           />
         </svg>
         <div className="absolute inset-0 w-full h-full flex items-center justify-center">
-          <p className="text-sm font-bold">{percentage}%</p>
+          <p className="text-xs font-bold">{percentage}%</p>
         </div>
       </div>
     </>

@@ -1,6 +1,7 @@
 import { FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { IReview } from "./reviewType";
+import malePlaceholder from "../../assets/defaultMale.svg";
 
 export function Review({
   id,
@@ -52,7 +53,11 @@ export function Review({
                   <a href="#">
                     <img
                       src={
-                        review.author_details.avatar_path?.startsWith("/http")
+                        review.author_details.avatar_path === null
+                          ? malePlaceholder
+                          : review.author_details.avatar_path?.startsWith(
+                              "/http"
+                            )
                           ? review.author_details.avatar_path.replace(
                               /^\/+/,
                               ""
