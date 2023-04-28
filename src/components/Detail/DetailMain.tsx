@@ -18,10 +18,8 @@ import { IVideo } from "../Trailer/videoType";
 
 type DetailMainProps = {
   id: number;
-  API_IMG: string;
   useDetail: (id: number) => any;
   detailType: "movie" | "tv";
-  // detailPath: (id: number) => string;
 };
 
 function convertMinutesToHoursAndMinutes(minutes: number) {
@@ -31,15 +29,10 @@ function convertMinutesToHoursAndMinutes(minutes: number) {
   return { hours, minutes: remainingMinutes };
 }
 
-export function DetailMain({
-  id,
-  API_IMG,
-  useDetail,
-  detailType,
-}: // detailPath,
-DetailMainProps) {
+export function DetailMain({ id, useDetail, detailType }: DetailMainProps) {
   const { data, isLoading, error } = useDetail(id);
   const [showPlayer, setShowPlayer] = useState<boolean>(false);
+  const API_IMG = "https://image.tmdb.org/t/p/w500";
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
@@ -103,9 +96,11 @@ DetailMainProps) {
           <div className="text-[#c0baba]">
             <h2 className="font-bold text-2xl text-white">
               {title}{" "}
-              <span className="font-normal text-[#c0baba]">
-                ({new Date(releaseDate).getFullYear()})
-              </span>
+              {releaseDate && (
+                <span className="font-normal text-[#c0baba]">
+                  ({new Date(releaseDate).getFullYear()})
+                </span>
+              )}
             </h2>
             <div className="space-x-3 text-sm flex gap-2">
               {certification !== "Not available" && (

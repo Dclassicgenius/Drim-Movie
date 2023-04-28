@@ -66,7 +66,9 @@ export function Recommendations({
                       <div className="flex justify-between px-2 pb-3 items-center">
                         <div className="flex gap-2 items-center">
                           <FaCalendarAlt />
-                          <p>{new Date(releaseDate).toLocaleDateString()}</p>
+                          {releaseDate && (
+                            <p>{new Date(releaseDate).toLocaleDateString()}</p>
+                          )}
                         </div>
 
                         <div className="flex gap-2">

@@ -1,6 +1,7 @@
-import { FreeToWatch } from "./FreeToWatch";
-import { LatestTrailer } from "./LatestTrailer";
-import { Popular } from "./Popular";
+import { FreeToWatch } from "./FreeToWatch/FreeToWatch";
+import { LatestTrailer } from "./LatestTrailers/LatestTrailer";
+
+import { Popular } from "./Popular/Popular";
 import { SearchBox } from "./SearchBox";
 import { Trending } from "./Trending/Trending";
 

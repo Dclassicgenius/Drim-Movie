@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { Tab } from "./Tab";
-import { IMovie, TabType, IResponse } from "./types";
-import { Movie } from "./components/Movie/Movie";
+import { useState } from "react";
+import { IMovie, TabType } from "../types";
+import { Movie } from "../components/Movie/Movie";
+import { Tabs } from "../components/Layout/Tabs";
+import useFetchMovies from "../api/api";
 
 const tabs = [
   {
@@ -23,30 +23,27 @@ const tabs = [
 
 export function FreeToWatch() {
   const [activeTab, setActiveTab] = useState<TabType>(tabs[0]);
-  const [movies, setMovies] = useState<IMovie[]>([]);
-  const API_IMG = "https://image.tmdb.org/t/p/w500";
-  //   const [image, setImage] = useState<string | any>("");
 
-  useEffect(() => {
-    const fetchMovie = async () => {
-      const response = await axios.get<IResponse>(activeTab.apiUrl);
-      setMovies(response.data.results);
-    };
-    fetchMovie();
-  }, [activeTab]);
+  const {
+    isLoading,
+    data: movies,
+    error,
+  } = useFetchMovies(activeTab.apiUrl, 1000 * 60 * 5, 1000 * 60);
 
-  const handleTabClick = (tab: TabType) => {
-    setActiveTab(tab);
-  };
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+
+  const freeToWatch: IMovie[] = movies || [];
   return (
     <>
-      <Tab
+      <Tabs
         tabs={tabs}
-        handleTabClick={handleTabClick}
         header="Free To Watch"
+        handleTabClick={setActiveTab}
         activeTab={activeTab}
       />
-      <Movie movies={movies} />
+
+      <Movie movies={freeToWatch} />
     </>
   );
 }

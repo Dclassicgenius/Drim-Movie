@@ -29,6 +29,7 @@ export interface IMovie {
   popularity: number;
   original_name: string;
   type: string;
+  trailer?: IVideo;
 }
 
 export interface IVideo {

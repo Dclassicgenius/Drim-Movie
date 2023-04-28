@@ -7,10 +7,18 @@ const fetchMovies = async (url: string) => {
   return response.data.results;
 };
 
-const useFetchMovies = (url: string) => {
+const useFetchMovies = (
+  url: string,
+  staleTime: number = 0,
+  refetchInterval: number = 0
+) => {
   const { isLoading, data, error } = useQuery<IMovie[], Error>(
     ["movies", url],
-    () => fetchMovies(url)
+    () => fetchMovies(url),
+    {
+      staleTime,
+      refetchInterval,
+    }
   );
 
   return { isLoading, data, error };

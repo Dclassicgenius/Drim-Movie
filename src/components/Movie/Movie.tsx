@@ -32,14 +32,20 @@ export function Movie({ movies }: MovieProps) {
                     />
                   </div>
                   <div className="py-4 px-1">
-                    <h5 className="text-xs font-bold tracking-tight text-gray-900 dark:text-white">
+                    <h5 className="text-sm font-bold tracking-tight text-gray-900 dark:text-white">
                       {movie.title || movie.name}
                     </h5>
-                    <p className="font-normal text-sm pt-2 text-gray-700 dark:text-gray-400">
-                      {new Date(
-                        movie.release_date || movie.first_air_date
-                      ).toLocaleDateString()}
-                    </p>
+                    {(() => {
+                      const dateValue =
+                        movie.release_date || movie.first_air_date;
+                      if (dateValue) {
+                        return (
+                          <p className="text-[10px] pt-2 text-gray-700 dark:text-gray-400 font-light">
+                            {new Date(dateValue).toLocaleDateString()}
+                          </p>
+                        );
+                      }
+                    })()}
                   </div>
                 </div>
               </Link>
