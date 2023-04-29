@@ -1,5 +1,3 @@
-import { Key } from "react";
-
 export interface IResponse {
   page: number;
   results: IMovie[];

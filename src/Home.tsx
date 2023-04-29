@@ -1,9 +1,9 @@
-import { FreeToWatch } from "./FreeToWatch/FreeToWatch";
-import { LatestTrailer } from "./LatestTrailers/LatestTrailer";
+import { FreeToWatch } from "./components/FreeToWatch/FreeToWatch";
+import { LatestTrailer } from "./components/LatestTrailers/LatestTrailer";
 
-import { Popular } from "./Popular/Popular";
+import { Popular } from "./components/Popular/Popular";
 import { SearchBox } from "./SearchBox";
-import { Trending } from "./Trending/Trending";
+import { Trending } from "./components/Trending/Trending";
 
 export function Home() {
   return (

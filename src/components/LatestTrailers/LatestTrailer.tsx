@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { FaPlay } from "react-icons/fa";
-import { IVideo, TabType } from "../types";
+import { IVideo, TabType } from "../../types";
 import useMediaTrailer from "./useMediaTrailer";
-import { MovieTrailer } from "../components/Trailer/MovieTrailer";
-import { Tabs } from "../components/Layout/Tabs";
+import { MovieTrailer } from "../Trailer/MovieTrailer";
+import { Tabs } from "../Layout/Tabs";
 import { Link } from "react-router-dom";
 
 const tabs = [

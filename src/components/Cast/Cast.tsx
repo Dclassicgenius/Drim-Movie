@@ -39,18 +39,20 @@ export function Cast({ id, API_IMG, useDetail, detailType }: CastProps) {
                   className="shadow-md rounded-lg overflow-hidden min-w-[140px] w-[140px]"
                   key={cast.id}
                 >
-                  <figure className="">
-                    <a href="#">
-                      <img
-                        src={API_IMG + cast.profile_path}
-                        alt=""
-                        className="w-full h-full"
-                      />
-                    </a>
-                  </figure>
-                  <p className="font-bold text-sm pl-3 pt-3">
-                    {cast.original_name}
-                  </p>
+                  <Link to={`/people/${cast.id}`}>
+                    <figure className="">
+                      <a href="#">
+                        <img
+                          src={API_IMG + cast.profile_path}
+                          alt=""
+                          className="w-full h-full"
+                        />
+                      </a>
+                    </figure>
+                    <p className="font-bold text-sm pl-3 pt-3">
+                      {cast.original_name}
+                    </p>
+                  </Link>
                   <p className="text-xs pl-3 pb-2">
                     {detailType === "tv"
                       ? cast.roles?.map((role) => role.character).join(", ")

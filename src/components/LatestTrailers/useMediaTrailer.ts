@@ -1,7 +1,7 @@
 // api.ts
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { IMovie, IVideo, TabType } from "../types";
+import { IMovie, IVideo, TabType } from "../../types";
 
 const TMDB_API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 

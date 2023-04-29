@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { IMovie, TabType } from "../types";
-import { Movie } from "../components/Movie/Movie";
-import { Tabs } from "../components/Layout/Tabs";
-import useFetchMovies from "../api/api";
+import { IMovie, TabType } from "../../types";
+import { Movie } from "../Movie/Movie";
+import { Tabs } from "../Layout/Tabs";
+import useFetchMovies from "../../api/api";
 
 const tabs = [
   {
@@ -33,7 +33,10 @@ export function FreeToWatch() {
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
-  const freeToWatch: IMovie[] = movies || [];
+  const freeToWatch: IMovie[] = (movies || []).map((media) => ({
+    ...media,
+    type: activeTab.id === 1 ? "movie" : "tv",
+  }));
   return (
     <>
       <Tabs

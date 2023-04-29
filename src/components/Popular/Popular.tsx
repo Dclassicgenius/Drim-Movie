@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { IMovie, TabType } from "../types";
-import { Movie } from "../components/Movie/Movie";
-import useFetchMovies from "../api/api";
-import { Tabs } from "../components/Layout/Tabs";
+import { IMovie, TabType } from "../../types";
+import { Movie } from "../Movie/Movie";
+import useFetchMovies from "../../api/api";
+import { Tabs } from "../Layout/Tabs";
 
 const tabs = [
   {
@@ -33,7 +33,11 @@ export function Popular() {
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
-  const popular: IMovie[] = movies || [];
+  const popular: IMovie[] = (movies || []).map((media) => ({
+    ...media,
+    type: activeTab.id === 1 ? "movie" : "tv",
+  }));
+
   return (
     <>
       <Tabs

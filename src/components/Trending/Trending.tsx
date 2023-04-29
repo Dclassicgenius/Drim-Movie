@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { IMovie, TabType } from "../types";
-import useFetchMovies from "../api/api";
-import { Movie } from "../components/Movie/Movie";
-import { Tabs } from "../components/Layout/Tabs";
+import { IMovie, TabType } from "../../types";
+import useFetchMovies from "../../api/api";
+import { Movie } from "../Movie/Movie";
+import { Tabs } from "../Layout/Tabs";
 
 const tabs = [
   {

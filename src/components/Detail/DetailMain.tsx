@@ -136,8 +136,8 @@ export function DetailMain({ id, useDetail, detailType }: DetailMainProps) {
               </ul>
             </div>
           </div>
-          <div className="flex gap-8 py-6 items-center font-bold text-base">
-            <p>
+          <div className="flex gap-8 py-6 items-center font-bold text-base ">
+            <p className="">
               <CircularProgressBar score={data.vote_average} /> User Score
             </p>
             <a

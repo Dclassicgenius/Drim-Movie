@@ -9,6 +9,7 @@ import { MovieReviewAll } from "./components/Detail/MovieDetails/MovieReviewAll"
 import { TvDetail } from "./components/Detail/TvDetails/TvDetail";
 import { TvFullCastsAndCrew } from "./components/Detail/TvDetails/TvFullCastsAndCrew";
 import { TvReviewAll } from "./components/Detail/TvDetails/TvReviewAll";
+import { Person } from "./components/People/Person";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/tv/:id" element={<TvDetail />} />
         <Route path="/tv/:id/cast" element={<TvFullCastsAndCrew />} />
         <Route path="/tv/:id/reviews" element={<TvReviewAll />} />
+        <Route path="/people/:id" element={<Person />} />
       </Routes>
       <FooterNav />
     </>

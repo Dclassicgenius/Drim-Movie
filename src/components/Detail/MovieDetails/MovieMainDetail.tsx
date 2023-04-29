@@ -6,13 +6,8 @@ type MovieMainProps = {
   API_IMG: string;
 };
 
-export function MovieMainDetail({ movieId, API_IMG }: MovieMainProps) {
+export function MovieMainDetail({ movieId }: MovieMainProps) {
   return (
-    <DetailMain
-      id={movieId}
-      API_IMG={API_IMG}
-      useDetail={useMovieDetail}
-      detailType="movie"
-    />
+    <DetailMain id={movieId} useDetail={useMovieDetail} detailType="movie" />
   );
 }
