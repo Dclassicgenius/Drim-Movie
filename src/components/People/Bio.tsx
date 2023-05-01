@@ -7,6 +7,7 @@ import {
   FaYoutube,
 } from "react-icons/fa";
 import { useCastProfile } from "../../hooks/People/useCastProfile";
+import { calculateAge } from "../utility/CalculateAge";
 
 type BioProps = {
   id: number;
@@ -18,31 +19,16 @@ export function Bio({ id }: BioProps) {
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
-  function calculateAge(birthday: string) {
-    const birthDate = new Date(birthday);
-    const currentDate = new Date();
-    const currentYear = currentDate.getFullYear();
-    const birthYear = birthDate.getFullYear();
-    const age = currentYear - birthYear;
-
-    const currentMonth = currentDate.getMonth();
-    const birthMonth = birthDate.getMonth();
-    if (
-      currentMonth < birthMonth ||
-      (currentMonth === birthMonth &&
-        currentDate.getDate() < birthDate.getDate())
-    ) {
-      return age - 1;
-    }
-    return age;
-  }
-
   const total_credit =
     data.combined_credits.cast.filter(
-      (credit) => !credit.character.includes("uncredited")
+      (credit) =>
+        !credit.character.includes("uncredited") &&
+        (credit.release_date || credit.first_air_date)
     ).length +
     data.combined_credits.crew.filter(
-      (credit) => !credit.job.includes("uncredited")
+      (credit) =>
+        !credit.job.includes("uncredited") &&
+        (credit.release_date || credit.first_air_date)
     ).length;
 
   const facebookUrl = data.external_ids.facebook_id
@@ -149,8 +135,10 @@ export function Bio({ id }: BioProps) {
           <div>
             <p className="font-bold text-sm">Day of Death</p>
             <p className="font-light text-sm">
-              {new Date(data.deathday).getDate()}{" "}
-              <span>( {calculateAge(data.deathday)} years old)</span>{" "}
+              {new Date(data.deathday).toLocaleDateString()}{" "}
+              <span>
+                ( {calculateAge(data.birthday, data.deathday)} years old)
+              </span>{" "}
             </p>
           </div>
         )}

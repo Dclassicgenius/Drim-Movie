@@ -1,13 +1,6 @@
 import { FaListUl, FaPlay, FaStar, FaBookmark, FaHeart } from "react-icons/fa";
 import { CircularProgressBar } from "../utility/CircularProgressBar";
-import {
-  JSXElementConstructor,
-  Key,
-  ReactElement,
-  ReactFragment,
-  ReactPortal,
-  useState,
-} from "react";
+import { useState } from "react";
 import { MovieTrailer } from "../Trailer/MovieTrailer";
 import { getCertification } from "../utility/getMovieCertification";
 import {
@@ -15,6 +8,8 @@ import {
   getUniqueImportantCrew,
 } from "../utility/getUniqueImportantCrew";
 import { IVideo } from "../Trailer/videoType";
+import { Link } from "react-router-dom";
+import { CreatedBy } from "./TvDetails/TvDetailsType";
 
 type DetailMainProps = {
   id: number;
@@ -193,7 +188,11 @@ export function DetailMain({ id, useDetail, detailType }: DetailMainProps) {
             {detailType === "movie" &&
               uniqueImportantCrew.map((crew) => (
                 <ul className="list-none" key={crew.credit_id}>
-                  <li className="font-bold text-sm">{crew.name}</li>
+                  <Link to={`/people/${crew.id}`}>
+                    <li className="font-bold text-sm cursor-pointer">
+                      {crew.name}
+                    </li>
+                  </Link>
                   <li className="text-[#c0baba] text-xs">
                     {crew.jobs.join(", ")}
                   </li>
@@ -201,25 +200,16 @@ export function DetailMain({ id, useDetail, detailType }: DetailMainProps) {
               ))}
 
             {detailType === "tv" &&
-              data.created_by.map(
-                (creator: {
-                  credit_id: Key | null | undefined;
-                  name:
-                    | string
-                    | number
-                    | boolean
-                    | ReactElement<any, string | JSXElementConstructor<any>>
-                    | ReactFragment
-                    | ReactPortal
-                    | null
-                    | undefined;
-                }) => (
-                  <ul className="list-none" key={creator.credit_id}>
-                    <li className="font-bold text-sm">{creator.name}</li>
-                    <li className="text-[#c0baba] text-xs">Creator</li>
-                  </ul>
-                )
-              )}
+              data.created_by.map((creator: CreatedBy) => (
+                <ul className="list-none" key={creator.credit_id}>
+                  <Link to={`/people/${creator.id}`}>
+                    <li className="font-bold text-sm cursor-pointer">
+                      {creator.name}
+                    </li>
+                  </Link>
+                  <li className="text-[#c0baba] text-xs">Creator</li>
+                </ul>
+              ))}
           </div>
         </div>
       </section>

@@ -1,7 +1,9 @@
+import React, { useEffect, useRef } from "react";
 import { ICast, ICrew } from "./castType";
 import malePlaceholder from "../../assets/defaultMale.svg";
 import femalePlaceholder from "../../assets/defaultFemale.svg";
 import { PageHeader } from "../Layout/PageHeader";
+import { Link } from "react-router-dom";
 
 interface GroupedCrew {
   [department: string]: ICrew[];
@@ -18,11 +20,15 @@ export function FullCastsAndCrew({
   useDetail,
   detailType,
 }: FullCastsAndCrewProps) {
-  // const { id } = useParams<{ id?: string }>();
-
   const API_IMG = "https://image.tmdb.org/t/p/w500";
-  // const movieId = parseInt(id ?? "0");
   const { data, isLoading, error } = useDetail(id);
+  const topAnchor = useRef<HTMLAnchorElement>(null);
+
+  useEffect(() => {
+    if (topAnchor.current) {
+      topAnchor.current.focus();
+    }
+  }, []);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
@@ -51,6 +57,7 @@ export function FullCastsAndCrew({
   return (
     <>
       <section className="pb-10">
+        <a ref={topAnchor} tabIndex={-1} />
         <PageHeader useDetail={useDetail} detailType={detailType} />
         <div className="pl-20 pt-10 grid grid-cols-2 gap-8">
           <article>
@@ -64,21 +71,27 @@ export function FullCastsAndCrew({
                   className=" flex justify-start items-center gap-6"
                   key={cast.id}
                 >
-                  <figure className="w-[75px] h-[100px] min-w-[75px]">
-                    <img
-                      src={
-                        cast.profile_path
-                          ? API_IMG + cast.profile_path
-                          : cast.gender === 1
-                          ? femalePlaceholder
-                          : malePlaceholder
-                      }
-                      alt=""
-                      className="w-full h-full  rounded-md overflow-hidden object-cover"
-                    />
-                  </figure>
+                  <Link to={`/people/${cast.id}`}>
+                    <figure className="w-[75px] h-[100px] min-w-[75px]">
+                      <img
+                        src={
+                          cast.profile_path
+                            ? API_IMG + cast.profile_path
+                            : cast.gender === 1
+                            ? femalePlaceholder
+                            : malePlaceholder
+                        }
+                        alt=""
+                        className="w-full h-full  rounded-md overflow-hidden object-cover"
+                      />
+                    </figure>
+                  </Link>
+
                   <div>
-                    <p className="font-bold">{cast.original_name}</p>
+                    <Link to={`/people/${cast.id}`}>
+                      <p className="font-bold">{cast.original_name}</p>
+                    </Link>
+
                     <p className="text text-sm pb-4">
                       {detailType === "tv"
                         ? cast.roles?.map((role) => role.character).join(", ")
