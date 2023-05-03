@@ -2,7 +2,6 @@ import { useCastProfile } from "../../hooks/People/useCastProfile";
 import { CreditList } from "./CreditList";
 import { Crew } from "./PeopleType";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
 type CreditProps = {
   id: number;
 };
