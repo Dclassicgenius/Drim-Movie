@@ -2,7 +2,8 @@ import { FaCircle } from "react-icons/fa";
 import { Cast, Crew } from "./PeopleType";
 import { Link } from "react-router-dom";
 import { DetailPopUp } from "./DetailPopUp";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+
 // import Tippy from "@tippyjs/react/headless";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
@@ -13,19 +14,9 @@ type CreditListProps = {
 
 export function CreditList({ credit }: CreditListProps) {
   const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
-  const [arrowDirection, setArrowDirection] = useState("up");
 
   function togglePopup(itemId: number) {
     setSelectedItemId(itemId);
-  }
-
-  function updateArrowDirection(instance: any) {
-    const placement = instance.props.placement;
-    if (placement.startsWith("top")) {
-      setArrowDirection("down");
-    } else if (placement.startsWith("bottom")) {
-      setArrowDirection("up");
-    }
   }
 
   function getYearOrUnderscore(dateString: string) {
@@ -65,13 +56,6 @@ export function CreditList({ credit }: CreditListProps) {
 
   let currentYear: string | number | null = null;
 
-  const Arrow = () => (
-    <div
-      className="w-2 h-2 bg-[#032541] transform rotate-45"
-      data-popper-arrow
-    ></div>
-  );
-  //
   return (
     <>
       {sortedData.map((credit) => {
@@ -90,30 +74,22 @@ export function CreditList({ credit }: CreditListProps) {
             <div className="flex gap-4 p-4 items-center" key={credit.id}>
               <p>{year}</p>
               <Tippy
-                // onCreate={updateArrowDirection}
-                // onShow={updateArrowDirection}
                 visible={selectedItemId === credit.id}
                 onClickOutside={() => setSelectedItemId(null)}
                 arrow={true}
                 interactive={true}
-                content={<DetailPopUp credit={credit}></DetailPopUp>}
+                content={
+                  <div>
+                    <DetailPopUp credit={credit}></DetailPopUp>
+                  </div>
+                }
                 inlinePositioning={true}
-                // placement="top"
-                // render={(attrs) => (
-                //   <div className="box" tabIndex={-1} {...attrs}>
-                //     <div>
-
-                //     </div>
-                //     <Arrow />
-                //   </div>
-                // )}
               >
                 <div className="text-xs rounded-full border border-black group cursor-pointer ">
                   <FaCircle
-                    // className="text-white group-hover:text-blue-800 p-0.5"
+                    className="text-white group-hover:text-blue-800 p-0.5"
                     size={8}
                     onClick={() => togglePopup(credit.id)}
-                    className={`text-white group-hover:text-blue-800 p-0.5 arrow-${arrowDirection}`}
                   />
                 </div>
               </Tippy>
