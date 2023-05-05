@@ -1,19 +1,29 @@
 import { TextInput } from "flowbite-react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import debounce from "lodash/debounce";
+import { useNavigate } from "react-router-dom";
 
-interface SearchProps {
-  onSearch: (query: string) => void;
-}
+// interface SearchProps {
+//   onSearch: (query: string) => void;
+// }
 
-export function SearchBox({ onSearch }: SearchProps) {
+export function SearchBox() {
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const navigate = useNavigate();
 
-  const deBouncedSearch = debounce(onSearch, 500);
+  // const deBouncedSearch = useCallback(
+  //   debounce((query) => onSearch(query), 500),
+  //   [onSearch]
+  // );
 
-  useEffect(() => {
-    deBouncedSearch(searchQuery);
-  }, [searchQuery, deBouncedSearch]);
+  // useEffect(() => {
+  //   deBouncedSearch(searchQuery);
+  // }, [searchQuery, deBouncedSearch]);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    navigate(`/search/${searchQuery}`);
+  };
 
   return (
     <>
@@ -23,7 +33,7 @@ export function SearchBox({ onSearch }: SearchProps) {
           Millions of movies, TV shows and people to discover. explore now.
         </p>
 
-        <form className="flex items-center">
+        <form className="flex items-center" onSubmit={handleSubmit}>
           <label htmlFor="simple-search" className="sr-only">
             Search
           </label>

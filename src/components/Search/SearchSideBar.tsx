@@ -1,7 +1,7 @@
-type SearchTab = {
+export type SearchTab = {
   id: number;
   label: string;
-  size: number;
+  size: number | null;
 };
 
 type SearchSideBarProps = {
@@ -17,8 +17,8 @@ export function SearchSideBar({
 }: SearchSideBarProps) {
   return (
     <>
-      <aside className="shadow rounded-lg pl-10 pt-8">
-        <div className="bg-[#09b4e4] ">
+      <aside className="shadow rounded-lg pl-10 pt-8 col-span-1 h-[300px] overflow-hidden">
+        <div className="bg-[#09b4e4] overflow-hidden">
           <h2 className="text-white font-bold p-5">Search Results</h2>
         </div>
 

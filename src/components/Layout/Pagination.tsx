@@ -21,7 +21,7 @@ export function Pagination({
         <button
           onClick={setPage(1)}
           disabled={isPreviousData || page === 1}
-          className="m-[1em] p[1em]"
+          className="border-none h-auto w-[85px] border-r focus:border"
         >
           <FaArrowLeft /> Previous
         </button>

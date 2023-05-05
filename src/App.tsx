@@ -10,6 +10,7 @@ import { TvDetail } from "./components/Detail/TvDetails/TvDetail";
 import { TvFullCastsAndCrew } from "./components/Detail/TvDetails/TvFullCastsAndCrew";
 import { TvReviewAll } from "./components/Detail/TvDetails/TvReviewAll";
 import { Person } from "./components/People/Person";
+import { SearchResults } from "./components/Search/SearchResults";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/tv/:id/cast" element={<TvFullCastsAndCrew />} />
         <Route path="/tv/:id/reviews" element={<TvReviewAll />} />
         <Route path="/people/:id" element={<Person />} />
+        <Route path="/search/:query" element={<SearchResults />} />
       </Routes>
       <FooterNav />
     </>
