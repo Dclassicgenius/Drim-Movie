@@ -82,7 +82,7 @@ export function SearchResults() {
 
   return (
     <>
-      <div className="grid grid-cols-5">
+      <div className="grid grid-cols-5 pl-16 pt-16">
         <SearchSideBar
           tabs={tabs}
           handleTabClick={setActiveTab}

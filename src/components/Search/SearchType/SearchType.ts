@@ -14,6 +14,7 @@ export interface Person {
   known_for: IMovie[];
   media_type: string;
   known_for_department: string;
+  gender: number;
 }
 
 export interface Collections {

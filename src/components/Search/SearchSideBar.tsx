@@ -1,3 +1,5 @@
+import classNames from "classnames";
+
 export type SearchTab = {
   id: number;
   label: string;
@@ -17,43 +19,48 @@ export function SearchSideBar({
 }: SearchSideBarProps) {
   return (
     <>
-      <aside className="shadow rounded-lg pl-10 pt-8 col-span-1 h-[300px] overflow-hidden">
+      <aside className="shadow rounded-lg col-span-1 overflow-hidden h-[200px]">
         <div className="bg-[#09b4e4] overflow-hidden">
-          <h2 className="text-white font-bold p-5">Search Results</h2>
+          <h2 className="text-white font-bold p-5 text-lg">Search Results</h2>
         </div>
-
-        <div className="px-3 py-1">
+        <ul className="py-2">
           {tabs.map((tab) => (
-            <ul
-              className="flex justify-between py-3"
-              onClick={() => handleTabClick(tab)}
+            <li
+              className={classNames(
+                "group hover:bg-[#ebebeb] flex justify-between py-2 px-4 items-center cursor-pointer",
+                {
+                  "bg-[#ebebeb]": activeTab.id === tab.id,
+                  "bg-white": activeTab.id !== tab.id,
+                }
+              )}
               key={tab.id}
+              onClick={() => handleTabClick(tab)}
               data-toggle="tab"
               role="tablist"
             >
-              <li>
-                <a
-                  className={
-                    "text-base leading-normal " +
-                    (activeTab.id === tab.id
-                      ? "font-bold bg-[#ebebeb]"
-                      : " bg-white")
-                  }
-                >
-                  {tab.label}
-                </a>
-              </li>
-              <li
-                className={
-                  "text-xs leading-normal rounded-full py-1 px-3" +
-                  (activeTab.id === tab.id ? " bg-white" : " bg-[#ebebeb]")
-                }
+              <p
+                className={classNames("text-base", {
+                  "font-bold": activeTab.id === tab.id,
+                  "font-normal": activeTab.id !== tab.id,
+                })}
+              >
+                {tab.label}
+              </p>
+              <p
+                className={classNames(
+                  "rounded-full px-3 py-0.5 text-xs",
+                  {
+                    "bg-white": activeTab.id === tab.id,
+                    "bg-[#ebebeb]": activeTab.id !== tab.id,
+                  },
+                  "group-hover:bg-white"
+                )}
               >
                 {tab.size}
-              </li>
-            </ul>
+              </p>
+            </li>
           ))}
-        </div>
+        </ul>
       </aside>
     </>
   );

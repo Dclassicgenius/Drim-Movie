@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { IMovie } from "../../types";
+import placeholderImage from "../../assets/placeholderImage.png";
 
 type MediaSearchCardProps = {
   media: IMovie[];
@@ -9,24 +10,42 @@ export function MediaSearchCard({ media }: MediaSearchCardProps) {
   const API_IMG = "https://image.tmdb.org/t/p/w500";
   return (
     <>
-      <article className="pl-10 py-6 col-span-4 mr-14">
+      <article className="pl-10 col-span-4 mr-14">
         {media &&
           media.map((item) => (
             <li className="shadow-lg rounded-lg flex gap-4 items-center mb-6">
-              <Link to={""}>
+              <Link
+                to={
+                  item.media_type === "tv"
+                    ? `/tv/${item.id}`
+                    : `/movie/${item.id}`
+                }
+              >
                 <figure className="h-[140px] w-[100px] min-w-[95px] overflow-hidden cursor-pointer">
                   <img
-                    src={API_IMG + item.poster_path}
+                    src={
+                      item.poster_path
+                        ? API_IMG + item.poster_path
+                        : placeholderImage
+                    }
                     alt=""
                     className="rounded-tl-lg rounded-bl-lg overflow-hidden w-full h-full"
                   />
                 </figure>
               </Link>
 
-              <div>
+              <div className="mr-5 text-justify">
                 <div>
-                  <Link to={""}>
-                    <h2>{item.media_type === "tv" ? item.name : item.title}</h2>
+                  <Link
+                    to={
+                      item.media_type === "tv"
+                        ? `/tv/${item.id}`
+                        : `/movie/${item.id}`
+                    }
+                  >
+                    <h2 className="font-bold">
+                      {item.media_type === "tv" ? item.name : item.title}
+                    </h2>
                   </Link>
 
                   {(() => {
@@ -40,7 +59,7 @@ export function MediaSearchCard({ media }: MediaSearchCardProps) {
                     }
                   })()}
                 </div>
-                <p className="mt-4">
+                <p className="mt-4 text-sm overflow-hidden line-clamp-2">
                   {item.overview ? (
                     item.overview
                   ) : (

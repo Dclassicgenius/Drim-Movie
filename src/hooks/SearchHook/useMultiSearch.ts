@@ -8,8 +8,9 @@ import {
 import { IMovie } from "../../types";
 
 const apiKey = import.meta.env.VITE_TMDB_API_KEY;
-type PersonDepartment = {
+type PersonDepartmentAndGender = {
   known_for_department: string;
+  gender: number;
   id: number;
 };
 
@@ -18,8 +19,8 @@ const isPerson = (item: IMovie | Person | Collections): item is Person =>
 
 const fetchPersonDepartment = async (
   personId: number
-): Promise<PersonDepartment> => {
-  const response = await axios.get<PersonDepartment>(
+): Promise<PersonDepartmentAndGender> => {
+  const response = await axios.get<PersonDepartmentAndGender>(
     `https://api.themoviedb.org/3/person/${personId}?api_key=${apiKey}&language=en-US`
   );
   return response.data;
@@ -37,10 +38,13 @@ const fetchMultiSearch = async (
   const updatedresults = await Promise.all(
     data.results.map(async (result) => {
       if (isPerson(result)) {
-        const personDepartment = await fetchPersonDepartment(result.id);
+        const personDepartmentAndGender = await fetchPersonDepartment(
+          result.id
+        );
         return {
           ...result,
-          known_for_department: personDepartment.known_for_department,
+          known_for_department: personDepartmentAndGender.known_for_department,
+          gender: personDepartmentAndGender.gender,
         };
       }
       return result;
