@@ -1,16 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MediaSearchCard } from "./MediaSearchCard";
 import { PeopleSearchCard } from "./PeopleSearchCard";
 import { SearchSideBar, SearchTab } from "./SearchSideBar";
-import { useMultiSearch } from "../../hooks/SearchHook/useMultiSearch";
-import {
-  Collections,
-  MultiSearchResult,
-  Person,
-} from "./SearchType/SearchType";
+import { Collections, Person, SearchResult } from "./SearchType/SearchType";
 import { IMovie } from "../../types";
 import { useParams } from "react-router-dom";
 import { Pagination } from "../Layout/Pagination";
+import { useSearchResult } from "../../hooks/SearchHook/useSearchResult";
 
 const tabs = [
   {
@@ -28,16 +24,13 @@ const tabs = [
     label: "People",
     size: null as number | null,
   },
-  {
-    id: 4,
-    label: "Collections",
-    size: null as number | null,
-  },
 ];
 
 export function SearchResults() {
   const [activeTab, setActiveTab] = useState<SearchTab>(tabs[0]);
-  const [page, setPage] = useState(1);
+  const [moviePage, setMoviePage] = useState(1);
+  const [tvPage, setTvPage] = useState(1);
+  const [personPage, setPersonPage] = useState(1);
   const { query } = useParams();
 
   if (query === undefined) {
@@ -45,68 +38,121 @@ export function SearchResults() {
   }
 
   const {
-    isLoading,
-    isError,
-    error,
-    data: searchResults,
-    isFetching,
-    isPreviousData,
-  } = useMultiSearch(page, query);
+    data: movieSearchResults,
+    isLoading: movieLoading,
+    isError: movieError,
+  } = useSearchResult(moviePage, "movie", query);
+  console.log(movieSearchResults);
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
+  const {
+    data: tvSearchResults,
+    isLoading: tvLoading,
+    isError: tvError,
+  } = useSearchResult(tvPage, "tv", query);
+  console.log(tvSearchResults);
 
-  const queryResult = searchResults.results || [];
+  const {
+    data: peopleSearchResults,
+    isLoading: peopleLoading,
+    isError: peopleError,
+  } = useSearchResult(personPage, "person", query);
+  console.log(peopleSearchResults);
 
-  const isPerson = (item: IMovie | Person | Collections): item is Person =>
-    (item as Person).media_type === "person";
-  const isMovie = (item: IMovie | Person | Collections): item is IMovie =>
-    (item as IMovie).media_type === "movie";
-  const isTvShow = (item: IMovie | Person | Collections): item is IMovie =>
-    (item as IMovie).media_type === "tv";
-  //   const isCollection = (item: IMovie | Person | Collections): item is Collections =>
-  //   (item as Collections).media_type === "collection";
+  function isMovie(value: SearchResult): value is IMovie {
+    return (
+      typeof value === "object" && value && value.hasOwnProperty("release_date")
+    );
+  }
 
-  const movieResults = queryResult.filter(isMovie);
+  function isTvShow(value: SearchResult): value is IMovie {
+    return (
+      typeof value === "object" &&
+      value &&
+      value.hasOwnProperty("first_air_date")
+    );
+  }
 
-  const tvResults = queryResult.filter(isTvShow);
+  function isPerson(value: SearchResult): value is Person {
+    return (
+      typeof value === "object" &&
+      value &&
+      value.hasOwnProperty("id") &&
+      value.hasOwnProperty("name") &&
+      value.hasOwnProperty("known_for") &&
+      value.hasOwnProperty("known_for_department") &&
+      value.hasOwnProperty("gender")
+    );
+  }
 
-  const peopleResult = queryResult.filter(isPerson);
+  const movieResults = (movieSearchResults?.results || []).filter(isMovie);
+  const tvResults = (tvSearchResults?.results || []).filter(isTvShow);
 
-  tabs[0].size = movieResults.length;
-  tabs[1].size = tvResults.length;
-  tabs[2].size = peopleResult.length;
+  const peopleResult = (peopleSearchResults?.results || []).filter(isPerson);
 
-  const lastPage = searchResults.total_pages;
-  const pages = Array.from({ length: lastPage }, (_, i) => i + 1);
+  useEffect(() => {
+    console.log("Movie Results:", movieResults);
+    console.log("TV Results:", tvResults);
+    console.log("People Results:", peopleResult);
+  }, [movieResults, tvResults, peopleResult]);
+
+  const updatedTabs = tabs.map((tab) => ({
+    ...tab,
+    size:
+      tab.id === 1
+        ? movieSearchResults?.total_results ?? 0
+        : tab.id === 2
+        ? tvSearchResults?.total_results ?? 0
+        : peopleSearchResults?.total_results ?? 0,
+  }));
 
   return (
     <>
       <div className="grid grid-cols-5 pl-16 pt-16">
         <SearchSideBar
-          tabs={tabs}
+          tabs={updatedTabs}
           handleTabClick={setActiveTab}
           activeTab={activeTab}
         />
 
-        {activeTab.label === "Movies" && (
-          <MediaSearchCard media={movieResults} />
-        )}
-        {activeTab.label === "Tv Shows" && (
-          <MediaSearchCard media={tvResults} />
-        )}
-        {activeTab.label === "People" && (
-          <PeopleSearchCard persons={peopleResult} />
-        )}
+        <div className="col-span-4">
+          {activeTab.label === "Movies" && (
+            <>
+              <MediaSearchCard media={movieResults} />
+              {movieSearchResults && movieSearchResults.total_pages > 1 && (
+                <Pagination
+                  currentPage={moviePage}
+                  totalPages={movieSearchResults.total_pages}
+                  setCurrentPage={(moviePage) => setMoviePage(moviePage + 1)}
+                />
+              )}
+            </>
+          )}
+          {activeTab.label === "Tv Shows" && (
+            <>
+              <MediaSearchCard media={tvResults} />
+              {tvSearchResults && tvSearchResults.total_pages > 1 && (
+                <Pagination
+                  currentPage={tvPage}
+                  totalPages={tvSearchResults.total_pages}
+                  setCurrentPage={(tvPage) => setTvPage(tvPage + 1)}
+                />
+              )}
+            </>
+          )}
+          {activeTab.label === "People" && (
+            <>
+              <PeopleSearchCard persons={peopleResult} />
+              {peopleSearchResults && peopleSearchResults.total_pages > 1 && (
+                <Pagination
+                  currentPage={personPage}
+                  totalPages={peopleSearchResults.total_pages}
+                  setCurrentPage={(personPage) => setPersonPage(personPage + 1)}
+                />
+              )}
+            </>
+          )}
+        </div>
       </div>
-
-      {/* <Pagination
-        page={page}
-        isPreviousData={isPreviousData}
-        lastPage={lastPage}
-        pages={pages}
-        setPage={setPage}
-      /> */}
     </>
   );
 }

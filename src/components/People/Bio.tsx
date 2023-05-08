@@ -51,7 +51,7 @@ export function Bio({ id }: BioProps) {
   return (
     <>
       <aside className="space-y-5 p-4 pt-10 col-span-2">
-        <figure className=" w-[300px] h-[450px] rounded-xl overflow-hidden">
+        <figure className=" rounded-xl overflow-hidden">
           <img src={API_IMG + data.profile_path} alt="" className="" />
         </figure>
 

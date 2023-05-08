@@ -1,8 +1,10 @@
 import { IMovie } from "../../../types";
 
+export type SearchResult = IMovie | Person | Collections;
+
 export interface MultiSearchResult {
   page: number;
-  results: (IMovie | Person | Collections)[];
+  results: SearchResult[];
   total_results: number;
   total_pages: number;
 }
@@ -12,7 +14,6 @@ export interface Person {
   name: string;
   profile_path: string;
   known_for: IMovie[];
-  media_type: string;
   known_for_department: string;
   gender: number;
 }

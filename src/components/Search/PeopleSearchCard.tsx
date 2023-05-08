@@ -5,7 +5,7 @@ import femalePlaceholder from "../../assets/defaultFemale.svg";
 import classNames from "classnames";
 
 type PeopleSearchCardProps = {
-  persons: Person[];
+  persons: Person[] | undefined;
 };
 
 export function PeopleSearchCard({ persons }: PeopleSearchCardProps) {

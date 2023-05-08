@@ -3,7 +3,7 @@ import { IMovie } from "../../types";
 import placeholderImage from "../../assets/placeholderImage.png";
 
 type MediaSearchCardProps = {
-  media: IMovie[];
+  media: IMovie[] | undefined;
 };
 
 export function MediaSearchCard({ media }: MediaSearchCardProps) {
@@ -29,7 +29,7 @@ export function MediaSearchCard({ media }: MediaSearchCardProps) {
                         : placeholderImage
                     }
                     alt=""
-                    className="rounded-tl-lg rounded-bl-lg overflow-hidden w-full h-full"
+                    className="rounded-tl-lg rounded-bl-lg overflow-hidden w-full h-full object-cover"
                   />
                 </figure>
               </Link>
