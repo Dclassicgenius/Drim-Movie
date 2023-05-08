@@ -11,15 +11,6 @@ export function SearchBox() {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const navigate = useNavigate();
 
-  // const deBouncedSearch = useCallback(
-  //   debounce((query) => onSearch(query), 500),
-  //   [onSearch]
-  // );
-
-  // useEffect(() => {
-  //   deBouncedSearch(searchQuery);
-  // }, [searchQuery, deBouncedSearch]);
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     navigate(`/search/${searchQuery}`);

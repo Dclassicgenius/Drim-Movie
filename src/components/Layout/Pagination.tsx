@@ -1,51 +1,3 @@
-// import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
-
-// type PaginationProps = {
-//   page: number;
-//   isPreviousData: boolean;
-//   lastPage: number;
-//   pages: number[];
-//   setPage: (page: number) => any;
-// };
-
-// export function Pagination({
-//   page,
-//   isPreviousData,
-//   lastPage,
-//   pages,
-//   setPage,
-// }: PaginationProps) {
-//   return (
-//     <>
-//       <nav className="flex justify-between items-center px-10">
-//         <button
-//           onClick={() => setPage(1)}
-//           disabled={isPreviousData || page === 1}
-//           className="flex items-center font-bold gap-1"
-//         >
-//           <FaArrowLeft /> Prev
-//         </button>
-//         {pages.map((pg) => (
-//           <button
-//             className="p-[0.5em] bg-red-700 w-[25px]"
-//             key={pg}
-//             onClick={() => setPage(pg)}
-//           >
-//             {pg}
-//           </button>
-//         ))}
-//         <button
-//           onClick={() => setPage(lastPage)}
-//           disabled={isPreviousData || page === lastPage}
-//           className="flex items-center font-bold gap-1"
-//         >
-//           Next <FaArrowRight />
-//         </button>
-//       </nav>
-//     </>
-//   );
-// }
-
 import ReactPaginate from "react-paginate";
 import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
 import { motion } from "framer-motion";
@@ -82,9 +34,9 @@ export function Pagination({
     },
   };
 
-  const showNextButton = currentPage !== totalPages - 1;
+  const showNextButton = currentPage !== totalPages;
 
-  const showPrevButton = currentPage !== 0;
+  const showPrevButton = currentPage !== 1;
 
   return (
     <motion.div
