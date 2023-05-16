@@ -11,6 +11,8 @@ import { TvFullCastsAndCrew } from "./components/Detail/TvDetails/TvFullCastsAnd
 import { TvReviewAll } from "./components/Detail/TvDetails/TvReviewAll";
 import { Person } from "./components/People/Person";
 import { SearchResults } from "./components/Search/SearchResults";
+import { MovieFilters } from "./components/Movies/SideBar/MovieFilters";
+import { PopularMovies } from "./components/Movies/PopularMovies/PopularMovies";
 
 function App() {
   return (
@@ -26,6 +28,7 @@ function App() {
         <Route path="/tv/:id/reviews" element={<TvReviewAll />} />
         <Route path="/people/:id" element={<Person />} />
         <Route path="/search/:query" element={<SearchResults />} />
+        <Route path="/movies/popular" element={<PopularMovies />} />
       </Routes>
       <FooterNav />
     </>
