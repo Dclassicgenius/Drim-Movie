@@ -1,6 +1,6 @@
 import { ChangeEvent, useState } from "react";
 import classNames from "classnames";
-import { CountryType, countries } from "../../utility/Country/countries";
+import { CountryType } from "../../utility/Country/countries";
 import {
   InputLabel,
   MenuItem,
@@ -9,15 +9,14 @@ import {
   Select,
   Slider,
   Box,
-  FormLabel,
   FormGroup,
   FormControlLabel,
   Checkbox,
-  Autocomplete,
-  TextField,
-  InputAdornment,
 } from "@mui/material";
 import CountrySelect from "../../utility/Country/CountrySelect";
+import { useGenres } from "../../../hooks/FilterHooks/useGenres";
+import { useCertifications } from "../../../hooks/FilterHooks/useCertifications";
+import { FilterChips } from "../../utility/FilterChips/FilterChips";
 
 export function MovieFilters() {
   const [isDivOpen, setIsDivOpen] = useState(false);
@@ -26,7 +25,13 @@ export function MovieFilters() {
   const [releaseFilter, setReleaseFilter] = useState<string[]>([]);
   const [checkedReleaseAll, setCheckedReleaseAll] = useState(true);
   const [checkedCountriesAll, setCheckedCountriesAll] = useState(true);
-  const [countryValue, setCountryValue] = useState<CountryType>();
+
+  const genres = useGenres("movie");
+  const { data: certifications } = useCertifications("movie");
+  const usCertifications = (certifications ?? {})["US"] || [];
+  const certificationNames = usCertifications.map(
+    (certification) => certification.certification
+  );
 
   const releases = [
     "Premiere",
@@ -37,7 +42,16 @@ export function MovieFilters() {
     "TV",
   ];
 
-  const handleChange = (event: SelectChangeEvent) => {
+  const sortParameters = [
+    "Popularity Descending",
+    "Popularity Ascending",
+    "Rating Descending",
+    "Rating Ascending",
+    "Release Date Descending",
+    "Title (A-Z)",
+    "Title (Z-A)",
+  ];
+  const handleSortChange = (event: SelectChangeEvent) => {
     setSortValue(event.target.value as string);
   };
 
@@ -95,28 +109,13 @@ export function MovieFilters() {
                     id="sort-select"
                     value={sortValue}
                     label="Sort"
-                    onChange={handleChange}
+                    onChange={handleSortChange}
                   >
-                    <MenuItem value={"Popularity Descending"}>
-                      Popularity Descending
-                    </MenuItem>
-                    <MenuItem value={"Popularity Ascending"}>
-                      Popularity Ascending
-                    </MenuItem>
-                    <MenuItem value={"Rating Descending"}>
-                      Rating Descending
-                    </MenuItem>
-                    <MenuItem value={"Rating Ascending"}>
-                      Rating Ascending
-                    </MenuItem>
-                    <MenuItem value={"Release Date Descending"}>
-                      Release Date Descending
-                    </MenuItem>
-                    <MenuItem value={"Release Date Ascending"}>
-                      Release Date Ascending
-                    </MenuItem>
-                    <MenuItem value={"Title (A-Z)"}>Title (A-Z)</MenuItem>
-                    <MenuItem value={"Title (Z-A)"}>Title (Z-A)</MenuItem>
+                    {sortParameters.map((sort, index) => (
+                      <MenuItem key={index} value={sort}>
+                        {sort}
+                      </MenuItem>
+                    ))}
                   </Select>
                 </FormControl>
               </div>
@@ -197,22 +196,15 @@ export function MovieFilters() {
               </section>
               <section className="px-4 pt-3">
                 <h2 className=" font-light text-grey-500 text-sm">Genres</h2>
-                <ul className="flex flex-wrap justify-start list-none pt-3">
-                  <li className="mr-2 mb-4 leading-6 whitespace-nowrap text-xs list-item  px-3 py-1 rounded-full border border-black cursor-pointer hover:bg-blue-500 hover:text-white hover:border-none">
-                    <p>Action</p>
-                  </li>
-                </ul>
+
+                <FilterChips chips={genres.data?.map((genre) => genre.name)} />
               </section>
               <hr />
               <section className="px-4 pt-3">
                 <h2 className=" font-light text-grey-500 text-sm">
                   Certifications
                 </h2>
-                <ul className="flex flex-wrap justify-start list-none pt-3">
-                  <li className="mr-2 mb-4 leading-6 whitespace-nowrap text-xs list-item  px-3 py-1 rounded-full border border-black cursor-pointer hover:bg-blue-500 hover:text-white hover:border-none">
-                    <p>Action</p>
-                  </li>
-                </ul>
+                <FilterChips chips={certificationNames} />
               </section>
               <hr />
               <section className="px-4 pt-3">
@@ -267,7 +259,7 @@ export function MovieFilters() {
                 </h2>
                 <input
                   type="text"
-                  placeholder="Filter by keywords.."
+                  placeholder="Filter by keywords..."
                   className="placeholder:italic placeholder:text-slate-400 block bg-white w-full border border-slate-300 rounded-md py-2 px-3 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 sm:text-sm"
                 />
               </section>

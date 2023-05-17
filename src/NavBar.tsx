@@ -1,10 +1,24 @@
-import { Dropdown } from "flowbite-react";
 import { Link } from "react-router-dom";
+import NavBarMenu from "./components/Layout/NavBar/NavBarMenu";
 
 export function NavBar() {
+  const movies = [
+    { id: 1, name: "Popular" },
+    { id: 2, name: "Now Playing" },
+    { id: 3, name: "Upcoming" },
+    { id: 4, name: "Top Rated" },
+  ];
+  const tvs = [
+    { id: 1, name: "Popular" },
+    { id: 2, name: "Airing Today" },
+    { id: 3, name: "Upcoming" },
+    { id: 4, name: "Top Rated" },
+  ];
+  const people = [{ id: 1, name: "Popular people" }];
+
   return (
     <>
-      <header className="sticky top-0 z-20 bg-[#1a56db] text-white">
+      <header className="sticky top-0 z-20 bg-green-800 text-white">
         <section className="mx-auto flex max-w-4xl items-center justify-between p-4">
           <div className="flex gap-6 items-center ">
             <Link to={"/"} key={"home"}>
@@ -12,28 +26,20 @@ export function NavBar() {
             </Link>
             <nav>
               <nav
-                className="hidden space-x-8 text-l md:block md:flex"
+                className="hidden space-x-8 text-l md:flex"
                 aria-label="main"
               >
-                <Dropdown label="Movies" dismissOnClick={false} inline={true}>
-                  <Link to={"movies/popular"}>
-                    <Dropdown.Item>Popular</Dropdown.Item>
-                  </Link>
-                  <Dropdown.Item>Now Playing</Dropdown.Item>
-                  <Dropdown.Item>Upcoming</Dropdown.Item>
-                  <Dropdown.Item>Top Rated</Dropdown.Item>
-                </Dropdown>
-
-                <Dropdown label="Tv Shows" dismissOnClick={false} inline={true}>
-                  <Dropdown.Item>Popular</Dropdown.Item>
-                  <Dropdown.Item>Airing Today</Dropdown.Item>
-                  <Dropdown.Item>On TV</Dropdown.Item>
-                  <Dropdown.Item>Top Rated</Dropdown.Item>
-                </Dropdown>
-
-                <Dropdown label="People" dismissOnClick={false} inline={true}>
-                  <Dropdown.Item>Popular people</Dropdown.Item>
-                </Dropdown>
+                <NavBarMenu
+                  header="Movies"
+                  menuItem={movies}
+                  mediaType="movie"
+                />
+                <NavBarMenu header="TV Shows" menuItem={tvs} mediaType="tv" />
+                <NavBarMenu
+                  header="People"
+                  menuItem={people}
+                  mediaType="people"
+                />
               </nav>
             </nav>
           </div>

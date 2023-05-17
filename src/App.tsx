@@ -28,7 +28,7 @@ function App() {
         <Route path="/tv/:id/reviews" element={<TvReviewAll />} />
         <Route path="/people/:id" element={<Person />} />
         <Route path="/search/:query" element={<SearchResults />} />
-        <Route path="/movies/popular" element={<PopularMovies />} />
+        <Route path="/movie/popular" element={<PopularMovies />} />
       </Routes>
       <FooterNav />
     </>
