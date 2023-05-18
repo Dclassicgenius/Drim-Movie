@@ -1,6 +1,5 @@
 import { ChangeEvent, useState } from "react";
 import classNames from "classnames";
-import { CountryType } from "../../utility/Country/countries";
 import {
   InputLabel,
   MenuItem,
@@ -18,11 +17,52 @@ import { useGenres } from "../../../hooks/FilterHooks/useGenres";
 import { useCertifications } from "../../../hooks/FilterHooks/useCertifications";
 import { FilterChips } from "../../utility/FilterChips/FilterChips";
 
-export function MovieFilters() {
+type MovieFiltersProps = {
+  sortValue: string;
+  handleSortChange: (event: SelectChangeEvent) => void;
+  runtime: number | string | Array<number | string>;
+  handleRuntimeChange: (event: Event, newValue: number | number[]) => any;
+  userScore: number | string | Array<number | string>;
+  handleUserScoreChange: (event: Event, newValue: number | number[]) => any;
+  userVote: number | string | Array<number | string>;
+  handleUserVoteChange: (event: Event, newValue: number | number[]) => any;
+  handleGenreChipClick: (chip: string) => void;
+  selectedGenreChips: string[];
+  handleCertificationChipClick: (chip: string) => void;
+  selectedCertificationChips: string[];
+  availabilityFilter: string[];
+  checkedAvailabilityAll: boolean;
+  handleAvailabilityAllChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  handleAvailabiltyChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  isSearchDisabled: boolean;
+  handleButtonClick: () => void;
+};
+
+export function MovieFilters({
+  sortValue,
+  handleSortChange,
+  runtime,
+  handleRuntimeChange,
+  userScore,
+  handleUserScoreChange,
+  userVote,
+  handleUserVoteChange,
+  selectedGenreChips,
+  handleGenreChipClick,
+  selectedCertificationChips,
+  handleCertificationChipClick,
+  availabilityFilter,
+  handleAvailabiltyChange,
+  checkedAvailabilityAll,
+  handleAvailabilityAllChange,
+  isSearchDisabled,
+  handleButtonClick,
+}: MovieFiltersProps) {
   const [isDivOpen, setIsDivOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(true);
-  const [sortValue, setSortValue] = useState("Popularity Descending");
-  const [releaseFilter, setReleaseFilter] = useState<string[]>([]);
+
+  const [releaseFilter, setReleaseFilter] = useState<number[]>([]);
+
   const [checkedReleaseAll, setCheckedReleaseAll] = useState(true);
   const [checkedCountriesAll, setCheckedCountriesAll] = useState(true);
 
@@ -34,26 +74,26 @@ export function MovieFilters() {
   );
 
   const releases = [
-    "Premiere",
-    "Theatrical (limited)",
-    "Theatrical",
-    "Digital",
-    "Physical",
-    "TV",
+    { value: 1, label: "Premiere" },
+    { value: 2, label: "Theatrical (limited)" },
+    { value: 3, label: "Theatrical" },
+    { value: 4, label: "Digital" },
+    { value: 5, label: "Physical" },
+    { value: 6, label: "TV" },
   ];
 
+  const availabilities = ["Stream", "Free", "Ads", "Rent", "Buy"];
+
   const sortParameters = [
-    "Popularity Descending",
-    "Popularity Ascending",
-    "Rating Descending",
-    "Rating Ascending",
-    "Release Date Descending",
-    "Title (A-Z)",
-    "Title (Z-A)",
+    { value: "popularity.desc", label: "Popularity Descending" },
+    { value: "popularity.asc", label: "Popularity Ascending" },
+    { value: "vote_average.desc", label: "Rating Descending" },
+    { value: "vote_average.asc", label: "Rating Ascending" },
+    { value: "primary_release_date.desc", label: "Release Date Descending" },
+    { value: "primary_release_date.asc", label: "Release Date Ascending" },
+    { value: "title.asc", label: "Title (A-Z" },
+    { value: "title.desc", label: "Title (Z-A)" },
   ];
-  const handleSortChange = (event: SelectChangeEvent) => {
-    setSortValue(event.target.value as string);
-  };
 
   const handleReleaseAllChange = (event: ChangeEvent<HTMLInputElement>) => {
     setCheckedReleaseAll(event.target.checked);
@@ -63,12 +103,13 @@ export function MovieFilters() {
   };
 
   const handleReleaseChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const index = releaseFilter.indexOf(event.target.value);
+    const releaseValue = parseInt(event.target.value);
+    const index = releaseFilter.indexOf(releaseValue);
     if (index === -1) {
-      setReleaseFilter([...releaseFilter, event.target.value]);
+      setReleaseFilter([...releaseFilter, releaseValue]);
     } else {
       setReleaseFilter(
-        releaseFilter.filter((release) => release !== event.target.value)
+        releaseFilter.filter((release) => release !== releaseValue)
       );
     }
   };
@@ -111,9 +152,9 @@ export function MovieFilters() {
                     label="Sort"
                     onChange={handleSortChange}
                   >
-                    {sortParameters.map((sort, index) => (
-                      <MenuItem key={index} value={sort}>
-                        {sort}
+                    {sortParameters.map((sort) => (
+                      <MenuItem key={sort.value} value={sort.value}>
+                        {sort.label}
                       </MenuItem>
                     ))}
                   </Select>
@@ -140,14 +181,52 @@ export function MovieFilters() {
                   <FormControlLabel
                     control={
                       <Checkbox
+                        checked={checkedAvailabilityAll}
+                        onChange={handleAvailabilityAllChange}
+                      />
+                    }
+                    label="Search all availabilities?"
+                  />
+                </Box>
+                <div
+                  className={classNames(
+                    checkedAvailabilityAll ? "hidden" : "block"
+                  )}
+                >
+                  <Box sx={{ display: "flex" }}>
+                    <FormControl component="fieldset" variant="standard">
+                      <FormGroup>
+                        {availabilities.map((item) => (
+                          <FormControlLabel
+                            key={item}
+                            control={
+                              <Checkbox
+                                checked={availabilityFilter.includes(item)}
+                                onChange={handleAvailabiltyChange}
+                                name={item}
+                                value={item.toLocaleLowerCase()}
+                              />
+                            }
+                            label={item}
+                          />
+                        ))}
+                      </FormGroup>
+                    </FormControl>
+                  </Box>
+                </div>
+
+                {/* <Box>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
                         checked={checkedReleaseAll}
                         onChange={handleReleaseAllChange}
                       />
                     }
                     label="Search all releases"
                   />
-                </Box>
-                <Box>
+                </Box> */}
+                {/* <Box>
                   <FormControlLabel
                     control={
                       <Checkbox
@@ -157,9 +236,9 @@ export function MovieFilters() {
                     }
                     label="Search all countries"
                   />
-                </Box>
+                </Box> */}
 
-                <div
+                {/* <div
                   className={classNames(
                     checkedCountriesAll ? "hidden" : "block"
                   )}
@@ -175,36 +254,44 @@ export function MovieFilters() {
                   <Box sx={{ display: "flex" }}>
                     <FormControl component="fieldset" variant="standard">
                       <FormGroup>
-                        {releases.map((release, index) => (
+                        {releases.map((release) => (
                           <FormControlLabel
-                            key={index}
+                            key={release.value}
                             control={
                               <Checkbox
-                                checked={releaseFilter.includes(release)}
+                                checked={releaseFilter.includes(release.value)}
                                 onChange={handleReleaseChange}
-                                name={release}
-                                value={release}
+                                name={release.label}
+                                value={release.value}
                               />
                             }
-                            label={release}
+                            label={release.label}
                           />
                         ))}
                       </FormGroup>
                     </FormControl>
                   </Box>
-                </div>
+                </div> */}
               </section>
               <section className="px-4 pt-3">
                 <h2 className=" font-light text-grey-500 text-sm">Genres</h2>
 
-                <FilterChips chips={genres.data?.map((genre) => genre.name)} />
+                <FilterChips
+                  selectedChips={selectedGenreChips}
+                  handleChipClick={handleGenreChipClick}
+                  chips={genres.data?.map((genre) => genre.name)}
+                />
               </section>
               <hr />
               <section className="px-4 pt-3">
                 <h2 className=" font-light text-grey-500 text-sm">
                   Certifications
                 </h2>
-                <FilterChips chips={certificationNames} />
+                <FilterChips
+                  selectedChips={selectedCertificationChips}
+                  handleChipClick={handleCertificationChipClick}
+                  chips={certificationNames}
+                />
               </section>
               <hr />
               <section className="px-4 pt-3">
@@ -220,6 +307,8 @@ export function MovieFilters() {
                   marks
                   min={0}
                   max={10}
+                  value={typeof userScore === "number" ? userScore : 0}
+                  onChange={handleUserScoreChange}
                 />
               </section>
               <hr />
@@ -236,6 +325,8 @@ export function MovieFilters() {
                   marks
                   min={0}
                   max={500}
+                  value={typeof userVote === "number" ? userVote : 0}
+                  onChange={handleUserVoteChange}
                 />
               </section>
               <hr />
@@ -250,6 +341,8 @@ export function MovieFilters() {
                   marks
                   min={0}
                   max={400}
+                  value={typeof runtime === "number" ? runtime : 0}
+                  onChange={handleRuntimeChange}
                 />
               </section>
               <hr />
@@ -267,7 +360,14 @@ export function MovieFilters() {
           </div>
         </div>
 
-        <button className="rounded-full py-2 px-10 bg-sky-500 block w-full">
+        <button
+          onClick={handleButtonClick}
+          className={`rounded-full py-2 px-10 bg-sky-500 block w-full disabled:opacity-50 disabled:cursor-not-allowed disabled:border-gray-400 ${
+            isSearchDisabled
+              ? "disabled:opacity-50 disabled:cursor-not-allowed disabled:border-gray-400"
+              : ""
+          }`}
+        >
           Search
         </button>
       </aside>

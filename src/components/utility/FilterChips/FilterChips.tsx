@@ -1,23 +1,17 @@
 import { Box, Chip } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type FilterChipsProps = {
   chips: string[] | undefined;
+  handleChipClick: (chip: string) => void;
+  selectedChips: string[];
 };
 
-export function FilterChips({ chips }: FilterChipsProps) {
-  const [selectedChips, setSelectedChips] = useState<string[]>([]);
-
-  const handleChipClick = (chip: string) => {
-    setSelectedChips((prevSelectedChips) => {
-      const chipIndex = prevSelectedChips.indexOf(chip);
-      if (chipIndex === -1) {
-        return [...prevSelectedChips, chip];
-      } else {
-        return prevSelectedChips.filter((prevChip) => prevChip !== chip);
-      }
-    });
-  };
+export function FilterChips({
+  chips,
+  handleChipClick,
+  selectedChips,
+}: FilterChipsProps) {
   return (
     <>
       <Box sx={{ my: 1 }}>
