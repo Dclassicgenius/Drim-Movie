@@ -11,11 +11,13 @@ import {
   FormGroup,
   FormControlLabel,
   Checkbox,
+  Autocomplete,
+  TextField,
 } from "@mui/material";
-import CountrySelect from "../../utility/Country/CountrySelect";
 import { useGenres } from "../../../hooks/FilterHooks/useGenres";
 import { useCertifications } from "../../../hooks/FilterHooks/useCertifications";
 import { FilterChips } from "../../utility/FilterChips/FilterChips";
+import { Keyword, Keywords } from "../../../types";
 
 type MovieFiltersProps = {
   sortValue: string;
@@ -36,6 +38,11 @@ type MovieFiltersProps = {
   handleAvailabiltyChange: (event: ChangeEvent<HTMLInputElement>) => void;
   isSearchDisabled: boolean;
   handleButtonClick: () => void;
+  selectedKeywords: Keyword[];
+  keywords: Keyword[];
+  searchQuery: string;
+  handleSearchInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleKeywordSelect: (event: React.ChangeEvent<{}>, value: Keyword[]) => void;
 };
 
 export function MovieFilters({
@@ -57,14 +64,19 @@ export function MovieFilters({
   handleAvailabilityAllChange,
   isSearchDisabled,
   handleButtonClick,
+  selectedKeywords,
+  keywords,
+  searchQuery,
+  handleSearchInputChange,
+  handleKeywordSelect,
 }: MovieFiltersProps) {
   const [isDivOpen, setIsDivOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(true);
 
-  const [releaseFilter, setReleaseFilter] = useState<number[]>([]);
+  // const [releaseFilter, setReleaseFilter] = useState<number[]>([]);
 
-  const [checkedReleaseAll, setCheckedReleaseAll] = useState(true);
-  const [checkedCountriesAll, setCheckedCountriesAll] = useState(true);
+  // const [checkedReleaseAll, setCheckedReleaseAll] = useState(true);
+  // const [checkedCountriesAll, setCheckedCountriesAll] = useState(true);
 
   const genres = useGenres("movie");
   const { data: certifications } = useCertifications("movie");
@@ -73,14 +85,14 @@ export function MovieFilters({
     (certification) => certification.certification
   );
 
-  const releases = [
-    { value: 1, label: "Premiere" },
-    { value: 2, label: "Theatrical (limited)" },
-    { value: 3, label: "Theatrical" },
-    { value: 4, label: "Digital" },
-    { value: 5, label: "Physical" },
-    { value: 6, label: "TV" },
-  ];
+  // const releases = [
+  //   { value: 1, label: "Premiere" },
+  //   { value: 2, label: "Theatrical (limited)" },
+  //   { value: 3, label: "Theatrical" },
+  //   { value: 4, label: "Digital" },
+  //   { value: 5, label: "Physical" },
+  //   { value: 6, label: "TV" },
+  // ];
 
   const availabilities = ["Stream", "Free", "Ads", "Rent", "Buy"];
 
@@ -95,24 +107,24 @@ export function MovieFilters({
     { value: "title.desc", label: "Title (Z-A)" },
   ];
 
-  const handleReleaseAllChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setCheckedReleaseAll(event.target.checked);
-  };
-  const handleCountriesAllChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setCheckedCountriesAll(event.target.checked);
-  };
+  // const handleReleaseAllChange = (event: ChangeEvent<HTMLInputElement>) => {
+  //   setCheckedReleaseAll(event.target.checked);
+  // };
+  // const handleCountriesAllChange = (event: ChangeEvent<HTMLInputElement>) => {
+  //   setCheckedCountriesAll(event.target.checked);
+  // };
 
-  const handleReleaseChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const releaseValue = parseInt(event.target.value);
-    const index = releaseFilter.indexOf(releaseValue);
-    if (index === -1) {
-      setReleaseFilter([...releaseFilter, releaseValue]);
-    } else {
-      setReleaseFilter(
-        releaseFilter.filter((release) => release !== releaseValue)
-      );
-    }
-  };
+  // const handleReleaseChange = (event: ChangeEvent<HTMLInputElement>) => {
+  //   const releaseValue = parseInt(event.target.value);
+  //   const index = releaseFilter.indexOf(releaseValue);
+  //   if (index === -1) {
+  //     setReleaseFilter([...releaseFilter, releaseValue]);
+  //   } else {
+  //     setReleaseFilter(
+  //       releaseFilter.filter((release) => release !== releaseValue)
+  //     );
+  //   }
+  // };
   const toggleDiv = () => {
     setIsDivOpen(!isDivOpen);
   };
@@ -127,7 +139,7 @@ export function MovieFilters({
 
   return (
     <>
-      <aside className=" p-5">
+      <aside className=" pr-5 pb-5 pl-5">
         <div className="mb-4">
           <section className="shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] mb-4 rounded-lg">
             <div>
@@ -196,82 +208,25 @@ export function MovieFilters({
                   <Box sx={{ display: "flex" }}>
                     <FormControl component="fieldset" variant="standard">
                       <FormGroup>
-                        {availabilities.map((item) => (
+                        {availabilities.map((availability) => (
                           <FormControlLabel
-                            key={item}
+                            key={availability}
                             control={
                               <Checkbox
-                                checked={availabilityFilter.includes(item)}
+                                checked={availabilityFilter.includes(
+                                  availability
+                                )}
+                                value={availability}
                                 onChange={handleAvailabiltyChange}
-                                name={item}
-                                value={item.toLocaleLowerCase()}
                               />
                             }
-                            label={item}
+                            label={availability}
                           />
                         ))}
                       </FormGroup>
                     </FormControl>
                   </Box>
                 </div>
-
-                {/* <Box>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={checkedReleaseAll}
-                        onChange={handleReleaseAllChange}
-                      />
-                    }
-                    label="Search all releases"
-                  />
-                </Box> */}
-                {/* <Box>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={checkedCountriesAll}
-                        onChange={handleCountriesAllChange}
-                      />
-                    }
-                    label="Search all countries"
-                  />
-                </Box> */}
-
-                {/* <div
-                  className={classNames(
-                    checkedCountriesAll ? "hidden" : "block"
-                  )}
-                >
-                  <Box>
-                    <CountrySelect />
-                  </Box>
-                </div>
-
-                <div
-                  className={classNames(checkedReleaseAll ? "hidden" : "block")}
-                >
-                  <Box sx={{ display: "flex" }}>
-                    <FormControl component="fieldset" variant="standard">
-                      <FormGroup>
-                        {releases.map((release) => (
-                          <FormControlLabel
-                            key={release.value}
-                            control={
-                              <Checkbox
-                                checked={releaseFilter.includes(release.value)}
-                                onChange={handleReleaseChange}
-                                name={release.label}
-                                value={release.value}
-                              />
-                            }
-                            label={release.label}
-                          />
-                        ))}
-                      </FormGroup>
-                    </FormControl>
-                  </Box>
-                </div> */}
               </section>
               <section className="px-4 pt-3">
                 <h2 className=" font-light text-grey-500 text-sm">Genres</h2>
@@ -350,10 +305,54 @@ export function MovieFilters({
                 <h2 className=" font-light text-grey-500 text-sm pb-2">
                   Keywords
                 </h2>
-                <input
+                {/* <input
                   type="text"
                   placeholder="Filter by keywords..."
                   className="placeholder:italic placeholder:text-slate-400 block bg-white w-full border border-slate-300 rounded-md py-2 px-3 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 sm:text-sm"
+                /> */}
+
+                {/* <Autocomplete
+                  multiple
+                  id="tags-outlined"
+                  options={keywords}
+                  getOptionLabel={(option) => option.name}
+                  // defaultValue=""
+                  filterSelectedOptions
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Keywords"
+                      placeholder="filter by keywords"
+                      value={searchQuery}
+                      onChange={handleSearchInputChange}
+                    />
+                  )}
+                /> */}
+                <Autocomplete
+                  multiple
+                  id="tags-outlined"
+                  options={keywords}
+                  getOptionLabel={(option) => option.name}
+                  filterSelectedOptions
+                  value={selectedKeywords}
+                  onChange={handleKeywordSelect}
+                  filterOptions={(options, params) => {
+                    const filtered = options.filter((option) =>
+                      option.name
+                        .toLowerCase()
+                        .includes(params.inputValue.toLowerCase())
+                    );
+                    return filtered;
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Keywords"
+                      placeholder="filter by keywords"
+                      value={searchQuery}
+                      onChange={handleSearchInputChange}
+                    />
+                  )}
                 />
               </section>
             </div>
@@ -361,12 +360,21 @@ export function MovieFilters({
         </div>
 
         <button
+          disabled={isSearchDisabled}
           onClick={handleButtonClick}
-          className={`rounded-full py-2 px-10 bg-sky-500 block w-full disabled:opacity-50 disabled:cursor-not-allowed disabled:border-gray-400 ${
-            isSearchDisabled
-              ? "disabled:opacity-50 disabled:cursor-not-allowed disabled:border-gray-400"
-              : ""
-          }`}
+          className={classNames(
+            "rounded-full",
+            "py-2",
+            "px-10",
+            "bg-sky-500",
+            "block",
+            "w-full",
+            {
+              "disabled:opacity-50": isSearchDisabled,
+              "disabled:cursor-not-allowed": isSearchDisabled,
+              "disabled:border-gray-400": isSearchDisabled,
+            }
+          )}
         >
           Search
         </button>
