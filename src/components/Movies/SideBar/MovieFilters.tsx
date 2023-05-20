@@ -17,7 +17,7 @@ import {
 import { useGenres } from "../../../hooks/FilterHooks/useGenres";
 import { useCertifications } from "../../../hooks/FilterHooks/useCertifications";
 import { FilterChips } from "../../utility/FilterChips/FilterChips";
-import { Keyword, Keywords } from "../../../types";
+import { Keyword } from "../../../types";
 
 type MovieFiltersProps = {
   sortValue: string;
@@ -81,9 +81,9 @@ export function MovieFilters({
   const genres = useGenres("movie");
   const { data: certifications } = useCertifications("movie");
   const usCertifications = (certifications ?? {})["US"] || [];
-  const certificationNames = usCertifications.map(
-    (certification) => certification.certification
-  );
+  // const certificationNames = usCertifications.map(
+  //   (certification) => certification.certification
+  // );
 
   // const releases = [
   //   { value: 1, label: "Premiere" },
@@ -234,7 +234,7 @@ export function MovieFilters({
                 <FilterChips
                   selectedChips={selectedGenreChips}
                   handleChipClick={handleGenreChipClick}
-                  chips={genres.data?.map((genre) => genre.name)}
+                  chips={genres.data}
                 />
               </section>
               <hr />
@@ -245,7 +245,7 @@ export function MovieFilters({
                 <FilterChips
                   selectedChips={selectedCertificationChips}
                   handleChipClick={handleCertificationChipClick}
-                  chips={certificationNames}
+                  chips={usCertifications}
                 />
               </section>
               <hr />

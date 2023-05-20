@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom";
-import { IMovie } from "../../../types";
 import { CircularProgressBar } from "../../utility/CircularProgressBar";
 import {
-  Box,
   Card,
   CardActionArea,
   CardContent,
@@ -10,9 +8,10 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
+import { Movie } from "../../../hooks/MovieHooks/useMoviesAll";
 
 interface MovieProps {
-  movies: IMovie[];
+  movies: Movie[];
 }
 
 export function MovieCards({ movies }: MovieProps) {
@@ -31,14 +30,13 @@ export function MovieCards({ movies }: MovieProps) {
                       component="img"
                       height="250"
                       image={API_IMG + movie.poster_path}
-                      alt={movie.name + "poster"}
+                      alt={movie.title + "poster"}
                     />
                     <CardContent sx={{ p: 1 }}>
                       <Typography
                         gutterBottom
                         variant="h5"
                         component="div"
-                        // sx={{ fontWeight: "bold" }}
                         sx={{
                           fontSize: "10px",
                           fontWeight: "bold",
@@ -50,7 +48,7 @@ export function MovieCards({ movies }: MovieProps) {
                           WebkitBoxOrient: "vertical",
                         }}
                       >
-                        {movie.title || movie.name}
+                        {movie.title}
                       </Typography>
                       <div className="absolute top-0 right-0 m-0.5 text-white rounded-full text-xs">
                         <CircularProgressBar
@@ -60,8 +58,7 @@ export function MovieCards({ movies }: MovieProps) {
                       </div>
                       <Typography variant="body2" color="text.secondary">
                         {(() => {
-                          const dateValue =
-                            movie.release_date || movie.first_air_date;
+                          const dateValue = movie.release_date;
                           if (dateValue) {
                             return (
                               <p className="text-[10px] pt-2 text-gray-700 dark:text-gray-400 font-light">

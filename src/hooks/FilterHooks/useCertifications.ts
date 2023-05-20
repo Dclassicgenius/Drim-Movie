@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-interface Certification {
+export interface Certification {
   certification: string;
   meaning: string;
   order: number;

@@ -10,9 +10,6 @@ type PersonDepartmentAndGender = {
   id: number;
 };
 
-// const isPerson = (item: SearchResult): item is Person =>
-//   (item as Person).media_type === "person";
-
 const fetchPersonDepartment = async (
   personId: number
 ): Promise<PersonDepartmentAndGender> => {

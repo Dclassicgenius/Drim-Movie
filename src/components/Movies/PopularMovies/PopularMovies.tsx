@@ -1,19 +1,14 @@
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
-import useFetchMovies from "../../../api/api";
-import { IMovie, Keyword } from "../../../types";
+import { Keyword } from "../../../types";
 import { MovieFilters } from "../SideBar/MovieFilters";
 import { SelectChangeEvent } from "@mui/material/Select";
 import { MovieCards } from "../MovieCards/MovieCards";
 import { Box, Grid, debounce } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { fetchKeywords } from "../../../hooks/SearchHook/useSearchKeyword";
+import { Movie, useMoviesAll } from "../../../hooks/MovieHooks/useMoviesAll";
 
 export function PopularMovies() {
-  const [apiUrl, setApiUrl] = useState(
-    `https://api.themoviedb.org/3/discover/movie?api_key=${
-      import.meta.env.VITE_TMDB_API_KEY
-    }&include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc`
-  );
   const [isDataFetched, setIsDataFetched] = useState(false);
 
   const [sortValue, setSortValue] = useState("popularity.desc");
@@ -35,6 +30,7 @@ export function PopularMovies() {
   const [availabilityFilter, setAvailabilityFilter] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedKeywords, setSelectedKeywords] = useState<Keyword[]>([]);
+  const [isButtonClicked, setIsButtonClicked] = useState(false);
 
   const genreFilters = selectedGenreChips.join(",").toLowerCase();
   const monetizationFilters = availabilityFilter.join("|").toLowerCase();
@@ -44,7 +40,7 @@ export function PopularMovies() {
     .join("");
 
   const keywordFilter = selectedKeywords
-    .map((word) => `&with_keywords=${word.name.toLowerCase()}`)
+    .map((word) => `&with_keywords=${word.id.toString()}`)
     .join("|");
 
   useEffect(() => {
@@ -74,8 +70,6 @@ export function PopularMovies() {
     availabilityFilter,
     selectedKeywords,
   ]);
-
-  // console.log(apiUrl);
 
   const handleSortChange = (event: SelectChangeEvent) => {
     setSortValue(event.target.value as string);
@@ -163,45 +157,57 @@ export function PopularMovies() {
   };
 
   const handleButtonClick = () => {
-    if (!isSearchDisabled) {
-      let monetizationFilterQuery = "";
-      if (!checkedAvailabilityAll && availabilityFilter.length > 0) {
-        monetizationFilterQuery = `&with_watch_monetization_types=${monetizationFilters}`;
-      }
-      const newApiUrl = `https://api.themoviedb.org/3/discover/movie?api_key=${
-        import.meta.env.VITE_TMDB_API_KEY
-      }&include_adult=false&include_video=false&language=en-US&page=1&sort_by=${sortValue}&vote_average.gte=${userScore}&vote_count.gte=${userVote}&with_genres=${genreFilters}&with_runtime.gte=${runtime}&certification_country=US${certificationFilter}&with_watch_monetization_types=${monetizationFilterQuery}${keywordFilter}`;
-
-      setApiUrl(newApiUrl);
-      setIsDataFetched(false);
-      setIsSearchDisabled(true);
-    }
-  };
-  console.log(apiUrl);
-
-  useEffect(() => {
+    // if (!isSearchDisabled) {
     setIsDataFetched(true);
-  }, [apiUrl]);
+    // setIsSearchDisabled(true);
+    // setIsButtonClicked(true);
+    // }
+  };
+
+  let monetizationFilterQuery = "";
+  if (!checkedAvailabilityAll && availabilityFilter.length > 0) {
+    monetizationFilterQuery = `&with_watch_monetization_types=${monetizationFilters}`;
+  }
 
   const {
     isLoading,
     data: movies,
     error,
-  } = useFetchMovies(apiUrl, 1000 * 60 * 5, 1000 * 60);
+  } = useMoviesAll(
+    sortValue,
+    userScore,
+    userVote,
+    genreFilters,
+    runtime,
+    certificationFilter,
+    monetizationFilterQuery,
+    keywordFilter,
+    1,
+    isDataFetched
+  );
+
+  useEffect(() => {
+    setIsSearchDisabled(isLoading);
+  }, [isLoading]);
+
+  useEffect(() => {
+    if (isDataFetched && !isLoading) {
+      setIsDataFetched(false);
+      setIsSearchDisabled(false);
+    }
+  }, [isDataFetched, isLoading]);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
-  const popular: IMovie[] = movies || [];
-
-  // console.log(selectedKeywords);
+  const popular: Movie[] = movies.results || [];
 
   return (
     <>
       <Box>
         <h1 className="font-bold text-2xl pl-5 my-7">Popular Movies</h1>
         <Grid container spacing={2}>
-          <Grid item xs={3}>
+          <Grid item xs={3} xl={2}>
             <MovieFilters
               runtime={runtime}
               handleRuntimeChange={handleRuntimeChange}
@@ -228,8 +234,8 @@ export function PopularMovies() {
               selectedKeywords={selectedKeywords}
             />
           </Grid>
-          <Grid sx={{ pr: 2 }} item xs={9}>
-            <Box>{isDataFetched && <MovieCards movies={popular} />}</Box>
+          <Grid sx={{ pr: 2 }} item xs={9} xl={10}>
+            <Box>{<MovieCards movies={popular} />}</Box>
           </Grid>
         </Grid>
       </Box>
