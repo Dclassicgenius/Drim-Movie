@@ -39,7 +39,7 @@ const fetchMoviesAll = async (
 ) => {
   const apiUrl = `https://api.themoviedb.org/3/discover/movie?api_key=${
     import.meta.env.VITE_TMDB_API_KEY
-  }&include_adult=false&include_video=false&language=en-US&page=${pageParam}&sort_by=${sortValue}&vote_average.gte=${userScore}&vote_count.gte=${userVote}&with_genres=${genreFilters}&with_runtime.gte=${runtime}&certification_country=US${certificationFilter}&with_watch_monetization_types=${monetizationFilterQuery}${keywordFilter}`;
+  }&include_adult=false&include_video=false&language=en-US&page=${pageParam}&sort_by=${sortValue}&vote_average.gte=${userScore}&vote_count.gte=${userVote}&with_genres=${genreFilters}&with_runtime.gte=${runtime}&certification=${certificationFilter}&certification_country=US&with_watch_monetization_types=${monetizationFilterQuery}${keywordFilter}`;
 
   const response = await axios.get<MovieResponse>(apiUrl);
   return response.data;
@@ -69,7 +69,7 @@ export const useMoviesAll = (
       monetizationFilterQuery,
       keywordFilter,
       pageParam,
-      isDataFetched,
+      //   isButtonClicked,
     ],
     () =>
       fetchMoviesAll(
@@ -86,3 +86,83 @@ export const useMoviesAll = (
     { keepPreviousData: true }
   );
 };
+
+// import { UseQueryResult, useQuery } from "@tanstack/react-query";
+// import axios from "axios";
+
+// ... (keep the existing code for MovieResponse, Movie, and Keyword)
+
+// const fetchMoviesAll = async (
+//   sortValue: string,
+//   userScore: string | number | (string | number)[],
+//   userVote: string | number | (string | number)[],
+//   genreFilters: string | null,
+//   runtime: string | number | (string | number)[],
+//   certificationArray: string[],
+//   monetizationFilterQuery: string | null,
+//   keywordFilter: string | null,
+//   pageParam: number
+// ) => {
+//   const apiPromises = certificationArray.map((certificationFilter) => {
+//     const apiUrl = `https://api.themoviedb.org/3/discover/movie?api_key=${
+//       import.meta.env.VITE_TMDB_API_KEY
+//     }&include_adult=false&include_video=false&language=en-US&page=${pageParam}&sort_by=${sortValue}&vote_average.gte=${userScore}&vote_count.gte=${userVote}&with_genres=${genreFilters}&with_runtime.gte=${runtime}&certification.gte=${certificationFilter}&certification_country=US&with_watch_monetization_types=${monetizationFilterQuery}${keywordFilter}`;
+
+//     return axios.get<MovieResponse>(apiUrl);
+//   });
+
+//   const responses = await Promise.all(apiPromises);
+
+//   // Combine the results of all certification requests
+//   const combinedResults = responses.reduce<MovieResponse>(
+//     (acc, response) => {
+//       acc.results.push(...response.data.results);
+//       acc.total_results += response.data.total_results;
+//       return acc;
+//     },
+//     { page: 1, results: [], total_pages: 1, total_results: 0 }
+//   );
+
+//   return combinedResults;
+// };
+
+// export const useMoviesAll = (
+//   sortValue: string,
+//   userScore: string | number | (string | number)[],
+//   userVote: string | number | (string | number)[],
+//   genreFilters: string | null,
+//   runtime: string | number | (string | number)[],
+//   certificationArray: string[],
+//   monetizationFilterQuery: string | null,
+//   keywordFilter: string | null,
+//   pageParam: number,
+//   isDataFetched: boolean
+// ): UseQueryResult<MovieResponse, Error> => {
+//   return useQuery(
+//     [
+//       "movies",
+//       sortValue,
+//       userScore,
+//       userVote,
+//       genreFilters,
+//       runtime,
+//       certificationArray,
+//       monetizationFilterQuery,
+//       keywordFilter,
+//       pageParam,
+//     ],
+//     () =>
+//       fetchMoviesAll(
+//         sortValue,
+//         userScore,
+//         userVote,
+//         genreFilters,
+//         runtime,
+//         certificationArray,
+//         monetizationFilterQuery,
+//         keywordFilter,
+//         pageParam
+//       ),
+//     { keepPreviousData: true }
+//   );
+// };

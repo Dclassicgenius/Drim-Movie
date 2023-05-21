@@ -13,11 +13,17 @@ import {
   Checkbox,
   Autocomplete,
   TextField,
+  Stack,
+  Typography,
 } from "@mui/material";
 import { useGenres } from "../../../hooks/FilterHooks/useGenres";
 import { useCertifications } from "../../../hooks/FilterHooks/useCertifications";
 import { FilterChips } from "../../utility/FilterChips/FilterChips";
 import { Keyword } from "../../../types";
+import { CountrySelect } from "../../utility/Country/CountrySelect";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs, { Dayjs } from "dayjs";
 
 type MovieFiltersProps = {
   sortValue: string;
@@ -73,28 +79,29 @@ export function MovieFilters({
   const [isDivOpen, setIsDivOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(true);
 
-  // const [releaseFilter, setReleaseFilter] = useState<number[]>([]);
+  const [releaseFilter, setReleaseFilter] = useState<number[]>([]);
 
-  // const [checkedReleaseAll, setCheckedReleaseAll] = useState(true);
-  // const [checkedCountriesAll, setCheckedCountriesAll] = useState(true);
+  const [checkedReleaseAll, setCheckedReleaseAll] = useState(true);
+  const [checkedCountriesAll, setCheckedCountriesAll] = useState(true);
 
   const genres = useGenres("movie");
   const { data: certifications } = useCertifications("movie");
   const usCertifications = (certifications ?? {})["US"] || [];
+  const [value, setValue] = useState<Dayjs | null>(dayjs("2022-04-17"));
   // const certificationNames = usCertifications.map(
   //   (certification) => certification.certification
   // );
 
-  // const releases = [
-  //   { value: 1, label: "Premiere" },
-  //   { value: 2, label: "Theatrical (limited)" },
-  //   { value: 3, label: "Theatrical" },
-  //   { value: 4, label: "Digital" },
-  //   { value: 5, label: "Physical" },
-  //   { value: 6, label: "TV" },
-  // ];
+  const releases = [
+    { value: 1, label: "Premiere" },
+    { value: 2, label: "Theatrical (limited)" },
+    { value: 3, label: "Theatrical" },
+    { value: 4, label: "Digital" },
+    { value: 5, label: "Physical" },
+    { value: 6, label: "TV" },
+  ];
 
-  const availabilities = ["Stream", "Free", "Ads", "Rent", "Buy"];
+  const availabilities = ["Flatrate", "Free", "Ads", "Rent", "Buy"];
 
   const sortParameters = [
     { value: "popularity.desc", label: "Popularity Descending" },
@@ -107,24 +114,24 @@ export function MovieFilters({
     { value: "title.desc", label: "Title (Z-A)" },
   ];
 
-  // const handleReleaseAllChange = (event: ChangeEvent<HTMLInputElement>) => {
-  //   setCheckedReleaseAll(event.target.checked);
-  // };
-  // const handleCountriesAllChange = (event: ChangeEvent<HTMLInputElement>) => {
-  //   setCheckedCountriesAll(event.target.checked);
-  // };
+  const handleReleaseAllChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setCheckedReleaseAll(event.target.checked);
+  };
+  const handleCountriesAllChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setCheckedCountriesAll(event.target.checked);
+  };
 
-  // const handleReleaseChange = (event: ChangeEvent<HTMLInputElement>) => {
-  //   const releaseValue = parseInt(event.target.value);
-  //   const index = releaseFilter.indexOf(releaseValue);
-  //   if (index === -1) {
-  //     setReleaseFilter([...releaseFilter, releaseValue]);
-  //   } else {
-  //     setReleaseFilter(
-  //       releaseFilter.filter((release) => release !== releaseValue)
-  //     );
-  //   }
-  // };
+  const handleReleaseChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const releaseValue = parseInt(event.target.value);
+    const index = releaseFilter.indexOf(releaseValue);
+    if (index === -1) {
+      setReleaseFilter([...releaseFilter, releaseValue]);
+    } else {
+      setReleaseFilter(
+        releaseFilter.filter((release) => release !== releaseValue)
+      );
+    }
+  };
   const toggleDiv = () => {
     setIsDivOpen(!isDivOpen);
   };
@@ -214,9 +221,9 @@ export function MovieFilters({
                             control={
                               <Checkbox
                                 checked={availabilityFilter.includes(
-                                  availability
+                                  availability.toLowerCase()
                                 )}
-                                value={availability}
+                                value={availability.toLowerCase()}
                                 onChange={handleAvailabiltyChange}
                               />
                             }
@@ -228,6 +235,105 @@ export function MovieFilters({
                   </Box>
                 </div>
               </section>
+              <hr />
+              <section className="px-4 pt-3">
+                <h2 className=" font-light text-grey-500 text-sm">
+                  Release Dates
+                </h2>
+
+                <Box>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={checkedReleaseAll}
+                        onChange={handleReleaseAllChange}
+                      />
+                    }
+                    label="Search all releases"
+                  />
+                </Box>
+
+                <div
+                  className={classNames(checkedReleaseAll ? "hidden" : "block")}
+                >
+                  <Box>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={checkedCountriesAll}
+                          onChange={handleCountriesAllChange}
+                        />
+                      }
+                      label="Search all countries"
+                    />
+                  </Box>
+                  <div
+                    className={classNames(
+                      checkedCountriesAll ? "hidden" : "block"
+                    )}
+                  >
+                    <Box sx={{ py: 0.75 }}>
+                      <CountrySelect />
+                    </Box>
+                  </div>
+                  <Box sx={{ display: "flex" }}>
+                    <FormControl component="fieldset" variant="standard">
+                      <FormGroup>
+                        {releases.map((release) => (
+                          <FormControlLabel
+                            key={release.value}
+                            control={
+                              <Checkbox
+                                checked={releaseFilter.includes(release.value)}
+                                onChange={handleReleaseChange}
+                                name={release.label}
+                                value={release.value}
+                              />
+                            }
+                            label={release.label}
+                          />
+                        ))}
+                      </FormGroup>
+                    </FormControl>
+                  </Box>
+                </div>
+
+                <Box>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        p: 1,
+                      }}
+                    >
+                      <Typography sx={{ color: "grey.500" }}>from</Typography>
+                      <DatePicker
+                        label="Pick a date"
+                        value={value}
+                        onChange={(newValue) => setValue(newValue)}
+                      />
+                    </Box>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        p: 1,
+                      }}
+                    >
+                      <Typography sx={{ color: "grey.500" }}>to</Typography>
+                      <DatePicker
+                        label="Pick a date"
+                        value={value}
+                        onChange={(newValue) => setValue(newValue)}
+                      />
+                    </Box>
+                  </LocalizationProvider>
+                </Box>
+              </section>
+              <hr />
               <section className="px-4 pt-3">
                 <h2 className=" font-light text-grey-500 text-sm">Genres</h2>
 
@@ -305,29 +411,7 @@ export function MovieFilters({
                 <h2 className=" font-light text-grey-500 text-sm pb-2">
                   Keywords
                 </h2>
-                {/* <input
-                  type="text"
-                  placeholder="Filter by keywords..."
-                  className="placeholder:italic placeholder:text-slate-400 block bg-white w-full border border-slate-300 rounded-md py-2 px-3 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 sm:text-sm"
-                /> */}
 
-                {/* <Autocomplete
-                  multiple
-                  id="tags-outlined"
-                  options={keywords}
-                  getOptionLabel={(option) => option.name}
-                  // defaultValue=""
-                  filterSelectedOptions
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Keywords"
-                      placeholder="filter by keywords"
-                      value={searchQuery}
-                      onChange={handleSearchInputChange}
-                    />
-                  )}
-                /> */}
                 <Autocomplete
                   multiple
                   id="tags-outlined"

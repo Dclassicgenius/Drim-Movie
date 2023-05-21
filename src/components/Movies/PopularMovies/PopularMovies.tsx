@@ -37,7 +37,7 @@ export function PopularMovies() {
 
   const certificationFilter = selectedCertificationChips
     .map((cert) => `&certification=${cert}`)
-    .join("");
+    .join(",");
 
   const keywordFilter = selectedKeywords
     .map((word) => `&with_keywords=${word.id.toString()}`)
@@ -166,7 +166,7 @@ export function PopularMovies() {
 
   let monetizationFilterQuery = "";
   if (!checkedAvailabilityAll && availabilityFilter.length > 0) {
-    monetizationFilterQuery = `&with_watch_monetization_types=${monetizationFilters}`;
+    monetizationFilterQuery = `&watch_region=US&with_watch_monetization_types=${monetizationFilters}`;
   }
 
   const {
@@ -201,6 +201,8 @@ export function PopularMovies() {
   if (error) return <div>Error: {error.message}</div>;
 
   const popular: Movie[] = movies.results || [];
+
+  console.log(monetizationFilterQuery);
 
   return (
     <>

@@ -2,7 +2,7 @@ import { Autocomplete, TextField, Box } from "@mui/material";
 import { CountryType, countries } from "./countries";
 import { ChangeEvent, SetStateAction, useState } from "react";
 
-export default function CountrySelect() {
+export function CountrySelect() {
   const [selectCountry, setSelectCountry] = useState<CountryType | null>(
     countries.find((country) => country.code === "US") ?? null
   );
