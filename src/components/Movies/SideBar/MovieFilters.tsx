@@ -21,7 +21,11 @@ import { useCertifications } from "../../../hooks/FilterHooks/useCertifications"
 import { FilterChips } from "../../utility/FilterChips/FilterChips";
 import { Keyword } from "../../../types";
 import { CountrySelect } from "../../utility/Country/CountrySelect";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import {
+  DatePicker,
+  DateValidationError,
+  LocalizationProvider,
+} from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
 
@@ -49,6 +53,10 @@ type MovieFiltersProps = {
   searchQuery: string;
   handleSearchInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleKeywordSelect: (event: React.ChangeEvent<{}>, value: Keyword[]) => void;
+  releaseDateStart: Dayjs | null;
+  releaseDateEnd: Dayjs | null;
+  handleReleaseDateStart: (newValue: Dayjs | null) => void;
+  handleReleaseDateEnd: (newValue: Dayjs | null) => void;
 };
 
 export function MovieFilters({
@@ -75,6 +83,10 @@ export function MovieFilters({
   searchQuery,
   handleSearchInputChange,
   handleKeywordSelect,
+  releaseDateStart,
+  releaseDateEnd,
+  handleReleaseDateStart,
+  handleReleaseDateEnd,
 }: MovieFiltersProps) {
   const [isDivOpen, setIsDivOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(true);
@@ -87,7 +99,11 @@ export function MovieFilters({
   const genres = useGenres("movie");
   const { data: certifications } = useCertifications("movie");
   const usCertifications = (certifications ?? {})["US"] || [];
-  const [value, setValue] = useState<Dayjs | null>(dayjs("2022-04-17"));
+
+  const handleError = (error: DateValidationError, value: Dayjs | null) => {
+    // Ignore the error by providing an empty function
+  };
+
   // const certificationNames = usCertifications.map(
   //   (certification) => certification.certification
   // );
@@ -305,14 +321,24 @@ export function MovieFilters({
                         display: "flex",
                         justifyContent: "space-between",
                         alignItems: "center",
-                        p: 1,
+                        py: 1.5,
                       }}
                     >
-                      <Typography sx={{ color: "grey.500" }}>from</Typography>
+                      <Typography sx={{ color: "grey.500", marginRight: 1 }}>
+                        from
+                      </Typography>
                       <DatePicker
                         label="Pick a date"
-                        value={value}
-                        onChange={(newValue) => setValue(newValue)}
+                        value={releaseDateStart}
+                        onChange={handleReleaseDateStart}
+                        maxDate={releaseDateEnd as Dayjs | undefined}
+                        onError={handleError}
+                        slotProps={{
+                          textField: {
+                            helperText: "",
+                            error: false,
+                          },
+                        }}
                       />
                     </Box>
                     <Box
@@ -320,15 +346,27 @@ export function MovieFilters({
                         display: "flex",
                         justifyContent: "space-between",
                         alignItems: "center",
-                        p: 1,
+                        py: 1.5,
                       }}
                     >
-                      <Typography sx={{ color: "grey.500" }}>to</Typography>
-                      <DatePicker
-                        label="Pick a date"
-                        value={value}
-                        onChange={(newValue) => setValue(newValue)}
-                      />
+                      <Typography sx={{ color: "grey.500", marginRight: 1 }}>
+                        to
+                      </Typography>
+                      <Box>
+                        <DatePicker
+                          label="Pick a date"
+                          value={releaseDateEnd}
+                          onChange={handleReleaseDateEnd}
+                          minDate={releaseDateStart as Dayjs | undefined}
+                          onError={handleError}
+                          slotProps={{
+                            textField: {
+                              helperText: "",
+                              error: false,
+                            },
+                          }}
+                        />
+                      </Box>
                     </Box>
                   </LocalizationProvider>
                 </Box>

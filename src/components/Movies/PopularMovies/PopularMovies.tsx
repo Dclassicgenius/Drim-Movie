@@ -7,6 +7,8 @@ import { Box, Grid, debounce } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { fetchKeywords } from "../../../hooks/SearchHook/useSearchKeyword";
 import { Movie, useMoviesAll } from "../../../hooks/MovieHooks/useMoviesAll";
+import dayjs, { Dayjs } from "dayjs";
+import React from "react";
 
 export function PopularMovies() {
   const [isDataFetched, setIsDataFetched] = useState(false);
@@ -30,6 +32,10 @@ export function PopularMovies() {
   const [availabilityFilter, setAvailabilityFilter] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedKeywords, setSelectedKeywords] = useState<Keyword[]>([]);
+  const [releaseDateStart, setReleaseDateStart] = useState<string | null>("");
+  const [releaseDateEnd, setReleaseDateEnd] = useState<string | null>(
+    "2023-11-21"
+  );
   const [isButtonClicked, setIsButtonClicked] = useState(false);
 
   const genreFilters = selectedGenreChips.join(",").toLowerCase();
@@ -42,6 +48,13 @@ export function PopularMovies() {
   const keywordFilter = selectedKeywords
     .map((word) => `&with_keywords=${word.id.toString()}`)
     .join("|");
+
+  // const formattedReleaseDateStart = releaseDateStart
+  //   ? releaseDateStart.format("YYYY-MM-DD")
+  //   : "";
+  // const formattedReleaseDateEnd = releaseDateEnd
+  //   ? releaseDateEnd.format("YYYY-MM-DD")
+  //   : "";
 
   useEffect(() => {
     if (
@@ -156,6 +169,14 @@ export function PopularMovies() {
     }
   };
 
+  const handleReleaseDateStart = (newValue: Dayjs | null) => {
+    setReleaseDateStart(newValue ? newValue.format("YYYY-MM-DD") : null);
+  };
+
+  const handleReleaseDateEnd = (newValue: Dayjs | null) => {
+    setReleaseDateEnd(newValue ? newValue.format("YYYY-MM-DD") : null);
+  };
+
   const handleButtonClick = () => {
     // if (!isSearchDisabled) {
     setIsDataFetched(true);
@@ -182,9 +203,16 @@ export function PopularMovies() {
     certificationFilter,
     monetizationFilterQuery,
     keywordFilter,
+    releaseDateStart,
+    releaseDateEnd,
     1,
     isDataFetched
   );
+
+  console.log(monetizationFilterQuery);
+
+  console.log(releaseDateStart);
+  console.log(releaseDateEnd);
 
   useEffect(() => {
     setIsSearchDisabled(isLoading);
@@ -201,8 +229,6 @@ export function PopularMovies() {
   if (error) return <div>Error: {error.message}</div>;
 
   const popular: Movie[] = movies.results || [];
-
-  console.log(monetizationFilterQuery);
 
   return (
     <>
@@ -234,6 +260,10 @@ export function PopularMovies() {
               searchQuery={searchQuery}
               handleSearchInputChange={handleSearchInputChange}
               selectedKeywords={selectedKeywords}
+              releaseDateStart={dayjs(releaseDateStart)}
+              releaseDateEnd={dayjs(releaseDateEnd)}
+              handleReleaseDateStart={handleReleaseDateStart}
+              handleReleaseDateEnd={handleReleaseDateEnd}
             />
           </Grid>
           <Grid sx={{ pr: 2 }} item xs={9} xl={10}>
