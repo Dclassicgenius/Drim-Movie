@@ -13,7 +13,6 @@ import {
   Checkbox,
   Autocomplete,
   TextField,
-  Stack,
   Typography,
 } from "@mui/material";
 import { useGenres } from "../../../hooks/FilterHooks/useGenres";
@@ -27,7 +26,8 @@ import {
   LocalizationProvider,
 } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import dayjs, { Dayjs } from "dayjs";
+import { Dayjs } from "dayjs";
+import { CountryType } from "../../utility/Country/countries";
 
 type MovieFiltersProps = {
   sortValue: string;
@@ -57,6 +57,17 @@ type MovieFiltersProps = {
   releaseDateEnd: Dayjs | null;
   handleReleaseDateStart: (newValue: Dayjs | null) => void;
   handleReleaseDateEnd: (newValue: Dayjs | null) => void;
+  countriesAll: boolean;
+  handleCountriesAllChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  selectCountry: CountryType | null;
+  handleSelectCountryChange: (
+    event: ChangeEvent<{}>,
+    newValue: CountryType | null
+  ) => void;
+  releaseAll: boolean;
+  releasesTypes: number[];
+  handleReleaseAllChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  handleReleaseChange: (event: ChangeEvent<HTMLInputElement>) => void;
 };
 
 export function MovieFilters({
@@ -87,26 +98,23 @@ export function MovieFilters({
   releaseDateEnd,
   handleReleaseDateStart,
   handleReleaseDateEnd,
+  countriesAll,
+  handleCountriesAllChange,
+  selectCountry,
+  handleSelectCountryChange,
+  releaseAll,
+  releasesTypes,
+  handleReleaseAllChange,
+  handleReleaseChange,
 }: MovieFiltersProps) {
   const [isDivOpen, setIsDivOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(true);
-
-  const [releaseFilter, setReleaseFilter] = useState<number[]>([]);
-
-  const [checkedReleaseAll, setCheckedReleaseAll] = useState(true);
-  const [checkedCountriesAll, setCheckedCountriesAll] = useState(true);
 
   const genres = useGenres("movie");
   const { data: certifications } = useCertifications("movie");
   const usCertifications = (certifications ?? {})["US"] || [];
 
-  const handleError = (error: DateValidationError, value: Dayjs | null) => {
-    // Ignore the error by providing an empty function
-  };
-
-  // const certificationNames = usCertifications.map(
-  //   (certification) => certification.certification
-  // );
+  const handleError = (error: DateValidationError, value: Dayjs | null) => {};
 
   const releases = [
     { value: 1, label: "Premiere" },
@@ -130,24 +138,6 @@ export function MovieFilters({
     { value: "title.desc", label: "Title (Z-A)" },
   ];
 
-  const handleReleaseAllChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setCheckedReleaseAll(event.target.checked);
-  };
-  const handleCountriesAllChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setCheckedCountriesAll(event.target.checked);
-  };
-
-  const handleReleaseChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const releaseValue = parseInt(event.target.value);
-    const index = releaseFilter.indexOf(releaseValue);
-    if (index === -1) {
-      setReleaseFilter([...releaseFilter, releaseValue]);
-    } else {
-      setReleaseFilter(
-        releaseFilter.filter((release) => release !== releaseValue)
-      );
-    }
-  };
   const toggleDiv = () => {
     setIsDivOpen(!isDivOpen);
   };
@@ -208,7 +198,7 @@ export function MovieFilters({
             <hr />
 
             <div className={classNames(isFilterOpen ? "block" : "hidden", "")}>
-              <section className="px-4 pt-3">
+              <section className="px-4 py-3">
                 <h2 className=" font-light text-grey-500 text-sm">
                   Availabilities
                 </h2>
@@ -220,7 +210,7 @@ export function MovieFilters({
                         onChange={handleAvailabilityAllChange}
                       />
                     }
-                    label="Search all availabilities?"
+                    label="Search all availabilities"
                   />
                 </Box>
                 <div
@@ -261,7 +251,7 @@ export function MovieFilters({
                   <FormControlLabel
                     control={
                       <Checkbox
-                        checked={checkedReleaseAll}
+                        checked={releaseAll}
                         onChange={handleReleaseAllChange}
                       />
                     }
@@ -269,14 +259,12 @@ export function MovieFilters({
                   />
                 </Box>
 
-                <div
-                  className={classNames(checkedReleaseAll ? "hidden" : "block")}
-                >
+                <div className={classNames(releaseAll ? "hidden" : "block")}>
                   <Box>
                     <FormControlLabel
                       control={
                         <Checkbox
-                          checked={checkedCountriesAll}
+                          checked={countriesAll}
                           onChange={handleCountriesAllChange}
                         />
                       }
@@ -284,12 +272,13 @@ export function MovieFilters({
                     />
                   </Box>
                   <div
-                    className={classNames(
-                      checkedCountriesAll ? "hidden" : "block"
-                    )}
+                    className={classNames(countriesAll ? "hidden" : "block")}
                   >
                     <Box sx={{ py: 0.75 }}>
-                      <CountrySelect />
+                      <CountrySelect
+                        handleSelectCountryChange={handleSelectCountryChange}
+                        selectCountry={selectCountry}
+                      />
                     </Box>
                   </div>
                   <Box sx={{ display: "flex" }}>
@@ -300,7 +289,7 @@ export function MovieFilters({
                             key={release.value}
                             control={
                               <Checkbox
-                                checked={releaseFilter.includes(release.value)}
+                                checked={releasesTypes.includes(release.value)}
                                 onChange={handleReleaseChange}
                                 name={release.label}
                                 value={release.value}

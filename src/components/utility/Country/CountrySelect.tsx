@@ -1,21 +1,26 @@
 import { Autocomplete, TextField, Box } from "@mui/material";
 import { CountryType, countries } from "./countries";
-import { ChangeEvent, SetStateAction, useState } from "react";
+import { ChangeEvent } from "react";
 
-export function CountrySelect() {
-  const [selectCountry, setSelectCountry] = useState<CountryType | null>(
-    countries.find((country) => country.code === "US") ?? null
-  );
+type CountrySelectProps = {
+  selectCountry: CountryType | null;
+  handleSelectCountryChange: (
+    event: ChangeEvent<{}>,
+    newValue: CountryType | null
+  ) => void;
+};
 
+export function CountrySelect({
+  selectCountry,
+  handleSelectCountryChange,
+}: CountrySelectProps) {
   return (
     <Autocomplete
       id="country-select-demo"
       options={countries}
       autoHighlight
       value={selectCountry}
-      onChange={(event: ChangeEvent<{}>, newValue: CountryType | null) => {
-        setSelectCountry(newValue);
-      }}
+      onChange={handleSelectCountryChange}
       getOptionLabel={(option) => option.label}
       renderOption={(props, option) => (
         <Box

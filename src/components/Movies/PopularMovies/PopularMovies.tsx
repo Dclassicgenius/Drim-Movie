@@ -9,6 +9,7 @@ import { fetchKeywords } from "../../../hooks/SearchHook/useSearchKeyword";
 import { Movie, useMoviesAll } from "../../../hooks/MovieHooks/useMoviesAll";
 import dayjs, { Dayjs } from "dayjs";
 import React from "react";
+import { CountryType, countries } from "../../utility/Country/countries";
 
 export function PopularMovies() {
   const [isDataFetched, setIsDataFetched] = useState(false);
@@ -36,6 +37,18 @@ export function PopularMovies() {
   const [releaseDateEnd, setReleaseDateEnd] = useState<string | null>(
     "2023-11-21"
   );
+
+  const [selectCountry, setSelectCountry] = useState<CountryType | null>(
+    countries.find((country) => country.code === "US") ?? null
+  );
+
+  const [releasesTypes, setReleasesTypes] = useState<number[]>([
+    1, 2, 3, 4, 5, 6,
+  ]);
+
+  const [countriesAll, setCountriesAll] = useState(true);
+  const [releasesAll, setReleasesAll] = useState(true);
+
   const [isButtonClicked, setIsButtonClicked] = useState(false);
 
   const genreFilters = selectedGenreChips.join(",").toLowerCase();
@@ -48,13 +61,8 @@ export function PopularMovies() {
   const keywordFilter = selectedKeywords
     .map((word) => `&with_keywords=${word.id.toString()}`)
     .join("|");
-
-  // const formattedReleaseDateStart = releaseDateStart
-  //   ? releaseDateStart.format("YYYY-MM-DD")
-  //   : "";
-  // const formattedReleaseDateEnd = releaseDateEnd
-  //   ? releaseDateEnd.format("YYYY-MM-DD")
-  //   : "";
+  const selectedRegion = selectCountry?.code ?? null;
+  const releaseTypeFilter = releasesTypes.join("|");
 
   useEffect(() => {
     if (
@@ -177,6 +185,32 @@ export function PopularMovies() {
     setReleaseDateEnd(newValue ? newValue.format("YYYY-MM-DD") : null);
   };
 
+  const handleSelectCountryChange = (
+    event: ChangeEvent<{}>,
+    newValue: CountryType | null
+  ) => {
+    setSelectCountry(newValue);
+  };
+
+  const handleReleaseAllChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setReleasesAll(event.target.checked);
+  };
+  const handleCountriesAllChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setCountriesAll(event.target.checked);
+  };
+
+  const handleReleaseChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const releaseValue = parseInt(event.target.value);
+    const index = releasesTypes.indexOf(releaseValue);
+    if (index === -1) {
+      setReleasesTypes([...releasesTypes, releaseValue]);
+    } else {
+      setReleasesTypes(
+        releasesTypes.filter((release) => release !== releaseValue)
+      );
+    }
+  };
+
   const handleButtonClick = () => {
     // if (!isSearchDisabled) {
     setIsDataFetched(true);
@@ -205,14 +239,11 @@ export function PopularMovies() {
     keywordFilter,
     releaseDateStart,
     releaseDateEnd,
+    selectedRegion,
+    releaseTypeFilter,
     1,
     isDataFetched
   );
-
-  console.log(monetizationFilterQuery);
-
-  console.log(releaseDateStart);
-  console.log(releaseDateEnd);
 
   useEffect(() => {
     setIsSearchDisabled(isLoading);
@@ -229,6 +260,9 @@ export function PopularMovies() {
   if (error) return <div>Error: {error.message}</div>;
 
   const popular: Movie[] = movies.results || [];
+
+  console.log(selectedRegion);
+  console.log(releaseTypeFilter);
 
   return (
     <>
@@ -264,6 +298,14 @@ export function PopularMovies() {
               releaseDateEnd={dayjs(releaseDateEnd)}
               handleReleaseDateStart={handleReleaseDateStart}
               handleReleaseDateEnd={handleReleaseDateEnd}
+              selectCountry={selectCountry}
+              handleSelectCountryChange={handleSelectCountryChange}
+              countriesAll={countriesAll}
+              handleCountriesAllChange={handleCountriesAllChange}
+              releaseAll={releasesAll}
+              handleReleaseAllChange={handleReleaseAllChange}
+              releasesTypes={releasesTypes}
+              handleReleaseChange={handleReleaseChange}
             />
           </Grid>
           <Grid sx={{ pr: 2 }} item xs={9} xl={10}>
