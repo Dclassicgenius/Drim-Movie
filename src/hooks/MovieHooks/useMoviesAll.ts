@@ -43,7 +43,7 @@ const fetchMoviesAll = async (
 ) => {
   const apiUrl = `https://api.themoviedb.org/3/discover/movie?api_key=${
     import.meta.env.VITE_TMDB_API_KEY
-  }&include_adult=false&include_video=false&language=en-US&page=${pageParam}&sort_by=${sortValue}&vote_average.gte=${userScore}&vote_count.gte=${userVote}&with_genres=${genreFilters}&with_runtime.gte=${runtime}&certification=${certificationFilter}&certification_country=US&with_watch_monetization_types=${monetizationFilterQuery}${keywordFilter}&release_date.gte=${releaseDateStart}&release_date.lte=${releaseDateEnd}&watch_region=${region}&with_release_type=${ReleaseType}`;
+  }&include_adult=false&include_video=false&language=en-US&page=${pageParam}&sort_by=${sortValue}&vote_average.gte=${userScore}&vote_count.gte=${userVote}&with_genres=${genreFilters}&with_runtime.gte=${runtime}&certification=${certificationFilter}&certification_country=US&with_watch_monetization_types=${monetizationFilterQuery}${keywordFilter}&release_date.gte=${releaseDateStart}&release_date.lte=${releaseDateEnd}&region=${region}&with_release_type=${ReleaseType}`;
 
   console.log(apiUrl);
 

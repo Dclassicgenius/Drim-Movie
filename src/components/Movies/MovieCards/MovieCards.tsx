@@ -28,9 +28,14 @@ export function MovieCards({ movies }: MovieProps) {
                   <CardActionArea component={Link} to={`/movie/${movie.id}`}>
                     <CardMedia
                       component="img"
-                      height="250"
+                      // height={250}
                       image={API_IMG + movie.poster_path}
                       alt={movie.title + "poster"}
+                      sx={{
+                        height: 250,
+                        width: "100%",
+                        objectFit: "cover",
+                      }}
                     />
                     <CardContent sx={{ p: 1 }}>
                       <Typography
@@ -40,7 +45,7 @@ export function MovieCards({ movies }: MovieProps) {
                         sx={{
                           fontSize: "10px",
                           fontWeight: "bold",
-                          minHeight: "3em",
+                          minHeight: "2.7em",
                           overflow: "hidden",
                           textOverflow: "ellipsis",
                           display: "-webkit-box",

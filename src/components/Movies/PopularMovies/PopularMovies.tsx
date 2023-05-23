@@ -3,7 +3,7 @@ import { Keyword } from "../../../types";
 import { MovieFilters } from "../SideBar/MovieFilters";
 import { SelectChangeEvent } from "@mui/material/Select";
 import { MovieCards } from "../MovieCards/MovieCards";
-import { Box, Grid, debounce } from "@mui/material";
+import { Box, Grid, Pagination, Stack, debounce } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { fetchKeywords } from "../../../hooks/SearchHook/useSearchKeyword";
 import { Movie, useMoviesAll } from "../../../hooks/MovieHooks/useMoviesAll";
@@ -34,8 +34,13 @@ export function PopularMovies() {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedKeywords, setSelectedKeywords] = useState<Keyword[]>([]);
   const [releaseDateStart, setReleaseDateStart] = useState<string | null>("");
+
+  const currentDate = new Date();
+  currentDate.setMonth(currentDate.getMonth() + 6);
+  const initialReleaseDateEnd = currentDate.toISOString().substring(0, 10);
+
   const [releaseDateEnd, setReleaseDateEnd] = useState<string | null>(
-    "2023-11-21"
+    initialReleaseDateEnd
   );
 
   const [selectCountry, setSelectCountry] = useState<CountryType | null>(
@@ -63,6 +68,10 @@ export function PopularMovies() {
     .join("|");
   const selectedRegion = selectCountry?.code ?? null;
   const releaseTypeFilter = releasesTypes.join("|");
+  const [page, setPage] = useState(1);
+  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
+  };
 
   useEffect(() => {
     if (
@@ -241,7 +250,7 @@ export function PopularMovies() {
     releaseDateEnd,
     selectedRegion,
     releaseTypeFilter,
-    1,
+    page,
     isDataFetched
   );
 
@@ -260,9 +269,6 @@ export function PopularMovies() {
   if (error) return <div>Error: {error.message}</div>;
 
   const popular: Movie[] = movies.results || [];
-
-  console.log(selectedRegion);
-  console.log(releaseTypeFilter);
 
   return (
     <>
@@ -312,6 +318,17 @@ export function PopularMovies() {
             <Box>{<MovieCards movies={popular} />}</Box>
           </Grid>
         </Grid>
+        <Stack sx={{ my: 4, display: "flex", alignItems: "center" }}>
+          <Pagination
+            count={500}
+            page={page}
+            onChange={handleChange}
+            variant="outlined"
+            color="primary"
+            boundaryCount={5}
+            siblingCount={4}
+          />
+        </Stack>
       </Box>
     </>
   );
