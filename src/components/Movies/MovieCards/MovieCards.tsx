@@ -9,6 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Movie } from "../../../hooks/MovieHooks/useMoviesAll";
+import placeholderImage from "../../../assets/placeholderImage.png";
 
 interface MovieProps {
   movies: Movie[];
@@ -21,7 +22,7 @@ export function MovieCards({ movies }: MovieProps) {
       <Grid container spacing={2} alignItems="stretch">
         {Array.isArray(movies) &&
           movies
-            .filter((movie) => movie.poster_path !== null)
+            // .filter((movie) => movie.poster_path !== null)
             .map((movie) => (
               <Grid item xs={6} md={3} lg={2} xl={1} key={movie.id}>
                 <Card sx={{ position: "relative" }}>
@@ -29,7 +30,11 @@ export function MovieCards({ movies }: MovieProps) {
                     <CardMedia
                       component="img"
                       // height={250}
-                      image={API_IMG + movie.poster_path}
+                      image={
+                        movie.poster_path !== null
+                          ? API_IMG + movie.poster_path
+                          : placeholderImage
+                      }
                       alt={movie.title + "poster"}
                       sx={{
                         height: 250,

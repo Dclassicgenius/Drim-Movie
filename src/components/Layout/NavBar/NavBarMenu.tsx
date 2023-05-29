@@ -8,6 +8,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 export type MenuItem = {
   id: number;
   name: string;
+  to: string;
 };
 
 type NavBarMenuProps = {
@@ -60,7 +61,7 @@ export default function NavBarMenu({
           menuItem.map((menu) => (
             <Link
               key={menu.id}
-              to={`${mediaType}/${menu.name.toLocaleLowerCase()}`}
+              to={`${mediaType}/${menu.to.toLocaleLowerCase()}`}
             >
               <MenuItem onClick={handleClose}>{menu.name}</MenuItem>
             </Link>

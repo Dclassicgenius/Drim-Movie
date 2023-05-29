@@ -51,7 +51,9 @@ export function CircularProgressBar({
           />
         </svg>
         <div className="absolute inset-0 w-full h-full flex items-center justify-center">
-          <p className="text-xs font-bold">{percentage}%</p>
+          <p className="text-xs font-bold">
+            {percentage > 0 ? percentage + "%" : "NR"}
+          </p>
         </div>
       </div>
     </>

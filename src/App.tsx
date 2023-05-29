@@ -13,6 +13,9 @@ import { Person } from "./components/People/Person";
 import { SearchResults } from "./components/Search/SearchResults";
 import { MovieFilters } from "./components/Movies/SideBar/MovieFilters";
 import { PopularMovies } from "./components/Movies/PopularMovies/PopularMovies";
+import { NowPlaying } from "./components/Movies/NowPlaying/NowPlaying";
+import { Upcoming } from "./components/Movies/Upcoming/Upcoming";
+import { TopRated } from "./components/Movies/TopRated/TopRated";
 
 function App() {
   return (
@@ -29,6 +32,9 @@ function App() {
         <Route path="/people/:id" element={<Person />} />
         <Route path="/search/:query" element={<SearchResults />} />
         <Route path="/movie/popular" element={<PopularMovies />} />
+        <Route path="/movie/now-playing" element={<NowPlaying />} />
+        <Route path="/movie/upcoming" element={<Upcoming />} />
+        <Route path="/movie/top-rated" element={<TopRated />} />
       </Routes>
       <FooterNav />
     </>

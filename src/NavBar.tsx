@@ -3,18 +3,18 @@ import NavBarMenu from "./components/Layout/NavBar/NavBarMenu";
 
 export function NavBar() {
   const movies = [
-    { id: 1, name: "Popular" },
-    { id: 2, name: "Now Playing" },
-    { id: 3, name: "Upcoming" },
-    { id: 4, name: "Top Rated" },
+    { id: 1, name: "Popular", to: "popular" },
+    { id: 2, name: "Now Playing", to: "now-playing" },
+    { id: 3, name: "Upcoming", to: "upcoming" },
+    { id: 4, name: "Top Rated", to: "top-rated" },
   ];
   const tvs = [
-    { id: 1, name: "Popular" },
-    { id: 2, name: "Airing Today" },
-    { id: 3, name: "Upcoming" },
-    { id: 4, name: "Top Rated" },
+    { id: 1, name: "Popular", to: "popular" },
+    { id: 2, name: "Airing Today", to: "airing-today" },
+    { id: 3, name: "Upcoming", to: "upcoming" },
+    { id: 4, name: "Top Rated", to: "top-rated" },
   ];
-  const people = [{ id: 1, name: "Popular people" }];
+  const people = [{ id: 1, name: "Popular people", to: "popular-people" }];
 
   return (
     <>

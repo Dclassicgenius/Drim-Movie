@@ -8,24 +8,18 @@ type FilterChipsProps = {
   chips: Genres[] | Certification[] | undefined;
   handleChipClick: (chip: string) => void;
   selectedChips: string[];
+  disableChips?: boolean[];
 };
 
 function isGenre(value: chips): value is Genres {
   return typeof value === "object" && value && value.hasOwnProperty("name");
 }
 
-// function isCertification(value: chips): value is Certification {
-//   return (
-//     typeof value === "object" &&
-//     value &&
-//     value.hasOwnProperty("certification")
-//   );
-// }
-
 export function FilterChips({
   chips,
   handleChipClick,
   selectedChips,
+  disableChips,
 }: FilterChipsProps) {
   return (
     <>
@@ -56,6 +50,7 @@ export function FilterChips({
                   ? "filled"
                   : "outlined"
               }
+              disabled={disableChips && disableChips[index]}
             />
           ))}
       </Box>

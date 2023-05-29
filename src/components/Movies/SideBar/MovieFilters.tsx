@@ -32,9 +32,9 @@ import { CountryType } from "../../utility/Country/countries";
 type MovieFiltersProps = {
   sortValue: string;
   handleSortChange: (event: SelectChangeEvent) => void;
-  runtime: number | string | Array<number | string>;
+  runtime: number | number[];
   handleRuntimeChange: (event: Event, newValue: number | number[]) => any;
-  userScore: number | string | Array<number | string>;
+  userScore: number | number[];
   handleUserScoreChange: (event: Event, newValue: number | number[]) => any;
   userVote: number | string | Array<number | string>;
   handleUserVoteChange: (event: Event, newValue: number | number[]) => any;
@@ -42,6 +42,7 @@ type MovieFiltersProps = {
   selectedGenreChips: string[];
   handleCertificationChipClick: (chip: string) => void;
   selectedCertificationChips: string[];
+  isChipSelected: boolean;
   availabilityFilter: string[];
   checkedAvailabilityAll: boolean;
   handleAvailabilityAllChange: (event: ChangeEvent<HTMLInputElement>) => void;
@@ -83,6 +84,7 @@ export function MovieFilters({
   handleGenreChipClick,
   selectedCertificationChips,
   handleCertificationChipClick,
+  isChipSelected,
   availabilityFilter,
   handleAvailabiltyChange,
   checkedAvailabilityAll,
@@ -125,7 +127,15 @@ export function MovieFilters({
     { value: 6, label: "TV" },
   ];
 
-  const availabilities = ["Flatrate", "Free", "Ads", "Rent", "Buy"];
+  // const availabilities = ["Flatrate", "Free", "Ads", "Rent", "Buy"];
+
+  const availabilities = [
+    { value: "Flatrate", label: "Stream" },
+    { value: "Free", label: "Free" },
+    { value: "Ads", label: "Ads" },
+    { value: "Rent", label: "Rent" },
+    { value: "Buy", label: "Buy" },
+  ];
 
   const sortParameters = [
     { value: "popularity.desc", label: "Popularity Descending" },
@@ -223,17 +233,17 @@ export function MovieFilters({
                       <FormGroup>
                         {availabilities.map((availability) => (
                           <FormControlLabel
-                            key={availability}
+                            key={availability.value}
                             control={
                               <Checkbox
                                 checked={availabilityFilter.includes(
-                                  availability.toLowerCase()
+                                  availability.value.toLowerCase()
                                 )}
-                                value={availability.toLowerCase()}
+                                value={availability.value.toLowerCase()}
                                 onChange={handleAvailabiltyChange}
                               />
                             }
-                            label={availability}
+                            label={availability.label}
                           />
                         ))}
                       </FormGroup>
@@ -367,7 +377,7 @@ export function MovieFilters({
                 <FilterChips
                   selectedChips={selectedGenreChips}
                   handleChipClick={handleGenreChipClick}
-                  chips={genres.data}
+                  chips={genres && genres.data}
                 />
               </section>
               <hr />
@@ -379,6 +389,11 @@ export function MovieFilters({
                   selectedChips={selectedCertificationChips}
                   handleChipClick={handleCertificationChipClick}
                   chips={usCertifications}
+                  disableChips={usCertifications.map(
+                    (chip) =>
+                      isChipSelected &&
+                      !selectedCertificationChips.includes(chip.certification)
+                  )}
                 />
               </section>
               <hr />
@@ -395,7 +410,7 @@ export function MovieFilters({
                   marks
                   min={0}
                   max={10}
-                  value={typeof userScore === "number" ? userScore : 0}
+                  value={userScore}
                   onChange={handleUserScoreChange}
                 />
               </section>
@@ -429,7 +444,7 @@ export function MovieFilters({
                   marks
                   min={0}
                   max={400}
-                  value={typeof runtime === "number" ? runtime : 0}
+                  value={runtime}
                   onChange={handleRuntimeChange}
                 />
               </section>
