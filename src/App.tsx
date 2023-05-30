@@ -16,6 +16,9 @@ import { NowPlaying } from "./components/Movies/NowPlaying/NowPlaying";
 import { Upcoming } from "./components/Movies/Upcoming/Upcoming";
 import { TopRated } from "./components/Movies/TopRated/TopRated";
 import { PopularTv } from "./components/TVs/PopularTvs/PopularTv";
+import { AiringToday } from "./components/TVs/Airing Today/AiringToday";
+import { AiringOnTv } from "./components/TVs/On Tv/AiringOnTv";
+import { TopRatedTv } from "./components/TVs/Top Rated/TopRatedTv";
 
 function App() {
   return (
@@ -36,6 +39,9 @@ function App() {
         <Route path="/movie/upcoming" element={<Upcoming />} />
         <Route path="/movie/top-rated" element={<TopRated />} />
         <Route path="/tv/popular" element={<PopularTv />} />
+        <Route path="/tv/airing-today" element={<AiringToday />} />
+        <Route path="/tv/on-tv" element={<AiringOnTv />} />
+        <Route path="/tv/top-rated" element={<TopRatedTv />} />
       </Routes>
       <FooterNav />
     </>

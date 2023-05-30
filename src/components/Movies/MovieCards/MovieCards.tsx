@@ -10,12 +10,22 @@ import {
 } from "@mui/material";
 import { Movie } from "../../../hooks/MovieHooks/useMoviesAll";
 import placeholderImage from "../../../assets/placeholderImage.png";
+import { Tv } from "../../../hooks/TvHooks/useTvAll";
+
+type movies = {};
 
 interface MovieProps {
-  movies: Movie[];
+  movies: Movie[] | Tv[];
+  mediaType: string;
 }
 
-export function MovieCards({ movies }: MovieProps) {
+function isMovie(value: movies): value is Movie {
+  return (
+    typeof value === "object" && value && value.hasOwnProperty("release_date")
+  );
+}
+
+export function MovieCards({ movies, mediaType }: MovieProps) {
   const API_IMG = "https://image.tmdb.org/t/p/w500";
   return (
     <>
@@ -24,7 +34,10 @@ export function MovieCards({ movies }: MovieProps) {
           movies.map((movie) => (
             <Grid item xs={6} md={3} lg={2} xl={1} key={movie.id}>
               <Card sx={{ position: "relative" }}>
-                <CardActionArea component={Link} to={`/movie/${movie.id}`}>
+                <CardActionArea
+                  component={Link}
+                  to={`/${mediaType}/${movie.id}`}
+                >
                   <CardMedia
                     component="img"
                     // height={250}
@@ -33,7 +46,7 @@ export function MovieCards({ movies }: MovieProps) {
                         ? API_IMG + movie.poster_path
                         : placeholderImage
                     }
-                    alt={movie.title + "poster"}
+                    alt={isMovie(movie) ? movie.title : movie.name + "poster"}
                     sx={{
                       height: 250,
                       width: "100%",
@@ -56,7 +69,7 @@ export function MovieCards({ movies }: MovieProps) {
                         WebkitBoxOrient: "vertical",
                       }}
                     >
-                      {movie.title}
+                      {isMovie(movie) ? movie.title : movie.name}
                     </Typography>
                     <div className="absolute top-0 right-0 m-0.5 text-white rounded-full text-xs">
                       <CircularProgressBar
@@ -66,7 +79,9 @@ export function MovieCards({ movies }: MovieProps) {
                     </div>
                     <Typography variant="body2" color="text.secondary">
                       {(() => {
-                        const dateValue = movie.release_date;
+                        const dateValue = isMovie(movie)
+                          ? movie.release_date
+                          : movie.first_air_date;
                         if (dateValue) {
                           return (
                             <p className="text-[10px] pt-2 text-gray-700 dark:text-gray-400 font-light">

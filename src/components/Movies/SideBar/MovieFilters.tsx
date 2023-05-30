@@ -71,6 +71,8 @@ type MovieFiltersProps = {
   handleReleaseAllChange: (event: ChangeEvent<HTMLInputElement>) => void;
   handleReleaseChange: (event: ChangeEvent<HTMLInputElement>) => void;
   mediaType: "tv" | "movie";
+  firstAirDate: boolean;
+  handleFirstAirDateChange: (event: ChangeEvent<HTMLInputElement>) => void;
 };
 
 export function MovieFilters({
@@ -111,6 +113,8 @@ export function MovieFilters({
   handleReleaseAllChange,
   handleReleaseChange,
   mediaType,
+  firstAirDate,
+  handleFirstAirDateChange,
 }: MovieFiltersProps) {
   const [isDivOpen, setIsDivOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(true);
@@ -258,7 +262,11 @@ export function MovieFilters({
                 </div>
               </section>
               <hr />
-              <section className="px-4 pt-3">
+              <section
+                className={classNames(
+                  mediaType === "tv" ? "block px-4 pt-3" : "hidden"
+                )}
+              >
                 <h2 className=" font-light text-grey-500 text-sm">Air Dates</h2>
                 <Box>
                   <FormControlLabel
@@ -271,14 +279,13 @@ export function MovieFilters({
                     label="Search all episodes?"
                   />
                 </Box>
-                <div>
-                  {/* className={classNames(releaseAll ? "hidden" : "block")} */}
+                <div className={classNames(releaseAll ? "hidden" : "block")}>
                   <Box>
                     <FormControlLabel
                       control={
                         <Checkbox
-                          checked={countriesAll}
-                          onChange={handleCountriesAllChange}
+                          checked={firstAirDate}
+                          onChange={handleFirstAirDateChange}
                         />
                       }
                       label="Search first air date?"
@@ -292,8 +299,14 @@ export function MovieFilters({
                   handleReleaseDateEnd={handleReleaseDateEnd}
                 />
               </section>
-              <hr />
-              <section className="px-4 pt-3">
+              <hr
+                className={classNames(mediaType === "tv" ? "block" : "hidden")}
+              />
+              <section
+                className={classNames(
+                  mediaType === "movie" ? "block px-4 pt-3" : "hidden"
+                )}
+              >
                 <h2 className=" font-light text-grey-500 text-sm">
                   Release Dates
                 </h2>
@@ -417,7 +430,11 @@ export function MovieFilters({
                   handleReleaseDateEnd={handleReleaseDateEnd}
                 />
               </section>
-              <hr />
+              <hr
+                className={classNames(
+                  mediaType === "movie" ? "block" : "hidden"
+                )}
+              />
               <section className="px-4 pt-3">
                 <h2 className=" font-light text-grey-500 text-sm">Genres</h2>
 

@@ -10,6 +10,7 @@ import { Movie, useMoviesAll } from "../../../hooks/MovieHooks/useMoviesAll";
 import dayjs, { Dayjs } from "dayjs";
 import React from "react";
 import { CountryType, countries } from "../../utility/Country/countries";
+import { useTvAll } from "../../../hooks/TvHooks/useTvAll";
 
 type MovieMainProps = {
   sortValue?: string;
@@ -81,6 +82,7 @@ export function MovieMain({
 
   const [countriesAll, setCountriesAll] = useState(true);
   const [releasesAll, setReleasesAll] = useState(initialReleasesAll);
+  const [firstAirDate, setFirstAirDate] = useState(true);
 
   const genreFilters = selectedGenreChips.join(",").toLowerCase();
   const monetizationFilters = availabilityFilter.join("|").toLowerCase();
@@ -222,6 +224,10 @@ export function MovieMain({
     }
   };
 
+  const handleFirstAirDateChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setFirstAirDate(event.target.checked);
+  };
+
   const handleButtonClick = () => {
     setIsDataFetched(true);
   };
@@ -254,15 +260,36 @@ export function MovieMain({
     isDataFetched
   );
 
+  const {
+    isLoading: tvLoading,
+    data: tvs,
+    error: tvError,
+  } = useTvAll(
+    sortValue,
+    userScore[0],
+    userScore[1],
+    userVote,
+    genreFilters,
+    runtime[0],
+    runtime[1],
+    certificationFilter,
+    monetizationFilterQuery,
+    keywordFilter,
+    releaseDateStart,
+    releaseDateEnd,
+    page,
+    isDataFetched
+  );
+
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
   const popular: Movie[] = movies.results || [];
+  const tvAll = tvs?.results || [];
 
   return (
     <>
       <Box>
-        <h1 className="font-bold text-2xl pl-5 my-7">Popular Movies</h1>
         <Grid container spacing={2}>
           <Grid item xs={3} xl={2}>
             <MovieFilters
@@ -303,10 +330,19 @@ export function MovieMain({
               releasesTypes={releasesTypes}
               handleReleaseChange={handleReleaseChange}
               mediaType={mediaType}
+              firstAirDate={firstAirDate}
+              handleFirstAirDateChange={handleFirstAirDateChange}
             />
           </Grid>
           <Grid sx={{ pr: 2 }} item xs={9} xl={10}>
-            <Box>{<MovieCards movies={popular} />}</Box>
+            <Box>
+              {
+                <MovieCards
+                  movies={mediaType === "movie" ? popular : tvAll}
+                  mediaType={mediaType}
+                />
+              }
+            </Box>
           </Grid>
         </Grid>
         <Stack sx={{ my: 4, display: "flex", alignItems: "center" }}>
