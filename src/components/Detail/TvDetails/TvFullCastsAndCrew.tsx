@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { FullCastsAndCrew } from "../../Cast/FullCastsAndCrew";
-import { useTvDetail } from "../../../hooks/VideoHooks/useTvDetail";
+import { useTvDetail } from "../../../hooks/TvHooks/useTvDetail";
 
 export function TvFullCastsAndCrew() {
   const { id } = useParams<{ id?: string }>();

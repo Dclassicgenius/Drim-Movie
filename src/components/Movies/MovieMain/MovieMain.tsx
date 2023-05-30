@@ -13,12 +13,14 @@ import { CountryType, countries } from "../../utility/Country/countries";
 
 type MovieMainProps = {
   sortValue?: string;
+  checkedAvailabilityAll?: boolean;
   releaseDateStart?: string | null;
   releaseDateEnd?: string | null;
   releasesAll?: boolean;
   releasesTypes?: number[];
   userVote?: number | string | Array<number | string>;
   pageCount?: number | undefined;
+  mediaType: "tv" | "movie";
 };
 
 const currentDate = new Date();
@@ -27,12 +29,14 @@ const initialReleaseDateEnd = currentDate.toISOString().substring(0, 10);
 
 export function MovieMain({
   sortValue: initialSortValue = "popularity.desc",
+  checkedAvailabilityAll: initialCheckedAvailabilityAll = true,
   releasesTypes: initialReleaseTypes = [1, 2, 3, 4, 5, 6],
   releasesAll: initialReleasesAll = true,
   releaseDateStart: initialReleaseDateStart = "",
   releaseDateEnd: initialReleaseEndDate = initialReleaseDateEnd,
   userVote: initialUserVote = 0,
   pageCount: initialPageCount = 500,
+  mediaType,
 }: MovieMainProps) {
   const [isDataFetched, setIsDataFetched] = useState(false);
 
@@ -48,7 +52,9 @@ export function MovieMain({
   >([]);
   const [isChipSelected, setIsChipSelected] = useState(false);
   const [isSearchDisabled, setIsSearchDisabled] = useState(true);
-  const [checkedAvailabilityAll, setCheckedAvailabilityAll] = useState(true);
+  const [checkedAvailabilityAll, setCheckedAvailabilityAll] = useState(
+    initialCheckedAvailabilityAll
+  );
   const [availabilityFilter, setAvailabilityFilter] = useState<string[]>([
     "flatrate",
     "free",
@@ -92,34 +98,6 @@ export function MovieMain({
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
-
-  // useEffect(() => {
-  //   if (
-  //     sortValue !== "" ||
-  //     (!checkedAvailabilityAll && availabilityFilter.length > 0) ||
-  //     runtime !== 0 ||
-  //     userScore !== 0 ||
-  //     userVote !== 0 ||
-  //     selectedGenreChips.length > 0 ||
-  //     selectedCertificationChips.length > 0 ||
-  //     availabilityFilter.length > 0 ||
-  //     selectedKeywords.length > 0
-  //   ) {
-  //     setIsSearchDisabled(false);
-  //   } else {
-  //     setIsSearchDisabled(true);
-  //   }
-  // }, [
-  //   sortValue,
-  //   checkedAvailabilityAll,
-  //   runtime,
-  //   userScore,
-  //   userVote,
-  //   selectedGenreChips,
-  //   selectedCertificationChips,
-  //   availabilityFilter,
-  //   selectedKeywords,
-  // ]);
 
   const handleSortChange = (event: SelectChangeEvent) => {
     setSortValue(event.target.value as string);
@@ -276,17 +254,6 @@ export function MovieMain({
     isDataFetched
   );
 
-  // useEffect(() => {
-  //   setIsSearchDisabled(isLoading);
-  // }, [isLoading]);
-
-  // useEffect(() => {
-  //   if (isDataFetched && !isLoading) {
-  //     setIsDataFetched(false);
-  //     setIsSearchDisabled(false);
-  //   }
-  // }, [isDataFetched, isLoading]);
-
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
@@ -335,6 +302,7 @@ export function MovieMain({
               handleReleaseAllChange={handleReleaseAllChange}
               releasesTypes={releasesTypes}
               handleReleaseChange={handleReleaseChange}
+              mediaType={mediaType}
             />
           </Grid>
           <Grid sx={{ pr: 2 }} item xs={9} xl={10}>

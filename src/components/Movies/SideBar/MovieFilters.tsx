@@ -28,6 +28,7 @@ import {
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Dayjs } from "dayjs";
 import { CountryType } from "../../utility/Country/countries";
+import { DateSelector } from "../../utility/DateSelector";
 
 type MovieFiltersProps = {
   sortValue: string;
@@ -69,6 +70,7 @@ type MovieFiltersProps = {
   releasesTypes: number[];
   handleReleaseAllChange: (event: ChangeEvent<HTMLInputElement>) => void;
   handleReleaseChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  mediaType: "tv" | "movie";
 };
 
 export function MovieFilters({
@@ -108,13 +110,17 @@ export function MovieFilters({
   releasesTypes,
   handleReleaseAllChange,
   handleReleaseChange,
+  mediaType,
 }: MovieFiltersProps) {
   const [isDivOpen, setIsDivOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(true);
 
-  const genres = useGenres("movie");
-  const { data: certifications } = useCertifications("movie");
-  const usCertifications = (certifications ?? {})["US"] || [];
+  const movieGenres = useGenres("movie");
+  const tvGenres = useGenres("tv");
+  const { data: movieCertifications } = useCertifications("movie");
+  const usMovieCertifications = (movieCertifications ?? {})["US"] || [];
+  const { data: tvCertifications } = useCertifications("tv");
+  const usTvCertifications = (tvCertifications ?? {})["US"] || [];
 
   const handleError = (error: DateValidationError, value: Dayjs | null) => {};
 
@@ -253,6 +259,41 @@ export function MovieFilters({
               </section>
               <hr />
               <section className="px-4 pt-3">
+                <h2 className=" font-light text-grey-500 text-sm">Air Dates</h2>
+                <Box>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={releaseAll}
+                        onChange={handleReleaseAllChange}
+                      />
+                    }
+                    label="Search all episodes?"
+                  />
+                </Box>
+                <div>
+                  {/* className={classNames(releaseAll ? "hidden" : "block")} */}
+                  <Box>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={countriesAll}
+                          onChange={handleCountriesAllChange}
+                        />
+                      }
+                      label="Search first air date?"
+                    />
+                  </Box>
+                </div>
+                <DateSelector
+                  releaseDateStart={releaseDateStart}
+                  releaseDateEnd={releaseDateEnd}
+                  handleReleaseDateStart={handleReleaseDateStart}
+                  handleReleaseDateEnd={handleReleaseDateEnd}
+                />
+              </section>
+              <hr />
+              <section className="px-4 pt-3">
                 <h2 className=" font-light text-grey-500 text-sm">
                   Release Dates
                 </h2>
@@ -313,7 +354,7 @@ export function MovieFilters({
                   </Box>
                 </div>
 
-                <Box>
+                {/* <Box>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <Box
                       sx={{
@@ -368,7 +409,13 @@ export function MovieFilters({
                       </Box>
                     </Box>
                   </LocalizationProvider>
-                </Box>
+                </Box> */}
+                <DateSelector
+                  releaseDateStart={releaseDateStart}
+                  releaseDateEnd={releaseDateEnd}
+                  handleReleaseDateStart={handleReleaseDateStart}
+                  handleReleaseDateEnd={handleReleaseDateEnd}
+                />
               </section>
               <hr />
               <section className="px-4 pt-3">
@@ -377,7 +424,7 @@ export function MovieFilters({
                 <FilterChips
                   selectedChips={selectedGenreChips}
                   handleChipClick={handleGenreChipClick}
-                  chips={genres && genres.data}
+                  chips={mediaType === "tv" ? tvGenres.data : movieGenres.data}
                 />
               </section>
               <hr />
@@ -388,8 +435,15 @@ export function MovieFilters({
                 <FilterChips
                   selectedChips={selectedCertificationChips}
                   handleChipClick={handleCertificationChipClick}
-                  chips={usCertifications}
-                  disableChips={usCertifications.map(
+                  chips={
+                    mediaType === "tv"
+                      ? usTvCertifications
+                      : usMovieCertifications
+                  }
+                  disableChips={(mediaType === "tv"
+                    ? usTvCertifications
+                    : usMovieCertifications
+                  ).map(
                     (chip) =>
                       isChipSelected &&
                       !selectedCertificationChips.includes(chip.certification)

@@ -3,7 +3,7 @@ import { FaTwitter } from "react-icons/fa";
 import { FaInstagram } from "react-icons/fa";
 import { FaLink } from "react-icons/fa";
 import ISO6391 from "iso-639-1";
-import { useTvDetail } from "../../../hooks/VideoHooks/useTvDetail";
+import { useTvDetail } from "../../../hooks/TvHooks/useTvDetail";
 import { KeyWord } from "../Keyword";
 
 type SideBarProps = {

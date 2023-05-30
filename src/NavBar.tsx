@@ -11,7 +11,7 @@ export function NavBar() {
   const tvs = [
     { id: 1, name: "Popular", to: "popular" },
     { id: 2, name: "Airing Today", to: "airing-today" },
-    { id: 3, name: "Upcoming", to: "upcoming" },
+    { id: 3, name: "On Tv", to: "on-tv" },
     { id: 4, name: "Top Rated", to: "top-rated" },
   ];
   const people = [{ id: 1, name: "Popular people", to: "popular-people" }];

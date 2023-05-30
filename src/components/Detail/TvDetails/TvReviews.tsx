@@ -1,4 +1,4 @@
-import { useTvDetail } from "../../../hooks/VideoHooks/useTvDetail";
+import { useTvDetail } from "../../../hooks/TvHooks/useTvDetail";
 import { Review } from "../../Review/Review";
 
 export type TvReviewProps = {

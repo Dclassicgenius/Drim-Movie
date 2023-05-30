@@ -11,11 +11,11 @@ import { TvFullCastsAndCrew } from "./components/Detail/TvDetails/TvFullCastsAnd
 import { TvReviewAll } from "./components/Detail/TvDetails/TvReviewAll";
 import { Person } from "./components/People/Person";
 import { SearchResults } from "./components/Search/SearchResults";
-import { MovieFilters } from "./components/Movies/SideBar/MovieFilters";
 import { PopularMovies } from "./components/Movies/PopularMovies/PopularMovies";
 import { NowPlaying } from "./components/Movies/NowPlaying/NowPlaying";
 import { Upcoming } from "./components/Movies/Upcoming/Upcoming";
 import { TopRated } from "./components/Movies/TopRated/TopRated";
+import { PopularTv } from "./components/TVs/PopularTvs/PopularTv";
 
 function App() {
   return (
@@ -35,6 +35,7 @@ function App() {
         <Route path="/movie/now-playing" element={<NowPlaying />} />
         <Route path="/movie/upcoming" element={<Upcoming />} />
         <Route path="/movie/top-rated" element={<TopRated />} />
+        <Route path="/tv/popular" element={<PopularTv />} />
       </Routes>
       <FooterNav />
     </>
