@@ -16,12 +16,15 @@ export function MovieDetail() {
       <MovieMainDetail movieId={movieId} API_IMG={API_IMG} />
 
       <section className="grid grid-cols-5 gap-4">
-        <MovieCast movieId={movieId} API_IMG={API_IMG} />
-        <MovieSideBar movieId={movieId} />
+        <div className="col-span-4">
+          <MovieCast movieId={movieId} API_IMG={API_IMG} />
+          <MovieReviews API_IMG={API_IMG} movieId={movieId} />
+          <MovieRecommendations movieId={movieId} API_IMG={API_IMG} />
+        </div>
+        <div>
+          <MovieSideBar movieId={movieId} />
+        </div>
       </section>
-
-      <MovieReviews API_IMG={API_IMG} movieId={movieId} />
-      <MovieRecommendations movieId={movieId} API_IMG={API_IMG} />
     </>
   );
 }

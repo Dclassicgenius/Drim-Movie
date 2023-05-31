@@ -19,6 +19,8 @@ import { PopularTv } from "./components/TVs/PopularTvs/PopularTv";
 import { AiringToday } from "./components/TVs/Airing Today/AiringToday";
 import { AiringOnTv } from "./components/TVs/On Tv/AiringOnTv";
 import { TopRatedTv } from "./components/TVs/Top Rated/TopRatedTv";
+import { PopularPeople } from "./components/People/Popular People/PopularPeople";
+import { MoviesByKeyword } from "./components/Detail/Keyword/MoviesByKeyword";
 
 function App() {
   return (
@@ -33,6 +35,7 @@ function App() {
         <Route path="/tv/:id/cast" element={<TvFullCastsAndCrew />} />
         <Route path="/tv/:id/reviews" element={<TvReviewAll />} />
         <Route path="/people/:id" element={<Person />} />
+        <Route path="/keyword/:id/:name" element={<MoviesByKeyword />} />
         <Route path="/search/:query" element={<SearchResults />} />
         <Route path="/movie/popular" element={<PopularMovies />} />
         <Route path="/movie/now-playing" element={<NowPlaying />} />
@@ -42,6 +45,7 @@ function App() {
         <Route path="/tv/airing-today" element={<AiringToday />} />
         <Route path="/tv/on-tv" element={<AiringOnTv />} />
         <Route path="/tv/top-rated" element={<TopRatedTv />} />
+        <Route path="/people/popular-people" element={<PopularPeople />} />
       </Routes>
       <FooterNav />
     </>

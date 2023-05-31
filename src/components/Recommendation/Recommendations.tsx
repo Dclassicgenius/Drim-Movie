@@ -30,7 +30,7 @@ export function Recommendations({
 
   return (
     <>
-      <section className=" px-10 text-sm">
+      <section className=" px-10 text-sm col-span-4">
         <hr />
         <h2 className="font-bold text-lg py-5">Recommendations</h2>
         <ol className="flex gap-4 overflow-x-scroll overflow-y-hidden list-none list-inside pb-6 items-stretch">

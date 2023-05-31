@@ -1,4 +1,5 @@
-import { Keyword } from "../../types";
+import { Link } from "react-router-dom";
+import { Keyword } from "../../../types";
 
 type KeywordProps = {
   id: number;
@@ -16,12 +17,14 @@ export function KeyWord({ id, useDetail }: KeywordProps) {
     <>
       <ul className="flex flex-wrap justify-start list-none py-3">
         {keywords.map((keyword) => (
-          <li
-            className="mr-2 mb-4 leading-6 whitespace-nowrap text-xs list-item bg-[#e5e5e5] px-3 py-1 rounded-lg"
-            key={keyword.id}
-          >
-            <a href="#">{keyword.name}</a>
-          </li>
+          <Link to={`/keyword/${keyword.id}/${keyword.name}`}>
+            <li
+              className="mr-2 mb-4 leading-6 whitespace-nowrap text-xs list-item bg-[#e5e5e5] px-3 py-1 rounded-lg"
+              key={keyword.id}
+            >
+              {keyword.name}
+            </li>
+          </Link>
         ))}
       </ul>
     </>

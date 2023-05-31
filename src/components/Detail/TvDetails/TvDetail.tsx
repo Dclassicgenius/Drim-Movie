@@ -17,12 +17,13 @@ export function TvDetail() {
       <TvMainDetail tvId={tvId} API_IMG={API_IMG} />
 
       <section className="grid grid-cols-5 gap-4">
-        <TvCast tvId={tvId} API_IMG={API_IMG} />
+        <div className="col-span-4">
+          <TvCast tvId={tvId} API_IMG={API_IMG} />
+          <TvReviews API_IMG={API_IMG} tvId={tvId} />
+          <TvRecommendations tvId={tvId} API_IMG={API_IMG} />
+        </div>
         <TvSideBar id={tvId} API_IMG={API_IMG} />
       </section>
-
-      <TvReviews API_IMG={API_IMG} tvId={tvId} />
-      <TvRecommendations tvId={tvId} API_IMG={API_IMG} />
     </>
   );
 }

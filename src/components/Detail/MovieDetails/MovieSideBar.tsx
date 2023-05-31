@@ -4,7 +4,7 @@ import { FaInstagram } from "react-icons/fa";
 import { FaLink } from "react-icons/fa";
 import ISO6391 from "iso-639-1";
 import { useMovieDetail } from "../../../hooks/MovieHooks/useMovieDetail";
-import { KeyWord } from "../Keyword";
+import { KeyWord } from "../Keyword/Keyword";
 
 type SideBarProps = {
   movieId: number;
@@ -34,7 +34,7 @@ export function MovieSideBar({ movieId }: SideBarProps) {
 
   return (
     <>
-      <aside className="space-y-5 p-4 pt-10 col-span-1">
+      <aside className="space-y-5 p-4 pt-14 col-span-1">
         <ol className="flex gap-5 text-xl pb-6">
           {facebookUrl && (
             <li>
