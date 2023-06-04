@@ -3,13 +3,11 @@ import { Review } from "../../Review/Review";
 
 export type MovieReviewProps = {
   movieId: number;
-  API_IMG: string;
 };
 
-export function MovieReviews({ movieId, API_IMG }: MovieReviewProps) {
+export function MovieReviews({ movieId }: MovieReviewProps) {
   return (
     <Review
-      API_IMG={API_IMG}
       id={movieId}
       useDetail={useMovieDetail}
       displayCount={1}

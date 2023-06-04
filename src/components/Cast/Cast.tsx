@@ -4,12 +4,11 @@ import { ICast } from "./castType";
 
 type CastProps = {
   id: number;
-  API_IMG: string;
   useDetail: (id: number) => any;
   detailType: "movie" | "tv";
 };
 
-export function Cast({ id, API_IMG, useDetail, detailType }: CastProps) {
+export function Cast({ id, useDetail, detailType }: CastProps) {
   const { data, isLoading, error } = useDetail(id);
 
   if (isLoading) return <div>Loading...</div>;
@@ -23,6 +22,8 @@ export function Cast({ id, API_IMG, useDetail, detailType }: CastProps) {
     (cast: { known_for_department: string }) =>
       cast.known_for_department === "Acting"
   );
+
+  const API_IMG = "https://image.tmdb.org/t/p/w500";
 
   return (
     <>

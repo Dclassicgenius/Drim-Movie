@@ -14,15 +14,15 @@ export function TvDetail() {
 
   return (
     <>
-      <TvMainDetail tvId={tvId} API_IMG={API_IMG} />
+      <TvMainDetail tvId={tvId} />
 
       <section className="grid grid-cols-5 gap-4">
         <div className="col-span-4">
-          <TvCast tvId={tvId} API_IMG={API_IMG} />
-          <TvReviews API_IMG={API_IMG} tvId={tvId} />
-          <TvRecommendations tvId={tvId} API_IMG={API_IMG} />
+          <TvCast tvId={tvId} />
+          <TvReviews tvId={tvId} />
+          <TvRecommendations tvId={tvId} />
         </div>
-        <TvSideBar id={tvId} API_IMG={API_IMG} />
+        <TvSideBar id={tvId} />
       </section>
     </>
   );

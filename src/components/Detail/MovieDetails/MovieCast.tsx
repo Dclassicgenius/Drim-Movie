@@ -3,15 +3,7 @@ import { Cast } from "../../Cast/Cast";
 
 export type MovieCastProps = {
   movieId: number;
-  API_IMG: string;
 };
-export function MovieCast({ movieId, API_IMG }: MovieCastProps) {
-  return (
-    <Cast
-      id={movieId}
-      API_IMG={API_IMG}
-      useDetail={useMovieDetail}
-      detailType={"movie"}
-    />
-  );
+export function MovieCast({ movieId }: MovieCastProps) {
+  return <Cast id={movieId} useDetail={useMovieDetail} detailType={"movie"} />;
 }

@@ -3,13 +3,11 @@ import { Review } from "../../Review/Review";
 
 export type TvReviewProps = {
   tvId: number;
-  API_IMG: string;
 };
 
-export function TvReviews({ tvId, API_IMG }: TvReviewProps) {
+export function TvReviews({ tvId }: TvReviewProps) {
   return (
     <Review
-      API_IMG={API_IMG}
       id={tvId}
       useDetail={useTvDetail}
       displayCount={1}

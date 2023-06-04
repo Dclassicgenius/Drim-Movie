@@ -8,11 +8,11 @@ import { KeyWord } from "../Keyword/Keyword";
 
 type SideBarProps = {
   id: number;
-  API_IMG: string;
 };
 
-export function TvSideBar({ id, API_IMG }: SideBarProps) {
+export function TvSideBar({ id }: SideBarProps) {
   const { data, isLoading, error } = useTvDetail(id);
+  const API_IMG = "https://image.tmdb.org/t/p/w500";
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;

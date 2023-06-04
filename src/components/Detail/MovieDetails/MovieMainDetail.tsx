@@ -3,7 +3,6 @@ import { DetailMain } from "../DetailMain";
 
 type MovieMainProps = {
   movieId: number;
-  API_IMG: string;
 };
 
 export function MovieMainDetail({ movieId }: MovieMainProps) {

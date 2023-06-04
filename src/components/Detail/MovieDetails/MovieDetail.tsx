@@ -13,13 +13,13 @@ export function MovieDetail() {
 
   return (
     <>
-      <MovieMainDetail movieId={movieId} API_IMG={API_IMG} />
+      <MovieMainDetail movieId={movieId} />
 
       <section className="grid grid-cols-5 gap-4">
         <div className="col-span-4">
-          <MovieCast movieId={movieId} API_IMG={API_IMG} />
-          <MovieReviews API_IMG={API_IMG} movieId={movieId} />
-          <MovieRecommendations movieId={movieId} API_IMG={API_IMG} />
+          <MovieCast movieId={movieId} />
+          <MovieReviews movieId={movieId} />
+          <MovieRecommendations movieId={movieId} />
         </div>
         <div>
           <MovieSideBar movieId={movieId} />

@@ -13,7 +13,6 @@ import { CreatedBy } from "./TvDetails/TvDetailsType";
 
 type DetailMainProps = {
   id: number;
-  API_IMG: string;
   useDetail: (id: number) => any;
   detailType: "movie" | "tv";
 };

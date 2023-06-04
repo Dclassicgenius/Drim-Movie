@@ -6,13 +6,11 @@ import malePlaceholder from "../../assets/defaultMale.svg";
 export function Review({
   id,
   displayCount = -1,
-  API_IMG,
   useDetail,
   detailType,
 }: {
   id: number;
   showAll?: boolean;
-  API_IMG: string;
   displayCount: number;
   useDetail: (id: number) => any;
   detailType: "movie" | "tv";
@@ -30,6 +28,8 @@ export function Review({
       : reviews.length > 0
       ? [reviews[Math.floor(Math.random() * reviews.length)]]
       : [];
+
+  const API_IMG = "https://image.tmdb.org/t/p/w500";
 
   return (
     <>

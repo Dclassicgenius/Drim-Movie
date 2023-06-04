@@ -3,16 +3,8 @@ import { DetailMain } from "../DetailMain";
 
 type TvMainDetailProps = {
   tvId: number;
-  API_IMG: string;
 };
 
-export function TvMainDetail({ tvId, API_IMG }: TvMainDetailProps) {
-  return (
-    <DetailMain
-      id={tvId}
-      API_IMG={API_IMG}
-      useDetail={useTvDetail}
-      detailType="tv"
-    />
-  );
+export function TvMainDetail({ tvId }: TvMainDetailProps) {
+  return <DetailMain id={tvId} useDetail={useTvDetail} detailType="tv" />;
 }

@@ -4,13 +4,11 @@ import { IRecommendation } from "./recommendationType";
 
 interface RecommendationProps {
   id: number;
-  API_IMG: string;
   useDetail: (id: number) => any;
   detailType: "movie" | "tv";
 }
 
 export function Recommendations({
-  API_IMG,
   id,
   useDetail,
   detailType,
@@ -22,6 +20,8 @@ export function Recommendations({
 
   const recommendations: IRecommendation[] =
     data?.recommendations.results || [];
+
+  const API_IMG = "https://image.tmdb.org/t/p/w500";
 
   // const title =
   //   detailType === "movie" ? data.title || data.original_title : data.name;
