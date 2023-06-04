@@ -59,7 +59,7 @@ export function FullCastsAndCrew({
       <section className="pb-10">
         <a ref={topAnchor} tabIndex={-1} />
         <PageHeader useDetail={useDetail} detailType={detailType} />
-        <div className="pl-20 pt-10 grid grid-cols-2 gap-8">
+        <div className="px-5 sm:px-20 pt-10 grid sm:grid-cols-2 gap-8">
           <article>
             <h2 className="font-bold text-xl pb-7">
               Cast{" "}
@@ -108,7 +108,7 @@ export function FullCastsAndCrew({
             </ol>
           </article>
           <article>
-            <h2 className="font-bold text-xl pb-7">
+            <h2 className="font-bold text-xl sm:pb-7">
               Crew{" "}
               <span className="text-[#c0baba] font-normal">{crew.length}</span>
             </h2>

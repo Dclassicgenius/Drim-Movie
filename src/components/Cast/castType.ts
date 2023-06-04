@@ -7,7 +7,7 @@ export interface Roles {
 export interface Jobs {
   credit_id: string;
   job: string;
-  episode_count: number;
+  episode_count?: number;
 }
 
 export interface ICast {

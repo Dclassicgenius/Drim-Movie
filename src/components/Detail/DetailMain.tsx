@@ -76,30 +76,30 @@ export function DetailMain({ id, useDetail, detailType }: DetailMainProps) {
   return (
     <>
       <section
-        className="grid grid-cols-4 gap-8 pt-10 px-10 pb-8 bg-cover "
+        className="sm:grid sm:grid-cols-4 gap-8 pt-10 px-5 sm:px-10 pb-8 bg-cover items-center"
         style={{
           backgroundImage: `linear-gradient( to bottom right, rgba(3,37,65, 1) , rgba(3,37,65, 0.8) ), url(${
             API_IMG + data.backdrop_path
           })`,
         }}
       >
-        <figure className="col-span-1 z-10">
+        <figure className="sm:col-span-1 pb-5 sm:pb-0 z-10">
           <img src={API_IMG + data.poster_path} alt="" className="rounded-lg" />
         </figure>
 
-        <div className="col-span-3 text-white z-10 flex flex-col justify-center">
+        <div className="sm:col-span-3 text-white z-10 flex flex-col justify-center">
           <div className="text-[#c0baba]">
-            <h2 className="font-bold text-2xl text-white">
+            <h2 className="font-bold sm:text-2xl text-lg text-white pb-5 sm:pb-0">
               {title}{" "}
               {releaseDate && (
-                <span className="font-normal text-[#c0baba]">
+                <span className=" font-extralight sm:font-normal text-[#c0baba]">
                   ({new Date(releaseDate).getFullYear()})
                 </span>
               )}
             </h2>
-            <div className="space-x-3 text-sm flex gap-2">
+            <div className="space-x-3 text-xs sm:text-sm flex sm:gap-2">
               {certification !== "Not available" && (
-                <span className="border border-current p-0.5 mr-3">
+                <span className="border border-current p-0.5 mr-3 flex items-center">
                   {certification}
                 </span>
               )}
@@ -131,8 +131,8 @@ export function DetailMain({ id, useDetail, detailType }: DetailMainProps) {
               </ul>
             </div>
           </div>
-          <div className="flex gap-8 py-6 items-center font-bold text-base ">
-            <p className="">
+          <div className="flex gap-2 sm:gap-8 py-6 items-center font-bold text-xs sm:text-base ">
+            <p className="flex items-center gap-2">
               <CircularProgressBar score={data.vote_average} /> User Score
             </p>
             <a
@@ -194,7 +194,7 @@ export function DetailMain({ id, useDetail, detailType }: DetailMainProps) {
                     </li>
                   </Link>
                   <li className="text-[#c0baba] text-xs">
-                    {crew.jobs.join(", ")}
+                    {crew.jobs.map((job) => job.job).join(", ")}
                   </li>
                 </ul>
               ))}

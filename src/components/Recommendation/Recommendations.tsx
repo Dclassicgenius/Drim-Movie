@@ -30,7 +30,7 @@ export function Recommendations({
 
   return (
     <>
-      <section className=" px-10 text-sm col-span-4">
+      <section className=" px-6 text-sm col-span-4">
         <hr />
         <h2 className="font-bold text-lg py-5">Recommendations</h2>
         <ol className="flex gap-4 overflow-x-scroll overflow-y-hidden list-none list-inside pb-6 items-stretch">
@@ -49,7 +49,7 @@ export function Recommendations({
                 return (
                   <Link to={`/${detailType}/${item.id}`} key={item.id}>
                     <li
-                      className="shadow-md rounded-lg overflow-hidden min-w-[250px] w-[350px]"
+                      className="shadow-md rounded-lg overflow-hidden min-w-[250px] "
                       key={item.id}
                     >
                       <a href="#">

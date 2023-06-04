@@ -11,6 +11,7 @@ import dayjs, { Dayjs } from "dayjs";
 import React from "react";
 import { CountryType, countries } from "../../utility/Country/countries";
 import { useTvAll } from "../../../hooks/TvHooks/useTvAll";
+import { auto } from "@popperjs/core";
 
 type MovieMainProps = {
   sortValue?: string;
@@ -290,8 +291,8 @@ export function MovieMain({
   return (
     <>
       <Box>
-        <Grid container spacing={2}>
-          <Grid item xs={3} xl={2}>
+        <Grid container spacing={1}>
+          <Grid item xs={12} sm={4} md={3} lg={2}>
             <MovieFilters
               runtime={runtime}
               handleRuntimeChange={handleRuntimeChange}
@@ -334,7 +335,7 @@ export function MovieMain({
               handleFirstAirDateChange={handleFirstAirDateChange}
             />
           </Grid>
-          <Grid sx={{ pr: 2 }} item xs={9} xl={10}>
+          <Grid sx={{ pr: { sm: 2 } }} item xs={12} sm={8} md={9} lg={10}>
             <Box>
               {
                 <MovieCards

@@ -29,7 +29,7 @@ export const DateSelector = ({
           <Box
             sx={{
               display: "flex",
-              justifyContent: "space-between",
+              gap: "15px",
               alignItems: "center",
               py: 1.5,
             }}
@@ -54,7 +54,7 @@ export const DateSelector = ({
           <Box
             sx={{
               display: "flex",
-              justifyContent: "space-between",
+              gap: "30px",
               alignItems: "center",
               py: 1.5,
             }}

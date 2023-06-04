@@ -15,8 +15,8 @@ export function MovieDetail() {
     <>
       <MovieMainDetail movieId={movieId} />
 
-      <section className="grid grid-cols-5 gap-4">
-        <div className="col-span-4">
+      <section className="grid sm:grid-cols-5 grid-cols-1 gap-4">
+        <div className=" col-span-1 sm:col-span-4">
           <MovieCast movieId={movieId} />
           <MovieReviews movieId={movieId} />
           <MovieRecommendations movieId={movieId} />

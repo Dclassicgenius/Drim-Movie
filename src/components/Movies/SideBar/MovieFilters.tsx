@@ -172,9 +172,9 @@ export function MovieFilters({
 
   return (
     <>
-      <aside className=" pr-5 pb-5 pl-5">
+      <aside className=" pb-5 px-10 [@media(min-width:600px)]:px-5">
         <div className="mb-4">
-          <section className="shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] mb-4 rounded-lg">
+          <section className="shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] mb-4 rounded-lg [@media(min-width:600px)]:px-0 px-10 ">
             <div>
               <button
                 className="px-3 text-left py-3 w-full font-bold"
@@ -210,16 +210,16 @@ export function MovieFilters({
 
           <div className="shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] rounded-lg">
             <button
-              className="text-left w-full pb-2 font-bold px-4 pt-4  "
+              className="text-left w-full pb-2 font-bold px-12 [@media(min-width:600px)]:px-4 pt-4  "
               onClick={toggleFilter}
             >
               Filter
             </button>
             <hr />
 
-            <div className={classNames(isFilterOpen ? "block" : "hidden", "")}>
-              <section className="px-4 py-3">
-                <h2 className=" font-light text-grey-500 text-sm">
+            <div className={classNames(isFilterOpen ? "block" : "hidden")}>
+              <section className="[@media(min-width:600px)]:px-4 py-3 px-10">
+                <h2 className=" font-light text-grey-500 text-sm ">
                   Availabilities
                 </h2>
                 <Box>
@@ -264,7 +264,9 @@ export function MovieFilters({
               <hr />
               <section
                 className={classNames(
-                  mediaType === "tv" ? "block px-4 pt-3" : "hidden"
+                  mediaType === "tv"
+                    ? "block [@media(min-width:600px)]:px-4 pt-3 px-10"
+                    : "hidden"
                 )}
               >
                 <h2 className=" font-light text-grey-500 text-sm">Air Dates</h2>
@@ -279,7 +281,7 @@ export function MovieFilters({
                     label="Search all episodes?"
                   />
                 </Box>
-                <div className={classNames(releaseAll ? "hidden" : "block")}>
+                <div className={classNames(releaseAll ? "hidden" : "block ")}>
                   <Box>
                     <FormControlLabel
                       control={
@@ -304,7 +306,9 @@ export function MovieFilters({
               />
               <section
                 className={classNames(
-                  mediaType === "movie" ? "block px-4 pt-3" : "hidden"
+                  mediaType === "movie"
+                    ? "block [@media(min-width:600px)]:px-4 pt-3 px-10"
+                    : "hidden"
                 )}
               >
                 <h2 className=" font-light text-grey-500 text-sm">
@@ -367,62 +371,6 @@ export function MovieFilters({
                   </Box>
                 </div>
 
-                {/* <Box>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        py: 1.5,
-                      }}
-                    >
-                      <Typography sx={{ color: "grey.500", marginRight: 1 }}>
-                        from
-                      </Typography>
-                      <DatePicker
-                        label="Pick a date"
-                        value={releaseDateStart}
-                        onChange={handleReleaseDateStart}
-                        maxDate={releaseDateEnd as Dayjs | undefined}
-                        onError={handleError}
-                        slotProps={{
-                          textField: {
-                            helperText: "",
-                            error: false,
-                          },
-                        }}
-                      />
-                    </Box>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        py: 1.5,
-                      }}
-                    >
-                      <Typography sx={{ color: "grey.500", marginRight: 1 }}>
-                        to
-                      </Typography>
-                      <Box>
-                        <DatePicker
-                          label="Pick a date"
-                          value={releaseDateEnd}
-                          onChange={handleReleaseDateEnd}
-                          minDate={releaseDateStart as Dayjs | undefined}
-                          onError={handleError}
-                          slotProps={{
-                            textField: {
-                              helperText: "",
-                              error: false,
-                            },
-                          }}
-                        />
-                      </Box>
-                    </Box>
-                  </LocalizationProvider>
-                </Box> */}
                 <DateSelector
                   releaseDateStart={releaseDateStart}
                   releaseDateEnd={releaseDateEnd}
@@ -435,7 +383,7 @@ export function MovieFilters({
                   mediaType === "movie" ? "block" : "hidden"
                 )}
               />
-              <section className="px-4 pt-3">
+              <section className="[@media(min-width:600px)]:px-4 pt-3 px-10">
                 <h2 className=" font-light text-grey-500 text-sm">Genres</h2>
 
                 <FilterChips
@@ -445,7 +393,7 @@ export function MovieFilters({
                 />
               </section>
               <hr />
-              <section className="px-4 pt-3">
+              <section className="[@media(min-width:600px)]:px-4 pt-3 px-10">
                 <h2 className=" font-light text-grey-500 text-sm">
                   Certifications
                 </h2>
@@ -468,7 +416,7 @@ export function MovieFilters({
                 />
               </section>
               <hr />
-              <section className="px-4 pt-3">
+              <section className="[@media(min-width:600px)]:px-4 pt-3 px-10">
                 <h2 className=" font-light text-grey-500 text-sm">
                   User Score
                 </h2>
@@ -486,7 +434,7 @@ export function MovieFilters({
                 />
               </section>
               <hr />
-              <section className="px-4 pt-3">
+              <section className="[@media(min-width:600px)]:px-4 pt-3 px-10">
                 <h2 className=" font-light text-grey-500 text-sm">
                   Minimum User Votes
                 </h2>
@@ -504,7 +452,7 @@ export function MovieFilters({
                 />
               </section>
               <hr />
-              <section className="px-4 pt-3">
+              <section className="[@media(min-width:600px)]:px-4 pt-3 px-10">
                 <h2 className=" font-light text-grey-500 text-sm">Runtime</h2>
                 <Slider
                   aria-label="Runtime"
@@ -520,7 +468,7 @@ export function MovieFilters({
                 />
               </section>
               <hr />
-              <section className="p-4">
+              <section className="[@media(min-width:600px)]:px-4 p-4 px-10">
                 <h2 className=" font-light text-grey-500 text-sm pb-2">
                   Keywords
                 </h2>
@@ -556,7 +504,7 @@ export function MovieFilters({
           </div>
         </div>
 
-        <button
+        {/* <button
           disabled={isSearchDisabled}
           onClick={handleButtonClick}
           className={classNames(
@@ -574,7 +522,7 @@ export function MovieFilters({
           )}
         >
           Search
-        </button>
+        </button> */}
       </aside>
     </>
   );

@@ -27,7 +27,7 @@ export function Cast({ id, useDetail, detailType }: CastProps) {
 
   return (
     <>
-      <section className=" pl-10 py-6 col-span-4">
+      <section className="px-6 py-6 col-span-4">
         <h2 className="font-bold py-6 text-lg">
           {detailType === "movie" ? "Top Billed Cast" : "Series Cast"}
         </h2>

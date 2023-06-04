@@ -34,8 +34,8 @@ export function MovieSideBar({ movieId }: SideBarProps) {
 
   return (
     <>
-      <aside className="space-y-5 p-4 pt-14 col-span-1">
-        <ol className="flex gap-5 text-xl pb-6">
+      <aside className="space-y-5 p-4 sm:p-0 sm:pt-14 col-span-1">
+        <ol className="flex gap-5 text-xl sm:pb-6">
           {facebookUrl && (
             <li>
               <a href={facebookUrl} target="_blank" rel="noopener noreferrer">

@@ -7,7 +7,9 @@ export const AiringToday = () => {
 
   return (
     <>
-      <h1 className="font-bold text-2xl pl-5 my-7">TV Shows Airing Today</h1>
+      <h1 className="font-bold text-2xl pl-10 [@media(min-width:600px)]:pl-5 my-7">
+        TV Shows Airing Today
+      </h1>
       <MovieMain
         checkedAvailabilityAll={false}
         releaseDateStart={currentDate}

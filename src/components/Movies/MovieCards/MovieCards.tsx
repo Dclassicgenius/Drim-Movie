@@ -29,10 +29,15 @@ export function MovieCards({ movies, mediaType }: MovieProps) {
   const API_IMG = "https://image.tmdb.org/t/p/w500";
   return (
     <>
-      <Grid container spacing={2} alignItems="stretch">
+      <Grid
+        container
+        spacing={2}
+        sx={{ px: { xs: 4, sm: 0 } }}
+        alignItems="stretch"
+      >
         {Array.isArray(movies) &&
           movies.map((movie) => (
-            <Grid item xs={6} md={3} lg={2} xl={1} key={movie.id}>
+            <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={movie.id}>
               <Card sx={{ position: "relative" }}>
                 <CardActionArea
                   component={Link}
@@ -48,9 +53,9 @@ export function MovieCards({ movies, mediaType }: MovieProps) {
                     }
                     alt={isMovie(movie) ? movie.title : movie.name + "poster"}
                     sx={{
-                      height: 250,
+                      // height: 250,
                       width: "100%",
-                      objectFit: "cover",
+                      // objectFit: "cover",
                     }}
                   />
                   <CardContent sx={{ p: 1 }}>

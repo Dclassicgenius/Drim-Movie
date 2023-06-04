@@ -24,8 +24,8 @@ export function PageHeader({ useDetail, detailType }: PageHeaderProps) {
   return (
     <>
       <div className="bg-slate-800">
-        <div className="pl-20 text-white flex gap-8 items-center justify-start py-6">
-          <figure className="w-[60px] h-[90px]">
+        <div className=" px-5 sm:px-0 sm:pl-10 text-white flex gap-4 sm:gap-8 items-center justify-start py-6">
+          <figure className="w-[60px] ">
             <img
               src={API_IMG + data.poster_path}
               alt=""
@@ -33,7 +33,7 @@ export function PageHeader({ useDetail, detailType }: PageHeaderProps) {
             />
           </figure>
           <div>
-            <h1 className="font-bold text-3xl">
+            <h1 className="font-bold text-lg sm:text-3xl">
               {title}{" "}
               <span className="text-[#c0baba] font-normal">
                 ({new Date(releaseDate).getFullYear()})

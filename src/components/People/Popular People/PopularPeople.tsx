@@ -14,6 +14,7 @@ import { IMovie } from "../../../types";
 import placeholderImage from "../../../assets/placeholderImage.png";
 import { Person } from "../../Search/SearchType/SearchType";
 import { Link } from "react-router-dom";
+import { auto } from "@popperjs/core";
 
 export const PopularPeople = () => {
   const API_IMG = "https://image.tmdb.org/t/p/w500";
@@ -35,7 +36,7 @@ export const PopularPeople = () => {
 
         <Grid container spacing={2} alignItems="stretch">
           {popularPeople.map((person) => (
-            <Grid item xs={6} md={3} lg={2} xl={1} key={person.id}>
+            <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={person.id}>
               <Card>
                 <CardActionArea component={Link} to={`/people/${person.id}`}>
                   <CardMedia
@@ -47,7 +48,7 @@ export const PopularPeople = () => {
                         : placeholderImage
                     }
                     sx={{
-                      height: 350,
+                      // height: 350,
                       width: "100%",
                       objectFit: "cover",
                     }}

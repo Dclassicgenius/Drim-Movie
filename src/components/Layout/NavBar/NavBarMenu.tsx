@@ -45,6 +45,7 @@ export default function NavBarMenu({
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
         endIcon={<KeyboardArrowDownIcon />}
+        sx={{ color: "inherit" }}
       >
         {header}
       </Button>

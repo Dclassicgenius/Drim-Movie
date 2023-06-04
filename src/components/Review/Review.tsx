@@ -2,6 +2,7 @@ import { FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { IReview } from "./reviewType";
 import malePlaceholder from "../../assets/defaultMale.svg";
+import { useState } from "react";
 
 export function Review({
   id,
@@ -15,6 +16,7 @@ export function Review({
   useDetail: (id: number) => any;
   detailType: "movie" | "tv";
 }) {
+  const [showFullText, setShowFullText] = useState(false);
   const { data, isLoading, error } = useDetail(id);
 
   if (isLoading) return <div>Loading...</div>;
@@ -34,7 +36,7 @@ export function Review({
   return (
     <>
       {reviews.length > 0 && (
-        <section className="px-10 pb-6">
+        <section className="px-5 sm:px-10 pb-6">
           <hr />
           <h2 className="font-bold text-lg pt-6 pb-4">
             Reviews{" "}
@@ -87,7 +89,9 @@ export function Review({
                     <span className="font-semibold">{review.author}</span> on{" "}
                     {new Date(review.created_at).toLocaleDateString()}
                   </p>
-                  <p className="text-sm font-normal">{review.content}</p>
+                  <p className="text-sm font-normal line-clamp-3">
+                    {review.content}
+                  </p>
                 </div>
               </article>
             );
