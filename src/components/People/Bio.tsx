@@ -50,12 +50,12 @@ export function Bio({ id }: BioProps) {
 
   return (
     <>
-      <aside className="space-y-5 p-4 pt-10 col-span-2">
+      <aside className="space-y-3 sm:space-y-5 p-4 pt-10 sm:col-span-2">
         <figure className=" rounded-xl overflow-hidden">
           <img src={API_IMG + data.profile_path} alt="" className="" />
         </figure>
 
-        <div className="pt-5 pb-7">
+        <div className=" pt-0 sm:pt-5 pb-7">
           <ol className="flex items-center justify-start gap-4 ">
             {instagramUrl && (
               <li>

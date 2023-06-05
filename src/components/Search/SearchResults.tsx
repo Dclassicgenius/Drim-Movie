@@ -49,21 +49,18 @@ export function SearchResults() {
     isLoading: movieLoading,
     isError: movieError,
   } = useSearchResult(moviePage, "movie", query);
-  console.log(movieSearchResults);
 
   const {
     data: tvSearchResults,
     isLoading: tvLoading,
     isError: tvError,
   } = useSearchResult(tvPage, "tv", query);
-  console.log(tvSearchResults);
 
   const {
     data: peopleSearchResults,
     isLoading: peopleLoading,
     isError: peopleError,
   } = useSearchResult(personPage, "person", query);
-  console.log(peopleSearchResults);
 
   function isMovie(value: SearchResult): value is IMovie {
     return (
@@ -96,11 +93,11 @@ export function SearchResults() {
 
   const peopleResult = (peopleSearchResults?.results || []).filter(isPerson);
 
-  useEffect(() => {
-    console.log("Movie Results:", movieResults);
-    console.log("TV Results:", tvResults);
-    console.log("People Results:", peopleResult);
-  }, [movieResults, tvResults, peopleResult]);
+  // useEffect(() => {
+  //   console.log("Movie Results:", movieResults);
+  //   console.log("TV Results:", tvResults);
+  //   console.log("People Results:", peopleResult);
+  // }, [movieResults, tvResults, peopleResult]);
 
   const updatedTabs = tabs.map((tab) => ({
     ...tab,
@@ -126,14 +123,14 @@ export function SearchResults() {
         />
       </section>
 
-      <div className="grid grid-cols-5 pl-16 pt-16">
+      <div className="grid sm:grid-cols-5 p-5 sm:pl-16 sm:pt-16">
         <SearchSideBar
           tabs={updatedTabs}
           handleTabClick={setActiveTab}
           activeTab={activeTab}
         />
 
-        <div className="col-span-4">
+        <div className="sm:col-span-4">
           {activeTab.label === "Movies" && (
             <>
               <MediaSearchCard media={movieResults} />

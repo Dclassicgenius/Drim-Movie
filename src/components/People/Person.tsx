@@ -8,7 +8,7 @@ export function Person() {
 
   return (
     <>
-      <section className="grid grid-cols-8 pl-7">
+      <section className="sm:grid sm:grid-cols-8 sm:pl-7">
         <Bio id={personId} />
         <Credits id={personId} />
       </section>

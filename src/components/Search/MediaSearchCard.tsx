@@ -10,7 +10,7 @@ export function MediaSearchCard({ media }: MediaSearchCardProps) {
   const API_IMG = "https://image.tmdb.org/t/p/w500";
   return (
     <>
-      <article className="pl-10 col-span-4 mr-14">
+      <article className="sm:pl-10 sm:col-span-4 sm:mr-14 pt-6">
         {media &&
           media.map((item) => (
             <li className="shadow-lg rounded-lg flex gap-4 items-center mb-6">
@@ -21,7 +21,7 @@ export function MediaSearchCard({ media }: MediaSearchCardProps) {
                     : `/movie/${item.id}`
                 }
               >
-                <figure className="h-[140px] w-[100px] min-w-[95px] overflow-hidden cursor-pointer">
+                <figure className=" w-[100px] min-w-[95px] overflow-hidden cursor-pointer">
                   <img
                     src={
                       item.poster_path
@@ -43,8 +43,8 @@ export function MediaSearchCard({ media }: MediaSearchCardProps) {
                         : `/movie/${item.id}`
                     }
                   >
-                    <h2 className="font-bold">
-                      {item.media_type === "tv" ? item.name : item.title}
+                    <h2 className="font-bold text-start">
+                      {item.title || item.name}
                     </h2>
                   </Link>
 

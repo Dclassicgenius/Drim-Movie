@@ -13,7 +13,7 @@ export function PeopleSearchCard({ persons }: PeopleSearchCardProps) {
 
   return (
     <>
-      <article className="pl-10  col-span-4">
+      <article className="sm:pl-10 sm:col-span-4 sm:mr-14 pt-6 p-3">
         <ol className="grid gap-4">
           {persons &&
             persons.map((person) => (

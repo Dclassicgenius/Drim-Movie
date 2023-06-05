@@ -19,7 +19,7 @@ export function SearchSideBar({
 }: SearchSideBarProps) {
   return (
     <>
-      <aside className="shadow rounded-lg col-span-1 overflow-hidden h-[200px]">
+      <aside className="shadow rounded-lg sm:col-span-1 overflow-hidden sm:h-[200px]">
         <div className="bg-[#09b4e4] overflow-hidden">
           <h2 className="text-white font-bold p-5 text-lg">Search Results</h2>
         </div>

@@ -27,14 +27,12 @@ export const getUniqueImportantCrew = (data: {
       const job: Jobs = {
         credit_id: crew.credit_id,
         job: crew.job,
-        // episode_count: crew.episode_count,
       };
       existingCrew.jobs.push(job);
     } else if (crew.job) {
       const job: Jobs = {
         credit_id: crew.credit_id,
         job: crew.job,
-        // episode_count: crew.episode_count,
       };
       acc.push({ ...crew, jobs: [job] });
     }

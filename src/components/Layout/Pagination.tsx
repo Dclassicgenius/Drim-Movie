@@ -54,7 +54,7 @@ export function Pagination({
           ) : null
         }
         onPageChange={handlePageClick}
-        pageRangeDisplayed={5}
+        pageRangeDisplayed={2}
         pageCount={totalPages}
         previousLabel={
           showPrevButton ? (
@@ -64,7 +64,7 @@ export function Pagination({
           ) : null
         }
         containerClassName="flex items-center justify-center mt-8 mb-4"
-        pageClassName="block border border-solid border-gray-500 hover:bg-gray-300 w-10 h-10 flex items-center justify-center rounded-md mr-4"
+        pageClassName="block border border-solid border-gray-500 hover:bg-gray-300 w-8 h-8 flex items-center justify-center rounded-md mr-3"
         activeClassName="bg-blue-500 text-white"
       />
     </motion.div>

@@ -6,7 +6,7 @@ import { useState } from "react";
 
 // import Tippy from "@tippyjs/react/headless";
 import Tippy from "@tippyjs/react";
-import "tippy.js/dist/tippy.css";
+// import "tippy.js/dist/tippy.css";
 
 type CreditListProps = {
   credit: Cast[] | Crew[];
@@ -71,8 +71,8 @@ export function CreditList({ credit }: CreditListProps) {
         return (
           <>
             {hrElement}
-            <div className="flex gap-4 p-4 items-center" key={credit.id}>
-              <p>{year}</p>
+            <div className="flex gap-4 p-3 sm:p-4 items-center" key={credit.id}>
+              <p className="mr-1">{year}</p>
               <Tippy
                 visible={selectedItemId === credit.id}
                 onClickOutside={() => setSelectedItemId(null)}

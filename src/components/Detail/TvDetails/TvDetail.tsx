@@ -16,7 +16,7 @@ export function TvDetail() {
     <>
       <TvMainDetail tvId={tvId} />
 
-      <section className="grid grid-cols-5 gap-4">
+      <section className="grid sm:grid-cols-5 grid-cols-1 gap-4">
         <div className="col-span-4">
           <TvCast tvId={tvId} />
           <TvReviews tvId={tvId} />

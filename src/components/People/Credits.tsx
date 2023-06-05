@@ -35,8 +35,8 @@ export function Credits({ id }: CreditProps) {
 
   return (
     <>
-      <section className="space-y-5 p-4 pt-10 col-span-6 w-11/12 ">
-        <h1 className="text-3xl font-bold pb-7">{data.name}</h1>
+      <section className="space-y-3 sm:space-y-5 p-4 sm:pt-10 sm:col-span-6 w-11/12 ">
+        <h1 className="text-3xl font-bold pb-4 sm:pb-7">{data.name}</h1>
         <h2 className="font-bold text-lg">Biography</h2>
         {data.biography ? (
           <p className="text-sm whitespace-pre-wrap leading-relaxed">
@@ -47,7 +47,7 @@ export function Credits({ id }: CreditProps) {
         )}
 
         <h3 className="font-bold pt-4">Known For</h3>
-        <div className="overflow-x-auto flex  space-x-5">
+        <div className="overflow-x-auto flex space-x-3  sm:space-x-5">
           {data.combined_credits &&
             data.combined_credits.cast
               .filter(
@@ -61,13 +61,13 @@ export function Credits({ id }: CreditProps) {
               .map((credit) => (
                 <div className=" text-center text-sm pb-3" key={credit.id}>
                   <Link to={`/${credit.media_type}/${credit.id}`}>
-                    <figure className="w-[130px] h-[195px] rounded-lg overflow-hidden">
+                    <figure className="w-[130px] rounded-lg overflow-hidden">
                       <img src={API_IMG + credit.poster_path} alt="" />
                     </figure>
                     <p className="pt-2 hover:text-blue-400 cursor-pointer">
                       {credit.media_type === "movie"
-                        ? credit.original_title
-                        : credit.original_name}
+                        ? credit.title
+                        : credit.name}
                     </p>
                   </Link>
                 </div>
