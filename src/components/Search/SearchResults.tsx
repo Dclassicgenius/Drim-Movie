@@ -93,11 +93,11 @@ export function SearchResults() {
 
   const peopleResult = (peopleSearchResults?.results || []).filter(isPerson);
 
-  // useEffect(() => {
-  //   console.log("Movie Results:", movieResults);
-  //   console.log("TV Results:", tvResults);
-  //   console.log("People Results:", peopleResult);
-  // }, [movieResults, tvResults, peopleResult]);
+  useEffect(() => {
+    console.log("Movie Results:", movieResults);
+    console.log("TV Results:", tvResults);
+    console.log("People Results:", peopleResult);
+  }, [movieResults, tvResults, peopleResult]);
 
   const updatedTabs = tabs.map((tab) => ({
     ...tab,

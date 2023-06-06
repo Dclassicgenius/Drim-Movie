@@ -89,7 +89,7 @@ export function Review({
                     <span className="font-semibold">{review.author}</span> on{" "}
                     {new Date(review.created_at).toLocaleDateString()}
                   </p>
-                  <p className="text-sm font-normal line-clamp-3">
+                  <p className="text-xs sm:text-sm font-normal">
                     {review.content}
                   </p>
                 </div>

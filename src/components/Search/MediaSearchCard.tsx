@@ -16,9 +16,7 @@ export function MediaSearchCard({ media }: MediaSearchCardProps) {
             <li className="shadow-lg rounded-lg flex gap-4 items-center mb-6">
               <Link
                 to={
-                  item.media_type === "tv"
-                    ? `/tv/${item.id}`
-                    : `/movie/${item.id}`
+                  item.first_air_date ? `/tv/${item.id}` : `/movie/${item.id}`
                 }
               >
                 <figure className=" w-[100px] min-w-[95px] overflow-hidden cursor-pointer">
@@ -38,13 +36,13 @@ export function MediaSearchCard({ media }: MediaSearchCardProps) {
                 <div>
                   <Link
                     to={
-                      item.media_type === "tv"
+                      item.first_air_date
                         ? `/tv/${item.id}`
                         : `/movie/${item.id}`
                     }
                   >
                     <h2 className="font-bold text-start">
-                      {item.title || item.name}
+                      {item.first_air_date ? item.name : item.title}
                     </h2>
                   </Link>
 
