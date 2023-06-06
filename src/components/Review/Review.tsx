@@ -51,8 +51,8 @@ export function Review({
                 key={review.id}
                 className="shadow rounded-xl overflow-hidden p-6 border  mb-8"
               >
-                <div className="flex ">
-                  <figure className="min-w-[50px] w-[70px]">
+                <div className="flex justify-start gap-2">
+                  <figure className="">
                     <a href="#">
                       <img
                         src={
@@ -70,13 +70,13 @@ export function Review({
                               }`
                         }
                         alt=""
-                        className="w-16 h-16 object-cover rounded-full"
+                        className="w-14 h-14 object-cover rounded-full"
                       />
                     </a>
                   </figure>
-                  <div className="pt-3">
-                    <div className="flex gap-4 items-center">
-                      <h2 className="text-lg font-bold">
+                  <div className="">
+                    <div className="flex gap-2 sm:gap-4 items-center">
+                      <h2 className=" text-sm sm:text-lg font-bold">
                         A review by {review.author}
                       </h2>
                       {review.author_details.rating && (
