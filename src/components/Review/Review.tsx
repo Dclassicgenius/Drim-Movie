@@ -49,50 +49,52 @@ export function Review({
             return (
               <article
                 key={review.id}
-                className="shadow rounded-xl overflow-hidden p-6 border flex gap-4 items-start mb-8"
+                className="shadow rounded-xl overflow-hidden p-6 border  mb-8"
               >
-                <figure className="min-w-[50px] w-[70px]">
-                  <a href="#">
-                    <img
-                      src={
-                        review.author_details.avatar_path === null
-                          ? malePlaceholder
-                          : review.author_details.avatar_path?.startsWith(
-                              "/http"
-                            )
-                          ? review.author_details.avatar_path.replace(
-                              /^\/+/,
-                              ""
-                            )
-                          : `${API_IMG}${
-                              review.author_details.avatar_path ?? ""
-                            }`
-                      }
-                      alt=""
-                      className="w-16 h-16 object-cover rounded-full"
-                    />
-                  </a>
-                </figure>
-                <div className="pt-3">
-                  <div className="flex gap-4 items-center">
-                    <h2 className="text-lg font-bold">
-                      A review by {review.author}
-                    </h2>
-                    {review.author_details.rating && (
-                      <div className="flex gap-1 items-center text-xs rounded-lg bg-black text-white px-2 py-1 w-12">
-                        <FaStar /> {review.author_details.rating.toFixed(1)}
-                      </div>
-                    )}
+                <div className="flex ">
+                  <figure className="min-w-[50px] w-[70px]">
+                    <a href="#">
+                      <img
+                        src={
+                          review.author_details.avatar_path === null
+                            ? malePlaceholder
+                            : review.author_details.avatar_path?.startsWith(
+                                "/http"
+                              )
+                            ? review.author_details.avatar_path.replace(
+                                /^\/+/,
+                                ""
+                              )
+                            : `${API_IMG}${
+                                review.author_details.avatar_path ?? ""
+                              }`
+                        }
+                        alt=""
+                        className="w-16 h-16 object-cover rounded-full"
+                      />
+                    </a>
+                  </figure>
+                  <div className="pt-3">
+                    <div className="flex gap-4 items-center">
+                      <h2 className="text-lg font-bold">
+                        A review by {review.author}
+                      </h2>
+                      {review.author_details.rating && (
+                        <div className="flex gap-1 items-center text-xs rounded-lg bg-black text-white px-2 py-1 w-12">
+                          <FaStar /> {review.author_details.rating.toFixed(1)}
+                        </div>
+                      )}
+                    </div>
+                    <p className="text-xs font-light mb-10">
+                      written by{" "}
+                      <span className="font-semibold">{review.author}</span> on{" "}
+                      {new Date(review.created_at).toLocaleDateString()}
+                    </p>
                   </div>
-                  <p className="text-xs font-light mb-10">
-                    written by{" "}
-                    <span className="font-semibold">{review.author}</span> on{" "}
-                    {new Date(review.created_at).toLocaleDateString()}
-                  </p>
-                  <p className="text-xs sm:text-sm font-normal">
-                    {review.content}
-                  </p>
                 </div>
+                <p className="text-xs sm:text-sm font-normal">
+                  {review.content}
+                </p>
               </article>
             );
           })}
