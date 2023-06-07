@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { ICast, ICrew } from "./castType";
 import malePlaceholder from "../../assets/defaultMale.svg";
 import femalePlaceholder from "../../assets/defaultFemale.svg";

@@ -3,9 +3,6 @@ import { useCallback, useEffect, useState } from "react";
 import debounce from "lodash/debounce";
 import { useNavigate } from "react-router-dom";
 
-// interface SearchProps {
-//   onSearch: (query: string) => void;
-// }
 
 export function SearchBox() {
   const [searchQuery, setSearchQuery] = useState<string>("");

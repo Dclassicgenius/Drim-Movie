@@ -2,13 +2,11 @@ import { useEffect, useState } from "react";
 import { MediaSearchCard } from "./MediaSearchCard";
 import { PeopleSearchCard } from "./PeopleSearchCard";
 import { SearchSideBar, SearchTab } from "./SearchSideBar";
-import { Collections, Person, SearchResult } from "./SearchType/SearchType";
+import { Person, SearchResult } from "./SearchType/SearchType";
 import { IMovie } from "../../types";
 import { useNavigate, useParams } from "react-router-dom";
 import { Pagination } from "../Layout/Pagination";
 import { useSearchResult } from "../../hooks/SearchHook/useSearchResult";
-import { FaSearch } from "react-icons/fa";
-import { TextInput } from "flowbite-react";
 import { SearchInput } from "../Layout/SearchInput";
 
 const tabs = [

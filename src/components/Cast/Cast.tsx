@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { useMovieDetail } from "../../hooks/MovieHooks/useMovieDetail";
 import { ICast } from "./castType";
 
 type CastProps = {
