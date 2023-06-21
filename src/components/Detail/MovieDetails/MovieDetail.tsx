@@ -7,8 +7,6 @@ import { MovieSideBar } from "./MovieSideBar";
 
 export function MovieDetail() {
   const { id } = useParams<{ id?: string }>();
-
-  const API_IMG = "https://image.tmdb.org/t/p/w500";
   const movieId = parseInt(id ?? "0");
 
   return (

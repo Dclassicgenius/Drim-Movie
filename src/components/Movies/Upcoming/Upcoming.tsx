@@ -1,5 +1,6 @@
 import moment from "moment";
 import { MovieMain } from "../MovieMain/MovieMain";
+import { FilterStateProvider } from "../Hook/useFilterState";
 
 export const Upcoming = () => {
   const now = moment();
@@ -15,14 +16,17 @@ export const Upcoming = () => {
       <h1 className="font-bold text-2xl pl-10 [@media(min-width:600px)]:pl-5 my-7">
         Upcoming Movies
       </h1>
-      <MovieMain
-        releasesAll={false}
-        releasesTypes={[2, 3]}
-        releaseDateStart={startDate}
-        releaseDateEnd={endDate}
-        pageCount={4}
-        mediaType="movie"
-      />
+      <FilterStateProvider
+        initialFilterState={{
+          releasesAll: false,
+          releasesTypes: [2, 3],
+          releaseDateStart: startDate,
+          releaseDateEnd: endDate,
+        }}
+        mediaType={"movie"}
+      >
+        <MovieMain pageCount={4} mediaType="movie" />
+      </FilterStateProvider>
     </>
   );
 };

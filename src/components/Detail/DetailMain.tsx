@@ -10,6 +10,7 @@ import {
 import { IVideo } from "../Trailer/videoType";
 import { Link } from "react-router-dom";
 import { CreatedBy } from "./TvDetails/TvDetailsType";
+import { processMedia } from "../utility/processMedia";
 
 type DetailMainProps = {
   id: number;
@@ -17,12 +18,12 @@ type DetailMainProps = {
   detailType: "movie" | "tv";
 };
 
-function convertMinutesToHoursAndMinutes(minutes: number) {
-  const hours = Math.floor(minutes / 60);
-  const remainingMinutes = minutes % 60;
+// function convertMinutesToHoursAndMinutes(minutes: number) {
+//   const hours = Math.floor(minutes / 60);
+//   const remainingMinutes = minutes % 60;
 
-  return { hours, minutes: remainingMinutes };
-}
+//   return { hours, minutes: remainingMinutes };
+// }
 
 export function DetailMain({ id, useDetail, detailType }: DetailMainProps) {
   const { data, isLoading, error } = useDetail(id);
@@ -32,14 +33,14 @@ export function DetailMain({ id, useDetail, detailType }: DetailMainProps) {
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
-  const { hours, minutes } = convertMinutesToHoursAndMinutes(
-    detailType === "movie" ? data.runtime : data.episode_run_time[0] || 0
-  );
+  // const { hours, minutes } = convertMinutesToHoursAndMinutes(
+  //   detailType === "movie" ? data.runtime : data.episode_run_time[0] || 0
+  // );
 
-  const title =
-    detailType === "movie" ? data.title || data.original_title : data.name;
-  const releaseDate =
-    detailType === "movie" ? data.release_date : data.first_air_date;
+  // const title =
+  //   detailType === "movie" ? data.title || data.original_title : data.name;
+  // const releaseDate =
+  //   detailType === "movie" ? data.release_date : data.first_air_date;
 
   function togglePlayer() {
     setShowPlayer((prevShowPlayer) => !prevShowPlayer);
@@ -50,28 +51,30 @@ export function DetailMain({ id, useDetail, detailType }: DetailMainProps) {
     setShowPlayer((prevShowPlayer) => !prevShowPlayer);
   }
 
-  const certification = getCertification(data, detailType);
-  const uniqueImportantCrew: IUniqueCrew[] = getUniqueImportantCrew(
-    data.credits
-  );
-  let trailer: IVideo | undefined;
+  // const certification = getCertification(data, detailType);
+  // const uniqueImportantCrew: IUniqueCrew[] = getUniqueImportantCrew(
+  //   data.credits
+  // );
+  // let trailer: IVideo | undefined;
 
-  if (data) {
-    const videos: IVideo[] = data.videos.results || [];
+  // if (data) {
+  //   const videos: IVideo[] = data.videos.results || [];
 
-    trailer = videos.find(
-      (video) => video.type === "Trailer" && video.site === "YouTube"
-    );
+  //   trailer = videos.find(
+  //     (video) => video.type === "Trailer" && video.site === "YouTube"
+  //   );
 
-    if (!trailer) {
-      trailer = videos.find(
-        (video) =>
-          video.type === "Teaser" ||
-          video.type === "Clip" ||
-          (video.type === "Opening Credits" && video.site === "YouTube")
-      );
-    }
-  }
+  //   if (!trailer) {
+  //     trailer = videos.find(
+  //       (video) =>
+  //         video.type === "Teaser" ||
+  //         video.type === "Clip" ||
+  //         (video.type === "Opening Credits" && video.site === "YouTube")
+  //     );
+  //   }
+  // }
+
+  const result = processMedia(data, detailType);
 
   return (
     <>
@@ -90,21 +93,23 @@ export function DetailMain({ id, useDetail, detailType }: DetailMainProps) {
         <div className="sm:col-span-3 text-white z-10 flex flex-col justify-center">
           <div className="text-[#c0baba]">
             <h2 className="font-bold sm:text-2xl text-lg text-white pb-5 sm:pb-0">
-              {title}{" "}
-              {releaseDate && (
+              {result.title}{" "}
+              {result.releaseDate && (
                 <span className=" font-extralight sm:font-normal text-[#c0baba]">
-                  ({new Date(releaseDate).getFullYear()})
+                  ({new Date(result.releaseDate).getFullYear()})
                 </span>
               )}
             </h2>
             <div className="space-x-3 text-xs sm:text-sm flex sm:gap-2">
-              {certification !== "Not available" && (
+              {result.certification !== "Not available" && (
                 <span className="border border-current p-0.5 mr-3 flex items-center">
-                  {certification}
+                  {result.certification}
                 </span>
               )}
               {detailType === "movie" && (
-                <span>{new Date(releaseDate).toLocaleDateString()} (US)</span>
+                <span>
+                  {new Date(result.releaseDate).toLocaleDateString()} (US)
+                </span>
               )}
 
               <ul className="list-disc flex gap-4 space-x-3">
@@ -115,16 +120,16 @@ export function DetailMain({ id, useDetail, detailType }: DetailMainProps) {
                 </li>
 
                 {(() => {
-                  if (hours === 0 && minutes === 0) {
+                  if (result.hours === 0 && result.minutes === 0) {
                     return null;
                   }
 
                   const timeString =
-                    hours === 0
-                      ? `${minutes}m`
-                      : minutes === 0
-                      ? `${hours}h`
-                      : `${hours}h ${minutes}m`;
+                    result.hours === 0
+                      ? `${result.minutes}m`
+                      : result.minutes === 0
+                      ? `${result.hours}h`
+                      : `${result.hours}h ${result.minutes}m`;
 
                   return <li>{timeString}</li>;
                 })()}
@@ -160,7 +165,7 @@ export function DetailMain({ id, useDetail, detailType }: DetailMainProps) {
               <FaStar />
             </a>
 
-            {trailer && (
+            {result.trailer && (
               <p
                 className="flex gap-4 items-center cursor-pointer"
                 onClick={togglePlayer}
@@ -170,9 +175,9 @@ export function DetailMain({ id, useDetail, detailType }: DetailMainProps) {
                     color: "white",
                   }}
                 />{" "}
-                Play {trailer?.type}
+                Play {result.trailer?.type}
                 <MovieTrailer
-                  trailer={trailer}
+                  trailer={result.trailer}
                   handleCloseClick={handleCloseClick}
                   showPlayer={showPlayer}
                 />
@@ -186,7 +191,7 @@ export function DetailMain({ id, useDetail, detailType }: DetailMainProps) {
           </div>
           <div className="grid grid-cols-3 gap-4">
             {detailType === "movie" &&
-              uniqueImportantCrew.map((crew) => (
+              result.uniqueImportantCrew.map((crew) => (
                 <ul className="list-none" key={crew.credit_id}>
                   <Link to={`/people/${crew.id}`}>
                     <li className="font-bold text-sm cursor-pointer">

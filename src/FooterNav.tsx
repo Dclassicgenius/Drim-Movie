@@ -1,55 +1,108 @@
-import { Footer } from "flowbite-react";
+import { Box, Container, Grid, Link, Typography } from "@mui/material";
+import { Facebook, Instagram, Twitter } from "@mui/icons-material";
 export function FooterNav() {
   return (
-    <>
-      <Footer container={true}>
-        <div className="w-full">
-          <div className="grid w-full justify-between sm:flex sm:justify-between md:flex md:grid-cols-1">
-            <div>
-              <Footer.Brand
-                href="https://flowbite.com"
-                src="https://flowbite.com/docs/images/logo.svg"
-                alt="Flowbite Logo"
-                name="Flowbite"
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-8 sm:mt-4 sm:grid-cols-3 sm:gap-6">
-              <div>
-                <Footer.Title title="about" />
-                <Footer.LinkGroup col={true}>
-                  <Footer.Link href="#">Flowbite</Footer.Link>
-                  <Footer.Link href="#">Tailwind CSS</Footer.Link>
-                </Footer.LinkGroup>
-              </div>
-              <div>
-                <Footer.Title title="Follow us" />
-                <Footer.LinkGroup col={true}>
-                  <Footer.Link href="#">Github</Footer.Link>
-                  <Footer.Link href="#">Discord</Footer.Link>
-                </Footer.LinkGroup>
-              </div>
-              <div>
-                <Footer.Title title="Legal" />
-                <Footer.LinkGroup col={true}>
-                  <Footer.Link href="#">Privacy Policy</Footer.Link>
-                  <Footer.Link href="#">Terms & Conditions</Footer.Link>
-                </Footer.LinkGroup>
-              </div>
-            </div>
-          </div>
-          <Footer.Divider />
-          <div className="w-full sm:flex sm:items-center sm:justify-between">
-            <Footer.Copyright href="#" by="Flowbite™" year={2023} />
-            <div className="mt-4 flex space-x-6 sm:mt-0 sm:justify-center">
-              {/* <Footer.Icon href="#" icon={BsFacebook} />
-              <Footer.Icon href="#" icon={BsInstagram} />
-              <Footer.Icon href="#" icon={BsTwitter} />
-              <Footer.Icon href="#" icon={BsGithub} />
-              <Footer.Icon href="#" icon={BsDribbble} /> */}
-            </div>
-          </div>
-        </div>
-      </Footer>
-    </>
+    <Box
+      component="footer"
+      sx={{
+        backgroundColor: "#034a95",
+        p: 6,
+        mt: 4,
+      }}
+    >
+      <Container maxWidth="lg">
+        <Grid container spacing={5}>
+          <Grid item xs={12} sm={4}>
+            <Typography
+              gutterBottom
+              variant="h5"
+              noWrap
+              component="a"
+              href="/"
+              sx={{
+                display: { xs: "none", md: "flex" },
+                fontFamily: "monospace",
+                fontWeight: 700,
+                letterSpacing: ".4rem",
+                color: "white",
+                textDecoration: "none",
+              }}
+            >
+              DRIM MOVIE
+            </Typography>
+            <Typography variant="body2" color="#c7cdd5">
+              Drim Movie is your one stop for everyting movies and tv shows.
+              find new, trending and popular movies and your favourite actors.
+            </Typography>
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <Typography
+              variant="h6"
+              color="white"
+              gutterBottom
+              sx={{
+                display: { xs: "none", md: "flex" },
+                fontFamily: "monospace",
+                fontWeight: 700,
+                letterSpacing: ".4rem",
+                color: "white",
+                textDecoration: "none",
+              }}
+            >
+              Contact Us
+            </Typography>
+            <Typography variant="body2" color="#c7cdd5">
+              St Petersbug, Russia
+            </Typography>
+            <Typography variant="body2" color="#c7cdd5">
+              Email: patamaechi1@gmail.com
+            </Typography>
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <Typography
+              variant="h6"
+              color="white"
+              gutterBottom
+              sx={{
+                display: { xs: "none", md: "flex" },
+                fontFamily: "monospace",
+                fontWeight: 700,
+                letterSpacing: ".4rem",
+                color: "white",
+                textDecoration: "none",
+              }}
+            >
+              Follow Us
+            </Typography>
+            <Link href="https://www.facebook.com/" color="#c7cdd5">
+              <Facebook />
+            </Link>
+            <Link
+              href="https://www.instagram.com/noblemalchik"
+              color="#c7cdd5"
+              sx={{ pl: 1, pr: 1 }}
+            >
+              <Instagram />
+            </Link>
+            <Link href="https://www.twitter.com/itzClassicpat" color="#c7cdd5">
+              <Twitter />
+            </Link>
+          </Grid>
+        </Grid>
+        <Box mt={5}>
+          <Typography variant="body2" color="#c7cdd5" align="center">
+            {"Copyright © "}
+            <Link
+              color="#c7cdd5"
+              href="https://https://drim-movie.netlify.app/"
+            >
+              drim-movie
+            </Link>{" "}
+            {new Date().getFullYear()}
+            {"."}
+          </Typography>
+        </Box>
+      </Container>
+    </Box>
   );
 }

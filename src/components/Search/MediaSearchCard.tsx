@@ -3,7 +3,7 @@ import { IMovie } from "../../types";
 import placeholderImage from "../../assets/placeholderImage.png";
 
 type MediaSearchCardProps = {
-  media: IMovie[] | undefined;
+  media: IMovie[];
 };
 
 export function MediaSearchCard({ media }: MediaSearchCardProps) {

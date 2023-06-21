@@ -38,7 +38,7 @@ export const getCertification = (
       availableCertification?.certification ||
       "Not available"
     );
-  } else if (detailType === "tv") {
+  } else {
     const usCertification = data?.content_ratings?.results?.find(
       (country) => country.iso_3166_1 === "US"
     )?.rating;

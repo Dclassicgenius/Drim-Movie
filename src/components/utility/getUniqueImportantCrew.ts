@@ -23,18 +23,17 @@ export const getUniqueImportantCrew = (data: {
 
   return importantCrew.reduce<IUniqueCrew[]>((acc, crew) => {
     const existingCrew = acc.find((item) => item.name === crew.name);
-    if (existingCrew && crew.job) {
+
+    if (crew.job) {
       const job: Jobs = {
         credit_id: crew.credit_id,
         job: crew.job,
       };
-      existingCrew.jobs.push(job);
-    } else if (crew.job) {
-      const job: Jobs = {
-        credit_id: crew.credit_id,
-        job: crew.job,
-      };
-      acc.push({ ...crew, jobs: [job] });
+      if (existingCrew) {
+        existingCrew.jobs.push(job);
+      } else {
+        acc.push({ ...crew, jobs: [job] });
+      }
     }
     return acc;
   }, []);

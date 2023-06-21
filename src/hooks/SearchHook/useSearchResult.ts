@@ -1,6 +1,10 @@
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
-import axios from "axios";
-import { MultiSearchResult } from "../../components/Search/SearchType/SearchType";
+import {
+  MultiSearchResult,
+  Person,
+  SearchResult,
+} from "../../components/Search/SearchType/SearchType";
+import axiosInstance from "../axiosInstance";
 import { IMovie } from "../../types";
 
 const apiKey = import.meta.env.VITE_TMDB_API_KEY;
@@ -10,11 +14,33 @@ type PersonDepartmentAndGender = {
   id: number;
 };
 
-const fetchPersonDepartment = async (
-  personId: number
-): Promise<PersonDepartmentAndGender> => {
-  const response = await axios.get<PersonDepartmentAndGender>(
-    `https://api.themoviedb.org/3/person/${personId}?api_key=${apiKey}&language=en-US`
+const filterMovie = (value: SearchResult): value is IMovie => {
+  return (
+    typeof value === "object" && value && value.hasOwnProperty("release_date")
+  );
+};
+
+const filterTvShow = (value: SearchResult): value is IMovie => {
+  return (
+    typeof value === "object" && value && value.hasOwnProperty("first_air_date")
+  );
+};
+
+const filterPerson = (value: SearchResult): value is Person => {
+  return (
+    typeof value === "object" &&
+    value &&
+    value.hasOwnProperty("id") &&
+    value.hasOwnProperty("name") &&
+    value.hasOwnProperty("known_for") &&
+    value.hasOwnProperty("known_for_department") &&
+    value.hasOwnProperty("gender")
+  );
+};
+
+const fetchPersonDepartment = async (personId: number) => {
+  const response = await axiosInstance.get<PersonDepartmentAndGender>(
+    `person/${personId}?api_key=${apiKey}&language=en-US`
   );
   return response.data;
 };
@@ -23,36 +49,34 @@ const fetchSearchResult = async (
   pageParam: number,
   searchType: string,
   searchQuery: string
-): Promise<MultiSearchResult> => {
-  const response = await axios.get<MultiSearchResult>(
-    `https://api.themoviedb.org/3/search/${searchType}?api_key=${apiKey}&language=en-US&query=${searchQuery}&page=${pageParam}&include_adult=false`
+) => {
+  const { data } = await axiosInstance.get<MultiSearchResult>(
+    `search/${searchType}?api_key=${apiKey}&language=en-US&query=${searchQuery}&page=${pageParam}&include_adult=false`
   );
-  const data = response.data;
 
-  if (searchType === "person") {
+  let filteredResults: IMovie[] | Person[] = [];
+
+  if (searchType === "movie") {
+    filteredResults = data.results.filter(filterMovie);
+  } else if (searchType === "tv") {
+    filteredResults = data.results.filter(filterTvShow);
+  } else if (searchType === "person") {
     const updatedresults = await Promise.all(
       data.results.map(async (result) => {
-        if (result) {
-          const personDepartmentAndGender = await fetchPersonDepartment(
-            result.id
-          );
-          return {
-            ...result,
-            known_for_department:
-              personDepartmentAndGender.known_for_department,
-            gender: personDepartmentAndGender.gender,
-          };
-        }
-        console.log(result);
-
-        return result;
+        const personDepartmentAndGender = await fetchPersonDepartment(
+          result.id
+        );
+        return {
+          ...result,
+          known_for_department: personDepartmentAndGender.known_for_department,
+          gender: personDepartmentAndGender.gender,
+        };
       })
     );
-    return { ...data, results: updatedresults };
+    filteredResults = updatedresults.filter(filterPerson);
   }
-  console.log(data);
 
-  return data;
+  return { ...data, results: filteredResults };
 };
 
 export const useSearchResult = (

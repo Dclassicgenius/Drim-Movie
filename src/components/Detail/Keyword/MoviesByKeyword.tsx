@@ -62,7 +62,7 @@ export const MoviesByKeyword = () => {
   );
 
   if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
+  if (error) return <div>Error: {(error as Error).message}</div>;
 
   const movies: IMovie[] = data?.results || [];
 
@@ -77,7 +77,7 @@ export const MoviesByKeyword = () => {
         <div className="flex justify-between bg-[#032541] py-8 px-10">
           <h1 className="text-white font-bold text-xl">{name}</h1>
           <p className="text-[#c0baba]">
-            {data.total_results} <span>{getMediaLabel(media)}</span>
+            {data?.total_results} <span>{getMediaLabel(media)}</span>
           </p>
         </div>
 
@@ -122,7 +122,7 @@ export const MoviesByKeyword = () => {
         <div className=" p-10">
           <MediaSearchCard media={resultWithMediaTypes} />
           <Pagination
-            count={data.total_pages}
+            count={data?.total_pages}
             page={pageNumber}
             onChange={handleChange}
             variant="outlined"

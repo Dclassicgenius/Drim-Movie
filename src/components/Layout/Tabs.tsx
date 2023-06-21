@@ -14,7 +14,7 @@ export function Tabs({ tabs, header, handleTabClick, activeTab }: TabsProps) {
         <div className="flex gap-8 items-center">
           <p className="font-bold text-xl">{header}</p>
           <ul
-            className="flex mb-0 list-none flex-wrap flex-row border-2 border-black border-solid rounded-lg"
+            className="flex mb-0 list-none flex-wrap flex-row border-2 border-[#1b74d2] border-solid rounded-lg"
             role="tablist"
           >
             {tabs &&
@@ -27,8 +27,8 @@ export function Tabs({ tabs, header, handleTabClick, activeTab }: TabsProps) {
                     className={
                       "text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal " +
                       (activeTab.id === tab.id
-                        ? "text-white bg-[#062441]"
-                        : "text-[#062441] bg-white")
+                        ? "text-white bg-[#1b74d2]"
+                        : "text-[#1b74d2] bg-white")
                     }
                     onClick={() => handleTabClick(tab)}
                     key={tab.id}

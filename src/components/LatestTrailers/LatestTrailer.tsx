@@ -91,7 +91,7 @@ export function LatestTrailer() {
   };
   return (
     <>
-      <div className="bg-sky-800 w-11/12 mx-auto pt-6 text-white">
+      <div className="bg-[#1b74d2] w-11/12 mx-auto pt-6 text-white">
         <Tabs
           tabs={tabs}
           header="Latest Trailers"

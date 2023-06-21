@@ -2,7 +2,6 @@ import { FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { IReview } from "./reviewType";
 import malePlaceholder from "../../assets/defaultMale.svg";
-import { useState } from "react";
 
 export function Review({
   id,
@@ -16,7 +15,6 @@ export function Review({
   useDetail: (id: number) => any;
   detailType: "movie" | "tv";
 }) {
-  const [showFullText, setShowFullText] = useState(false);
   const { data, isLoading, error } = useDetail(id);
 
   if (isLoading) return <div>Loading...</div>;
@@ -34,77 +32,76 @@ export function Review({
   const API_IMG = "https://image.tmdb.org/t/p/w500";
 
   return (
-    <>
-      {reviews.length > 0 && (
-        <section className="px-5 sm:px-10 pb-6">
-          <hr />
-          <h2 className="font-bold text-lg pt-6 pb-4">
-            Reviews{" "}
-            <span className="text-[#c0baba] text-sm">{reviews.length}</span>
-          </h2>
-          {displayedReviews.map((review) => {
-            if (!review.author_details) {
-              return null;
-            }
-            return (
-              <article
-                key={review.id}
-                className="shadow rounded-xl overflow-hidden p-6 border  mb-8"
-              >
-                <div className="flex justify-start gap-2">
-                  <figure className="">
-                    <a href="#">
-                      <img
-                        src={
-                          review.author_details.avatar_path === null
-                            ? malePlaceholder
-                            : review.author_details.avatar_path?.startsWith(
-                                "/http"
-                              )
-                            ? review.author_details.avatar_path.replace(
-                                /^\/+/,
-                                ""
-                              )
-                            : `${API_IMG}${
-                                review.author_details.avatar_path ?? ""
-                              }`
-                        }
-                        alt=""
-                        className="w-14 h-14 object-cover rounded-full"
-                      />
-                    </a>
-                  </figure>
-                  <div className="">
-                    <div className="flex gap-2 sm:gap-4 items-center">
-                      <h2 className=" text-sm sm:text-lg font-bold">
-                        A review by {review.author}
-                      </h2>
-                      {review.author_details.rating && (
-                        <div className="flex gap-1 items-center text-xs rounded-lg bg-black text-white px-2 py-1 w-12">
-                          <FaStar /> {review.author_details.rating.toFixed(1)}
-                        </div>
-                      )}
-                    </div>
-                    <p className="text-xs font-light mb-10">
-                      written by{" "}
-                      <span className="font-semibold">{review.author}</span> on{" "}
-                      {new Date(review.created_at).toLocaleDateString()}
-                    </p>
+    <section className="px-5 sm:px-10 pb-6">
+      <hr />
+      <h2 className="font-bold text-lg pt-6 pb-4">
+        Reviews <span className="text-[#c0baba] text-sm">{reviews.length}</span>
+      </h2>
+      {displayedReviews.length === 0 ? (
+        <p>We do not have reviews currently.</p>
+      ) : (
+        displayedReviews.map((review) => {
+          if (!review.author_details) {
+            return null;
+          }
+          return (
+            <article
+              key={review.id}
+              className="shadow rounded-xl overflow-hidden p-6 border  mb-8"
+            >
+              <div className="flex justify-start gap-2">
+                <figure className="">
+                  <a href="#">
+                    <img
+                      src={
+                        review.author_details.avatar_path === null
+                          ? malePlaceholder
+                          : review.author_details.avatar_path?.startsWith(
+                              "/http"
+                            )
+                          ? review.author_details.avatar_path.replace(
+                              /^\/+/,
+                              ""
+                            )
+                          : `${API_IMG}${
+                              review.author_details.avatar_path ?? ""
+                            }`
+                      }
+                      alt=""
+                      className="w-14 h-14 object-cover rounded-full"
+                    />
+                  </a>
+                </figure>
+                <div className="">
+                  <div className="flex gap-2 sm:gap-4 items-center">
+                    <h2 className=" text-sm sm:text-lg font-bold">
+                      A review by {review.author}
+                    </h2>
+                    {review.author_details.rating && (
+                      <div className="flex gap-1 items-center text-xs rounded-lg bg-black text-white px-2 py-1 w-12">
+                        <FaStar /> {review.author_details.rating.toFixed(1)}
+                      </div>
+                    )}
                   </div>
+                  <p className="text-xs font-light mb-10">
+                    written by{" "}
+                    <span className="font-semibold">{review.author}</span> on{" "}
+                    {new Date(review.created_at).toLocaleDateString()}
+                  </p>
                 </div>
-                <p className="text-xs sm:text-sm font-normal">
-                  {review.content}
-                </p>
-              </article>
-            );
-          })}
-          {displayCount !== -1 && (
+              </div>
+              <p className="text-xs sm:text-sm font-normal">{review.content}</p>
+            </article>
+          );
+        })
+      )}
+      {displayedReviews.length > 0
+        ? displayCount !== -1 && (
             <p className="font-bold text-lg pt-4">
               <Link to={`/${detailType}/${id}/reviews`}>Read All Reviews</Link>
             </p>
-          )}
-        </section>
-      )}
-    </>
+          )
+        : null}
+    </section>
   );
 }

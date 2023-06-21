@@ -1,7 +1,6 @@
-import { UseQueryResult, useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import { IMovie } from "../../types";
+import { useQuery } from "@tanstack/react-query";
 import { Person } from "../../components/Search/SearchType/SearchType";
+import axiosInstance from "../axiosInstance";
 
 const apiKey = import.meta.env.VITE_TMDB_API_KEY;
 
@@ -12,18 +11,15 @@ export interface PopularPeopleResponse {
   total_results: number;
 }
 
-const fetchPopularPeople = async (pageParam: number) => {
-  const apiUrl = `https://api.themoviedb.org/3/person/popular?api_key=${apiKey}&language=en-US&page=${pageParam}`;
+const fetchPopularPeople = (pageParam: number) => {
+  const apiUrl = `person/popular?api_key=${apiKey}&language=en-US&page=${pageParam}`;
 
-  const response = await axios.get<PopularPeopleResponse>(apiUrl);
-  console.log(response.data.results);
-
-  return response.data;
+  return axiosInstance
+    .get<PopularPeopleResponse>(apiUrl)
+    .then((response) => response.data);
 };
 
-export const usePopularPeople = (
-  pageParam: number
-): UseQueryResult<PopularPeopleResponse, Error> => {
+export const usePopularPeople = (pageParam: number) => {
   return useQuery(
     ["popularPeople", pageParam],
     () => fetchPopularPeople(pageParam),

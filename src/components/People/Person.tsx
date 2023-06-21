@@ -7,11 +7,9 @@ export function Person() {
   const personId = parseInt(id ?? "0");
 
   return (
-    <>
-      <section className="sm:grid sm:grid-cols-8 sm:pl-7">
-        <Bio id={personId} />
-        <Credits id={personId} />
-      </section>
-    </>
+    <section className="sm:grid sm:grid-cols-8 sm:pl-7">
+      <Bio id={personId} />
+      <Credits id={personId} />
+    </section>
   );
 }

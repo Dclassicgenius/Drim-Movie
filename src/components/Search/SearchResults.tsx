@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { MediaSearchCard } from "./MediaSearchCard";
 import { PeopleSearchCard } from "./PeopleSearchCard";
 import { SearchSideBar, SearchTab } from "./SearchSideBar";
-import { Person, SearchResult } from "./SearchType/SearchType";
+import { Person } from "./SearchType/SearchType";
 import { IMovie } from "../../types";
 import { useNavigate, useParams } from "react-router-dom";
 import { Pagination } from "../Layout/Pagination";
@@ -28,7 +28,7 @@ const tabs = [
 ];
 
 export function SearchResults() {
-  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
   const [activeTab, setActiveTab] = useState<SearchTab>(tabs[0]);
@@ -60,42 +60,9 @@ export function SearchResults() {
     isError: peopleError,
   } = useSearchResult(personPage, "person", query);
 
-  function isMovie(value: SearchResult): value is IMovie {
-    return (
-      typeof value === "object" && value && value.hasOwnProperty("release_date")
-    );
-  }
-
-  function isTvShow(value: SearchResult): value is IMovie {
-    return (
-      typeof value === "object" &&
-      value &&
-      value.hasOwnProperty("first_air_date")
-    );
-  }
-
-  function isPerson(value: SearchResult): value is Person {
-    return (
-      typeof value === "object" &&
-      value &&
-      value.hasOwnProperty("id") &&
-      value.hasOwnProperty("name") &&
-      value.hasOwnProperty("known_for") &&
-      value.hasOwnProperty("known_for_department") &&
-      value.hasOwnProperty("gender")
-    );
-  }
-
-  const movieResults = (movieSearchResults?.results || []).filter(isMovie);
-  const tvResults = (tvSearchResults?.results || []).filter(isTvShow);
-
-  const peopleResult = (peopleSearchResults?.results || []).filter(isPerson);
-
-  useEffect(() => {
-    console.log("Movie Results:", movieResults);
-    console.log("TV Results:", tvResults);
-    console.log("People Results:", peopleResult);
-  }, [movieResults, tvResults, peopleResult]);
+  const movieResults = (movieSearchResults?.results as IMovie[]) || [];
+  const tvResults = (tvSearchResults?.results as IMovie[]) || [];
+  const peopleResult = (peopleSearchResults?.results as Person[]) || [];
 
   const updatedTabs = tabs.map((tab) => ({
     ...tab,
@@ -108,6 +75,9 @@ export function SearchResults() {
   }));
 
   const handleSubmit = (e: React.FormEvent) => {
+    if (searchQuery.trim() === "") {
+      return;
+    }
     navigate(`/search/${searchQuery}`);
   };
 

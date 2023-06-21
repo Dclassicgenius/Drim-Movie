@@ -3,10 +3,7 @@ import { Cast, Crew } from "./PeopleType";
 import { Link } from "react-router-dom";
 import { DetailPopUp } from "./DetailPopUp";
 import { useState } from "react";
-
-// import Tippy from "@tippyjs/react/headless";
 import Tippy from "@tippyjs/react";
-// import "tippy.js/dist/tippy.css";
 
 type CreditListProps = {
   credit: Cast[] | Crew[];

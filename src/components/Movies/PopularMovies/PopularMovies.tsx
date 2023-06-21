@@ -1,3 +1,4 @@
+import { FilterStateProvider } from "../Hook/useFilterState";
 import { MovieMain } from "../MovieMain/MovieMain";
 
 export function PopularMovies() {
@@ -6,7 +7,9 @@ export function PopularMovies() {
       <h1 className="font-bold text-2xl pl-10 [@media(min-width:600px)]:pl-5 my-7">
         Popular Movies
       </h1>
-      <MovieMain mediaType="movie" />
+      <FilterStateProvider mediaType="movie">
+        <MovieMain mediaType="movie" />
+      </FilterStateProvider>
     </>
   );
 }
