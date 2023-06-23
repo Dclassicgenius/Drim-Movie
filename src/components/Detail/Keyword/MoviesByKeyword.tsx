@@ -10,9 +10,7 @@ import {
 import { useState } from "react";
 import { useMoviesByKeyword } from "../../../hooks/MovieKeyword/useMoviesByKeyword";
 import { useParams } from "react-router-dom";
-import { IMovie } from "../../../types";
 import { MediaSearchCard } from "../../Search/MediaSearchCard";
-import bgImage from "../../../assets/light_blue-bg.svg";
 const options = [
   { name: "movie", label: "Movies" },
   { name: "tv", label: "Tv Shows" },
@@ -64,20 +62,13 @@ export const MoviesByKeyword = () => {
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {(error as Error).message}</div>;
 
-  const movies: IMovie[] = data?.results || [];
-
-  const resultWithMediaTypes = movies.map((movie) => ({
-    ...movie,
-    media_type: movie.first_air_date ? "tv" : "movie",
-  }));
-
   return (
     <>
       <section className="">
         <div className="flex justify-between bg-[#032541] py-8 px-10">
           <h1 className="text-white font-bold text-xl">{name}</h1>
           <p className="text-[#c0baba]">
-            {data?.total_results} <span>{getMediaLabel(media)}</span>
+            {data?.totalResults} <span>{getMediaLabel(media)}</span>
           </p>
         </div>
 
@@ -99,7 +90,9 @@ export const MoviesByKeyword = () => {
               onChange={handleMediaChange}
             >
               {options.map((option) => (
-                <MenuItem value={option.name}>{option.label}</MenuItem>
+                <MenuItem value={option.name} key={option.name}>
+                  {option.label}
+                </MenuItem>
               ))}
             </Select>
           </FormControl>
@@ -120,9 +113,9 @@ export const MoviesByKeyword = () => {
         </Box>
         <hr />
         <div className=" p-10">
-          <MediaSearchCard media={resultWithMediaTypes} />
+          <MediaSearchCard media={data?.resultWithMediaTypes ?? []} />
           <Pagination
-            count={data?.total_pages}
+            count={data?.totalPages}
             page={pageNumber}
             onChange={handleChange}
             variant="outlined"

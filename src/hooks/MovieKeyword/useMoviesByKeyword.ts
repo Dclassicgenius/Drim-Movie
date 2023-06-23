@@ -19,9 +19,17 @@ const fetchMoviesKeyword = (
 ) => {
   const apiUrl = `discover/${mediaType}?api_key=${apiKey}&include_adult=false&include_video=false&language=en-US&page=${pageParam}&sort_by=${sortValue}&with_keywords=${keyword}`;
 
-  return axiosInstance
-    .get<KeywordResponse>(apiUrl)
-    .then((response) => response.data);
+  return axiosInstance.get<KeywordResponse>(apiUrl).then((response) => {
+    const resultWithMediaTypes = response.data.results.map((movie) => ({
+      ...movie,
+      media_type: movie.first_air_date ? "tv" : "movie",
+    }));
+    return {
+      resultWithMediaTypes,
+      totalResults: response.data.total_results,
+      totalPages: response.data.total_results,
+    };
+  });
 };
 
 export const useMoviesByKeyword = (

@@ -20,15 +20,15 @@ export function MovieSideBar({ movieId }: SideBarProps) {
   const { data, isLoading, error } = useMovieDetail(movieId);
 
   if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
+  if (error) return <div>Error: {(error as Error).message}</div>;
 
-  const facebookUrl = data.external_ids.facebook_id
+  const facebookUrl = data?.external_ids.facebook_id
     ? `https://www.facebook.com/${data.external_ids.facebook_id}`
     : null;
-  const twitterUrl = data.external_ids.twitter_id
+  const twitterUrl = data?.external_ids.twitter_id
     ? `https://www.twitter.com/${data.external_ids.twitter_id}`
     : null;
-  const instagramUrl = data.external_ids.instagram_id
+  const instagramUrl = data?.external_ids.instagram_id
     ? `https://www.instagram.com/${data.external_ids.instagram_id}`
     : null;
 
@@ -59,7 +59,7 @@ export function MovieSideBar({ movieId }: SideBarProps) {
             </li>
           )}
 
-          {data.homepage && (
+          {data?.homepage && (
             <li>
               <a href={data.homepage} target="_blank" rel="noopener noreferrer">
                 <FaLink />
@@ -96,7 +96,7 @@ export function MovieSideBar({ movieId }: SideBarProps) {
         </div>
         <div>
           <p className="font-bold text-base">Keywords</p>
-          {!data.keywords.keywords ? (
+          {!data?.keywords.keywords ? (
             <p className="text-sm">No keyword available</p>
           ) : (
             <KeyWord id={movieId} useDetail={useMovieDetail} />

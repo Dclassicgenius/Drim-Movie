@@ -17,13 +17,13 @@ export function TvSideBar({ id }: SideBarProps) {
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
-  const facebookUrl = data.external_ids.facebook_id
+  const facebookUrl = data?.external_ids.facebook_id
     ? `https://www.facebook.com/${data.external_ids.facebook_id}`
     : null;
-  const twitterUrl = data.external_ids.twitter_id
+  const twitterUrl = data?.external_ids.twitter_id
     ? `https://www.twitter.com/${data.external_ids.twitter_id}`
     : null;
-  const instagramUrl = data.external_ids.instagram_id
+  const instagramUrl = data?.external_ids.instagram_id
     ? `https://www.instagram.com/${data.external_ids.instagram_id}`
     : null;
 

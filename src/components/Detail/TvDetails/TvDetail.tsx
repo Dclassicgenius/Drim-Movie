@@ -4,12 +4,8 @@ import { TvRecommendations } from "./TvRecommendations";
 import { TvReviews } from "./TvReviews";
 import { TvCast } from "./TvCast";
 import { TvSideBar } from "./TvSideBar";
-// import { TvSideBar } from "./TvSideBar";
-
 export function TvDetail() {
   const { id } = useParams<{ id?: string }>();
-
-  const API_IMG = "https://image.tmdb.org/t/p/w500";
   const tvId = parseInt(id ?? "0");
 
   return (

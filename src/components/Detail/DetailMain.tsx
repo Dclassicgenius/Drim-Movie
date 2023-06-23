@@ -2,12 +2,6 @@ import { FaListUl, FaPlay, FaStar, FaBookmark, FaHeart } from "react-icons/fa";
 import { CircularProgressBar } from "../utility/CircularProgressBar";
 import { useState } from "react";
 import { MovieTrailer } from "../Trailer/MovieTrailer";
-import { getCertification } from "../utility/getMovieCertification";
-import {
-  IUniqueCrew,
-  getUniqueImportantCrew,
-} from "../utility/getUniqueImportantCrew";
-import { IVideo } from "../Trailer/videoType";
 import { Link } from "react-router-dom";
 import { CreatedBy } from "./TvDetails/TvDetailsType";
 import { processMedia } from "../utility/processMedia";
@@ -18,13 +12,6 @@ type DetailMainProps = {
   detailType: "movie" | "tv";
 };
 
-// function convertMinutesToHoursAndMinutes(minutes: number) {
-//   const hours = Math.floor(minutes / 60);
-//   const remainingMinutes = minutes % 60;
-
-//   return { hours, minutes: remainingMinutes };
-// }
-
 export function DetailMain({ id, useDetail, detailType }: DetailMainProps) {
   const { data, isLoading, error } = useDetail(id);
   const [showPlayer, setShowPlayer] = useState<boolean>(false);
@@ -32,15 +19,6 @@ export function DetailMain({ id, useDetail, detailType }: DetailMainProps) {
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
-
-  // const { hours, minutes } = convertMinutesToHoursAndMinutes(
-  //   detailType === "movie" ? data.runtime : data.episode_run_time[0] || 0
-  // );
-
-  // const title =
-  //   detailType === "movie" ? data.title || data.original_title : data.name;
-  // const releaseDate =
-  //   detailType === "movie" ? data.release_date : data.first_air_date;
 
   function togglePlayer() {
     setShowPlayer((prevShowPlayer) => !prevShowPlayer);
@@ -50,29 +28,6 @@ export function DetailMain({ id, useDetail, detailType }: DetailMainProps) {
     event.stopPropagation();
     setShowPlayer((prevShowPlayer) => !prevShowPlayer);
   }
-
-  // const certification = getCertification(data, detailType);
-  // const uniqueImportantCrew: IUniqueCrew[] = getUniqueImportantCrew(
-  //   data.credits
-  // );
-  // let trailer: IVideo | undefined;
-
-  // if (data) {
-  //   const videos: IVideo[] = data.videos.results || [];
-
-  //   trailer = videos.find(
-  //     (video) => video.type === "Trailer" && video.site === "YouTube"
-  //   );
-
-  //   if (!trailer) {
-  //     trailer = videos.find(
-  //       (video) =>
-  //         video.type === "Teaser" ||
-  //         video.type === "Clip" ||
-  //         (video.type === "Opening Credits" && video.site === "YouTube")
-  //     );
-  //   }
-  // }
 
   const result = processMedia(data, detailType);
 

@@ -1,9 +1,4 @@
-import {
-  ContentRatings,
-  ExternalIDs,
-  EpisodeGroups,
-  Keywords,
-} from "../../../types";
+import { ExternalIDs, EpisodeGroups, Keywords } from "../../../types";
 import { ICredits } from "../../Cast/castType";
 import { IRecommendationResponse } from "../../Recommendation/recommendationType";
 import { IReviewResponse } from "../../Review/reviewType";
