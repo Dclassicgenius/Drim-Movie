@@ -162,21 +162,33 @@ export const FilterStateProvider = ({
 
   const handleAvailabiltyChange = (event: ChangeEvent<HTMLInputElement>) => {
     const availabilityValue = event.target.value;
-    if (availabilityFilter.includes(availabilityValue)) {
-      setAvailabilityFilter(
-        availabilityFilter.filter(
-          (availability) => availability !== availabilityValue
-        )
-      );
-    } else {
+    const index = availabilityFilter.indexOf(availabilityValue);
+    if (index === -1) {
       setAvailabilityFilter([...availabilityFilter, availabilityValue]);
-    }
-    if (availabilityFilter.length === 4 && !checkedAvailabilityAll) {
-      setCheckedAvailabilityAll(true);
-    } else if (checkedAvailabilityAll) {
-      setCheckedAvailabilityAll(false);
+    } else {
+      setAvailabilityFilter(
+        availabilityFilter.filter((type) => type !== availabilityValue)
+      );
     }
   };
+
+  // const handleAvailabiltyChange = (event: ChangeEvent<HTMLInputElement>) => {
+  //   const availabilityValue = event.target.value;
+  //   if (availabilityFilter.includes(availabilityValue)) {
+  //     setAvailabilityFilter(
+  //       availabilityFilter.filter(
+  //         (availability) => availability !== availabilityValue
+  //       )
+  //     );
+  //   } else {
+  //     setAvailabilityFilter([...availabilityFilter, availabilityValue]);
+  //   }
+  //   if (availabilityFilter.length === 4 && !checkedAvailabilityAll) {
+  //     setCheckedAvailabilityAll(true);
+  //   } else if (checkedAvailabilityAll) {
+  //     setCheckedAvailabilityAll(false);
+  //   }
+  // };
 
   const handleReleaseDateStart = (newValue: Dayjs | null) => {
     setReleaseDateStart(newValue);

@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "../axiosInstance";
+const apiKey = import.meta.env.VITE_TMDB_API_KEY;
 
 export interface TVResponse {
   page: number;
@@ -40,9 +41,7 @@ const fetchTvAll = async (
   airDateEnd: string | null,
   pageParam: number
 ) => {
-  const apiUrl = `discover/tv?api_key=${
-    import.meta.env.VITE_TMDB_API_KEY
-  }&include_adult=false&include_null_first_air_dates=false&include_video=false&language=en-US&page=${pageParam}&sort_by=${sortValue}&vote_average.gte=${userScoreStart}&vote_average.lte${userScoreEnd}&vote_count.gte=${userVote}&with_genres=${genreFilters}&with_runtime.gte=${runtimeStart}&with_runtime.lte${runtimeEnd}&certification=${certificationFilter}&certification_country=US&with_watch_monetization_types=${monetizationFilterQuery}${keywordFilter}&air_date.gte=${airDateStart}&air_date.lte=${airDateEnd}&watch_region=US`;
+  const apiUrl = `discover/tv?api_key=${apiKey}&include_adult=false&include_null_first_air_dates=false&include_video=false&language=en-US&page=${pageParam}&sort_by=${sortValue}&vote_average.gte=${userScoreStart}&vote_average.lte=${userScoreEnd}&vote_count.gte=${userVote}&with_genres=${genreFilters}&with_runtime.gte=${runtimeStart}&with_runtime.lte=${runtimeEnd}&certification=${certificationFilter}&certification_country=US&with_watch_monetization_types=${monetizationFilterQuery}${keywordFilter}&air_date.gte=${airDateStart}&air_date.lte=${airDateEnd}&watch_region=US`;
 
   const response = await axiosInstance.get<TVResponse>(apiUrl);
   return response.data;

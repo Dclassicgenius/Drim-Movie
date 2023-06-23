@@ -1,27 +1,28 @@
-import axios from "axios";
 import { IMovie, IResponse } from "../types";
 import { useQuery } from "@tanstack/react-query";
+import axiosInstance from "../hooks/axiosInstance";
 
-const fetchMovies = async (url: string) => {
-  const response = await axios.get<IResponse>(url);
-  return response.data.results;
+const apiKey = import.meta.env.VITE_TMDB_API_KEY;
+
+const fetchMovies = (day: string) => {
+  const url = `trending/all/${day}?api_key=${apiKey}`;
+  return axiosInstance.get<IResponse>(url).then((response) => {
+    const trending: IMovie[] = response.data.results.map((movie) => ({
+      ...movie,
+      type: movie.first_air_date ? "tv" : "movie",
+    }));
+
+    return trending;
+  });
 };
 
-const useFetchMovies = (
-  url: string,
-  staleTime: number = 0,
-  refetchInterval: number = 0
-) => {
+const useFetchTrendingMovies = (day: string) => {
   const { isLoading, data, error } = useQuery<IMovie[], Error>(
-    ["movies", url],
-    () => fetchMovies(url),
-    {
-      staleTime,
-      refetchInterval,
-    }
+    ["TrendingMovies", day],
+    () => fetchMovies(day)
   );
 
   return { isLoading, data, error };
 };
 
-export default useFetchMovies;
+export default useFetchTrendingMovies;

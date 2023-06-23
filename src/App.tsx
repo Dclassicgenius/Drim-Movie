@@ -1,9 +1,9 @@
 import { Route, Routes } from "react-router-dom";
-import { NavBar } from "./NavBar";
-import { FooterNav } from "./FooterNav";
+import { NavBar } from "./components/Home/Navigation/NavBar";
+import { FooterNav } from "./components/Home/Navigation/FooterNav";
 import { MovieDetail } from "./components/Detail/MovieDetails/MovieDetail";
 
-import { Home } from "./Home";
+import { Home } from "./components/Home/Home";
 import { MovieFullCastsAndCrew } from "./components/Detail/MovieDetails/MovieFullCastsAndCrew";
 import { MovieReviewAll } from "./components/Detail/MovieDetails/MovieReviewAll";
 import { TvDetail } from "./components/Detail/TvDetails/TvDetail";

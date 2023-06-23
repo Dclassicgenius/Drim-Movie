@@ -27,7 +27,7 @@ export interface IMovie {
   popularity: number;
   original_name: string;
   type: string;
-  trailer?: IVideo;
+  trailer?: IVideo | null;
 }
 
 export interface IVideo {
@@ -47,7 +47,7 @@ export interface IVideo {
 export type TabType = {
   id: string | number;
   title: string;
-  apiUrl: string;
+  type: string;
 };
 
 export type TabProps = {

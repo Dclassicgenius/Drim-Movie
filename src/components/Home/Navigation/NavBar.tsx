@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import NavBarMenu from "./components/Layout/NavBar/NavBarMenu";
+import NavBarMenu from "./NavBarMenu";
 import {
   AppBar,
   Box,

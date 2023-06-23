@@ -1,6 +1,8 @@
 import { UseQueryResult, useQuery } from "@tanstack/react-query";
 import axiosInstance from "../axiosInstance";
 
+const apiKey = import.meta.env.VITE_TMDB_API_KEY;
+
 export interface MovieResponse {
   page: number;
   results: Movie[];
@@ -42,9 +44,7 @@ const fetchMoviesAll = async (
   ReleaseType: string | number | (string | number)[],
   pageParam: number
 ) => {
-  const apiUrl = `discover/movie?api_key=${
-    import.meta.env.VITE_TMDB_API_KEY
-  }&include_adult=false&include_video=false&language=en-US&page=${pageParam}&sort_by=${sortValue}&vote_average.gte=${userScoreStart}&vote_average.lte${userScoreEnd}&vote_count.gte=${userVote}&with_genres=${genreFilters}&with_runtime.gte=${runtimeStart}&with_runtime.lte${runtimeEnd}&certification=${certificationFilter}&certification_country=US&with_watch_monetization_types=${monetizationFilterQuery}${keywordFilter}&release_date.gte=${releaseDateStart}&release_date.lte=${releaseDateEnd}&region=${region}&with_release_type=${ReleaseType}`;
+  const apiUrl = `discover/movie?api_key=${apiKey}&include_adult=false&include_video=false&language=en-US&page=${pageParam}&sort_by=${sortValue}&vote_average.gte=${userScoreStart}&vote_average.lte=${userScoreEnd}&vote_count.gte=${userVote}&with_genres=${genreFilters}&with_runtime.gte=${runtimeStart}&with_runtime.lte=${runtimeEnd}&certification=${certificationFilter}&certification_country=US&with_watch_monetization_types=${monetizationFilterQuery}${keywordFilter}&release_date.gte=${releaseDateStart}&release_date.lte=${releaseDateEnd}&region=${region}&with_release_type=${ReleaseType}`;
 
   const response = await axiosInstance.get<MovieResponse>(apiUrl);
   return response.data;
