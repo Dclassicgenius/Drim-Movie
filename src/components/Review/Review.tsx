@@ -2,6 +2,7 @@ import { FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { IReview } from "./reviewType";
 import malePlaceholder from "../../assets/defaultMale.svg";
+import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 
 export function Review({
   id,
@@ -90,7 +91,9 @@ export function Review({
                   </p>
                 </div>
               </div>
-              <p className="text-xs sm:text-sm font-normal">{review.content}</p>
+              <p className="text-xs sm:text-sm font-normal">
+                <ReactMarkdown>{review.content}</ReactMarkdown>
+              </p>
             </article>
           );
         })

@@ -13,7 +13,7 @@ type MovieFiltersProps = {
 };
 
 export function MovieFilters({ mediaType }: MovieFiltersProps) {
-  const [isFilterOpen, setIsFilterOpen] = useState(true);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   // const handleError = (error: DateValidationError, value: Dayjs | null) => {};
 
