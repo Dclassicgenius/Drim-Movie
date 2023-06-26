@@ -56,7 +56,7 @@ export function Recommendations({
                     />
                   </a>
                   <div className="flex justify-between p-2">
-                    <p>{title}</p>
+                    <p className="overflow-hidden line-clamp-1">{title}</p>
                     <p>{Math.round(item.vote_average * 10)}%</p>
                   </div>
                   <div className="flex justify-between px-2 pb-3 items-center">

@@ -40,7 +40,7 @@ export function Credits({ id }: CreditProps) {
       <h1 className="text-3xl font-bold pb-4 sm:pb-7">{data.name}</h1>
       <h2 className="font-bold text-lg">Biography</h2>
       {data.biography ? (
-        <p className="text-sm whitespace-pre-wrap leading-relaxed">
+        <p className="text-sm whitespace-pre-wrap leading-relaxed text-justify">
           {data.biography}
         </p>
       ) : (

@@ -92,10 +92,7 @@ export function FooterNav() {
         <Box mt={5}>
           <Typography variant="body2" color="#c7cdd5" align="center">
             {"Copyright © "}
-            <Link
-              color="#c7cdd5"
-              href="https://https://drim-movie.netlify.app/"
-            >
+            <Link color="#c7cdd5" href="#" underline="none">
               drim-movie
             </Link>{" "}
             {new Date().getFullYear()}
