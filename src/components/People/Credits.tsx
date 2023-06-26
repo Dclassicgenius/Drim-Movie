@@ -2,6 +2,8 @@ import { useCastProfile } from "../../hooks/People/useCastProfile";
 import { CreditList } from "./CreditList";
 import { Crew } from "./PeopleType";
 import { Link } from "react-router-dom";
+import ReactMarkdown from "react-markdown";
+import { Key } from "@mui/icons-material";
 type CreditProps = {
   id: number;
 };
@@ -36,12 +38,12 @@ export function Credits({ id }: CreditProps) {
   );
 
   return (
-    <section className="space-y-3 sm:space-y-5 p-4 sm:pt-10 sm:col-span-6 w-11/12 ">
+    <section className="space-y-3 sm:space-y-5 p-4 sm:pt-10 sm:col-span-6 w-11/12 mx-auto ">
       <h1 className="text-3xl font-bold pb-4 sm:pb-7">{data.name}</h1>
       <h2 className="font-bold text-lg">Biography</h2>
       {data.biography ? (
         <p className="text-sm whitespace-pre-wrap leading-relaxed text-justify">
-          {data.biography}
+          <ReactMarkdown>{data.biography}</ReactMarkdown>
         </p>
       ) : (
         <p>We don't have a biography for {data.name}.</p>
@@ -86,10 +88,8 @@ export function Credits({ id }: CreditProps) {
 
       <div>
         {sortedDepartments.map((department) => (
-          <>
-            <h3 className="font-bold mb-6 mt-10 text-lg" key={department}>
-              {department}
-            </h3>
+          <div key={department}>
+            <h3 className="font-bold mb-6 mt-10 text-lg">{department}</h3>
             <hr />
             <div className="shadow-md">
               {data.combined_credits && (
@@ -97,7 +97,7 @@ export function Credits({ id }: CreditProps) {
               )}
               <hr />
             </div>
-          </>
+          </div>
         ))}
       </div>
       <hr />
